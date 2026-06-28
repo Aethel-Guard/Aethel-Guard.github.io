@@ -408,33 +408,24 @@
   </div>
 </section>
 
-<!-- ═══ DEPLOYMENT TIERS ═══ -->
+<!-- ═══ SERVICE TIERS ═══ -->
 <section class="section" id="tiers" style="background: var(--bg-secondary);">
   <div class="section-inner">
-    <div class="section-label">// Deployment</div>
-    <h2 class="section-title">Two tiers. Your choice.</h2>
-    <p class="section-subtitle">Start with the Starter plan. Scale to Professional when you need the full agent roster.</p>
+    <div class="section-label">// Plans</div>
+    <h2 class="section-title">Two plans. Your choice.</h2>
+    <p class="section-subtitle">Start with Starter. Scale to Professional when you need the full agent roster.</p>
 
     <div style="overflow-x: auto;">
       <table class="tier-table">
         <thead>
           <tr>
             <th>Feature</th>
-            <th><span class="tier-label core">Core</span></th>
-            <th><span class="tier-label full">Full</span></th>
+            <th><span class="tier-label core">Starter</span></th>
+            <th><span class="tier-label full">Professional</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Minimum RAM</td>
-            <td>Starter</td>
-            <td>Professional</td>
-          </tr>
-          <tr>
-            <td>Containers</td>
-            <td>~15</td>
-            <td>~25</td>
-          </tr>
+
           <tr>
             <td>AI Agents</td>
             <td>Alpha + Bravo</td>
@@ -476,7 +467,7 @@
             <td>✓</td>
           </tr>
           <tr>
-            <td>Angular Dashboard</td>
+            <td>Dashboard</td>
             <td>✓</td>
             <td>✓</td>
           </tr>
@@ -491,7 +482,7 @@
             <td>✓</td>
           </tr>
           <tr>
-            <td>Host Enrollment + Autoscaling</td>
+            <td>Managed Infrastructure</td>
             <td>✓</td>
             <td>✓</td>
           </tr>
@@ -706,37 +697,37 @@
 <section class="section" id="quickstart">
   <div class="section-inner">
     <div class="section-label">// Quick Start</div>
-    <h2 class="section-title">Deploy in minutes</h2>
-    <p class="section-subtitle">Clone, configure, and launch your SOC with Docker Compose. Full instructions in the Integration Guide.</p>
+    <h2 class="section-title">Get started in minutes</h2>
+    <p class="section-subtitle">No infrastructure to manage. Sign up, connect your SIEM, and start triaging alerts.</p>
 
     <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-lg);">
 
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('https://github.com/Aethel-Guard')">copy</button>
         </div>
-        <pre><span class="comment"># Clone the repository</span>
-<span class="keyword">git clone</span> https://github.com/Aethel-Guard
-<span class="keyword">cd</span> Aethel-Guard</pre>
+        <pre><span class="comment"># 1. Create your account</span>
+<span class="keyword">curl</span> -X POST https://api.aethelguard.com/v1/register \
+  -H "Content-Type: application/json" \
+  -d '{"org": "your-org", "plan": "starter"}'</pre>
       </div>
 
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
         </div>
-        <pre><span class="comment"># Configuration is managed by Aethel Guard</span>
-<span class="comment"># No local setup required — we handle everything</span></pre>
+        <pre><span class="comment"># 2. Connect your SIEM (Wazuh, Splunk, etc.)</span>
+<span class="keyword">curl</span> -X POST https://api.aethelguard.com/v1/integrations \
+  -H "Authorization: Bearer $AETHEL_API_KEY" \
+  -d '{"type": "wazuh", "url": "https://wazuh.your-org.com"}'</pre>
       </div>
 
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
         </div>
-        <pre><span class="comment"># Provisioning is managed by Aethel Guard</span>
-<span class="keyword"># You focus on security, we handle the infrastructure</span>
-
-<span class="comment"># Scale your plan anytime from the dashboard</span></pre>
+        <pre><span class="comment"># 3. AI agents start triaging immediately</span>
+<span class="comment"># → https://app.aethelguard.com/dashboard</span></pre>
       </div>
 
       <div class="code-block">
@@ -755,7 +746,7 @@
 
     <div style="text-align: center; margin-top: var(--space-2xl);">
       <p style="color: var(--text-secondary); font-size: var(--text-sm);">
-        Need detailed setup? Read the <a href="../docs/index.html" style="color: var(--accent);">Integration Guide</a> →
+        Need help? Read the <a href="../docs/index.html" style="color: var(--accent);">Integration Guide</a> or <a href="mailto:hello@aethelguard.com" style="color: var(--accent);">contact us</a> →
       </p>
     </div>
   </div>
@@ -783,8 +774,8 @@
 
     <div style="margin-top: var(--space-3xl); display: flex; gap: var(--space-2xl); justify-content: center; flex-wrap: wrap;">
       <div style="text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">Docker</div>
-        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Compose deployment</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">SaaS</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Fully managed</div>
       </div>
       <div style="text-align: center;">
         <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">TLS</div>
