@@ -98,27 +98,6 @@
       font-size: var(--text-lg);
       margin-bottom: var(--space-xs);
     }
-    .engine-card .count {
-      font-family: var(--font-mono);
-      font-size: var(--text-xs);
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: var(--space-sm);
-    }
-    .engine-card .bar {
-      width: 100%;
-      height: 4px;
-      background: var(--bg-tertiary);
-      border-radius: 2px;
-      margin-bottom: var(--space-sm);
-      overflow: hidden;
-    }
-    .engine-card .bar-fill {
-      height: 100%;
-      border-radius: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-    }
     .engine-card p {
       font-size: var(--text-sm);
       color: var(--text-secondary);
@@ -578,7 +557,7 @@
   <div class="section-inner">
     <div class="section-header reveal">
       <div class="section-label">// Security Engines</div>
-      <h2 class="section-title">Comprehensive coverage. Nine categories. <span class="accent">All on-device.</span></h2>
+      <h2 class="section-title">Comprehensive coverage. Ten categories. <span class="accent">All on-device.</span></h2>
       <p class="section-subtitle">Every engine runs locally. No network calls. No cloud round-trips. Your data is processed in memory and never persisted outside the device.</p>
     </div>
 
@@ -586,72 +565,60 @@
       <div class="engine-card reveal">
         <div class="icon">🛡️</div>
         <h3>Anti-Tracking</h3>
-        <div class="count">15 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
-        <p>Intercepts and refuses 15 categories of tracking — analytics, advertising, fingerprinting, cross-app, location, cookies, pixels, beacons, SDK telemetry, and more. Blocked at the network layer before any connection is established.</p>
+        <p>Intercepts and refuses tracking — analytics, advertising, fingerprinting, cross-app, location, cookies, pixels, beacons, SDK telemetry, and more. Blocked at the network layer before any connection is established.</p>
       </div>
 
       <div class="engine-card reveal delay-1">
         <div class="icon">🎣</div>
         <h3>Anti-Phishing</h3>
-        <div class="count">12 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
         <p>Real-time URL analysis, SMS phishing detection, email link inspection, and credential harvest prevention. All pattern matching runs on-device — no cloud lookups, no DNS leaks.</p>
       </div>
 
       <div class="engine-card reveal delay-2">
         <div class="icon">🌐</div>
         <h3>Network Security</h3>
-        <div class="count">10 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 67%;"></div></div>
         <p>TLS interception detection, DNS poisoning prevention, rogue Wi-Fi identification, man-in-the-middle blocking, and packet inspection — all processed locally without sending a single byte to the cloud.</p>
       </div>
 
       <div class="engine-card reveal">
         <div class="icon">🕵️</div>
         <h3>Privacy</h3>
-        <div class="count">9 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
         <p>PII redaction across 25 categories, clipboard protection, screenshot blocking, camera/microphone guard, and app permission auditing. Your personal data never leaves the device — by architecture.</p>
       </div>
 
       <div class="engine-card reveal delay-1">
         <div class="icon">📱</div>
         <h3>Device Security</h3>
-        <div class="count">8 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 53%;"></div></div>
         <p>File integrity monitoring, process auditing, secure storage verification, USB attack prevention, and sideload analysis. The device protects itself — no remote attestation required.</p>
       </div>
 
       <div class="engine-card reveal delay-2">
         <div class="icon">📦</div>
         <h3>App Security</h3>
-        <div class="count">7 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 47%;"></div></div>
         <p>Installed app scanning, permission analysis, behavioral profiling, SDK fingerprinting, and inter-app communication monitoring. Apps are verified locally — no app data sent to servers.</p>
       </div>
 
       <div class="engine-card reveal">
         <div class="icon">🔑</div>
         <h3>Identity</h3>
-        <div class="count">6 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 40%;"></div></div>
         <p>Credential vault, biometric verification, session integrity, token rotation, identity proofing, and multi-factor authentication. Dual-layer MFA with duress and wipe PINs for emergency scenarios.</p>
       </div>
 
       <div class="engine-card reveal delay-1">
         <div class="icon">🔒</div>
         <h3>Data Protection</h3>
-        <div class="count">5 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 33%;"></div></div>
         <p>At-rest encryption, in-transit protection, secure deletion, data minimization, and retention enforcement. Data that never leaves your device cannot be subpoenaed, leaked, or sold.</p>
       </div>
 
       <div class="engine-card reveal delay-2">
+        <div class="icon">🔐</div>
+        <h3>Password Manager</h3>
+        <p>Zero-knowledge credential vault, breach-monitoring across 2 billion+ leaked records, password strength auditing, auto-rotate on compromise, and secure sharing. Your vault never leaves your device — only breach alerts and strength reports are generated locally.</p>
+      </div>
+
+      <div class="engine-card reveal">
         <div class="icon">🚨</div>
         <h3>Emergency</h3>
-        <div class="count">4 engines</div>
-        <div class="bar"><div class="bar-fill" style="width: 27%;"></div></div>
         <p>Duress PIN routing to Overwatch, wipe PIN for irreversible data destruction, emergency contact alerting, and panic mode lockdown. Built for real-world threats, not just theoretical ones.</p>
       </div>
     </div>
@@ -827,8 +794,8 @@
         <p class="pricing-desc">Real security, not a trial. Core protection for everyone.</p>
         <ul class="pricing-features">
           <li><span class="check">✓</span> 40+ security engines (core subset)</li>
-          <li><span class="check">✓</span> Anti-tracking (15 categories)</li>
-          <li><span class="check">✓</span> Anti-phishing (12 engines)</li>
+          <li><span class="check">✓</span> Anti-tracking</li>
+          <li><span class="check">✓</span> Anti-phishing</li>
           <li><span class="check">✓</span> P1–P7 redlines enforced</li>
           <li><span class="check">✓</span> Dual-layer MFA (PIN + biometric)</li>
           <li><span class="check">✓</span> PII redaction (basic)</li>
@@ -846,12 +813,13 @@
         <p class="pricing-desc">The full security stack with on-device AI. Everything Vigilar offers.</p>
         <ul class="pricing-features">
           <li><span class="check">✓</span> All security engines</li>
-          <li><span class="check">✓</span> Anti-tracking (15 categories)</li>
-          <li><span class="check">✓</span> Anti-phishing (12 engines)</li>
+          <li><span class="check">✓</span> Anti-tracking</li>
+          <li><span class="check">✓</span> Anti-phishing</li>
           <li><span class="check">✓</span> P1–P7 redlines enforced</li>
           <li><span class="check">✓</span> Dual-layer MFA (PIN + biometric)</li>
-          <li><span class="check">✓</span> PII redaction (25 categories)</li>
-          <li><span class="check">✓</span> On-device AI inference</li>
+          <li><span class="check">✓</span> Password manager with breach monitoring</li>
+          <li><span class="check">✓</span> PII redaction</li>
+          <li><span class="check">✓</span> On-device AI</li>
           <li><span class="check">✓</span> Advanced anomaly detection</li>
           <li><span class="check">✓</span> Emergency features (duress/wipe PIN)</li>
           <li><span class="check">✓</span> Priority alpha access + updates</li>
