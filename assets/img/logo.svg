@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="sentinelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D0D8E4"/>
+    </linearGradient>
+    <radialGradient id="emberGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#F5BE50" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#D9AB52" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="16" fill="#080B12"/>
+  
+  <!-- Sentinel mark: 3 converging upward strokes -->
+  <!-- Center stroke (tallest) -->
+  <polygon points="256,78 247,298 265,298" fill="url(#sentinelGrad)"/>
+  
+  <!-- Left stroke (angled) -->
+  <polygon points="256,108 148,298 170,298 268,118" fill="#E0E7F0"/>
+  
+  <!-- Right stroke (angled mirror) -->
+  <polygon points="256,108 344,298 366,298 244,118" fill="#C8D2DE"/>
+  
+  <!-- Horizontal crossbar -->
+  <rect x="148" y="278" width="218" height="6" rx="3" fill="#C8D2DE" opacity="0.7"/>
+  
+  <!-- Ember dot -->
+  <circle cx="256" cy="340" r="14" fill="url(#emberGlow)"/>
+  <circle cx="256" cy="340" r="7" fill="#F5BE50"/>
+  
+  <!-- Wordmark -->
+  <text x="256" y="400" font-family="SFCompactDisplay, -apple-system, Helvetica, Arial, sans-serif" font-size="48" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">AETHEL</text>
+  <text x="256" y="400" font-family="SFCompactDisplay, -apple-system, Helvetica, Arial, sans-serif" font-size="48" font-weight="300" fill="#9BA8BA" text-anchor="middle" letter-spacing="4">
+    <tspan dx="260">GUARD</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="256" y="440" font-family="SFCompactText, -apple-system, Helvetica, Arial, sans-serif" font-size="14" fill="#64748B" text-anchor="middle" letter-spacing="6">S E C U R I T Y    I N T E L L I G E N C E</text>
+  
+  <!-- Top accent line -->
+  <line x1="180" y1="58" x2="332" y2="58" stroke="white" stroke-width="1.5" opacity="0.3"/>
+</svg>

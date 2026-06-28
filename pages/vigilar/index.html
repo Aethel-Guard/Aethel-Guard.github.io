@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vigilar — Your Data Never Leaves Your Device | Aethel Guard</title>
+  <meta name="description" content="Vigilar is a consumer security companion with 76 on-device security engines, P1-P7 redlines, anti-tracking, MFA, PII redaction, and zero cloud dependency. Your data never leaves your device.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* ── Vigilar-specific styles ── */
+    .vigilar-hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+
+    /* ── Problem section ── */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+    @media (max-width: 768px) { .problem-grid { grid-template-columns: 1fr; } }
+
+    .problem-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--threat), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .problem-card:hover {
+      border-color: rgba(239, 68, 68, 0.3);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .problem-card:hover::before { opacity: 1; }
+    .problem-card .icon { font-size: 1.75rem; margin-bottom: var(--space-md); }
+    .problem-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-sm);
+    }
+    .problem-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Engines grid ── */
+    .engines-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+    @media (max-width: 768px) { .engines-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 1024px) { .engines-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .engine-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .engine-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .engine-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    .engine-card:hover::before { opacity: 1; }
+
+    .engine-card .icon { font-size: 1.75rem; margin-bottom: var(--space-md); }
+    .engine-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-xs);
+    }
+    .engine-card .count {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-sm);
+    }
+    .engine-card .bar {
+      width: 100%;
+      height: 4px;
+      background: var(--bg-tertiary);
+      border-radius: 2px;
+      margin-bottom: var(--space-sm);
+      overflow: hidden;
+    }
+    .engine-card .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    }
+    .engine-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Redlines ── */
+    .redlines-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .redlines-grid { grid-template-columns: 1fr; } }
+
+    .redline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-left: 3px solid var(--threat);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      display: flex;
+      gap: var(--space-lg);
+      align-items: flex-start;
+      transition: all var(--transition-default);
+    }
+    .redline-card:hover {
+      border-color: var(--border-accent);
+      border-left-color: var(--threat);
+      background: var(--bg-card-hover);
+    }
+
+    .redline-badge {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 71, 87, 0.12);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--threat);
+    }
+
+    .redline-card .body h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      margin-bottom: var(--space-xs);
+    }
+    .redline-card .body p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── On-Device AI section ── */
+    .ai-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3xl);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+    @media (max-width: 768px) { .ai-section { grid-template-columns: 1fr; } }
+
+    .ai-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 280px;
+    }
+    .ai-orb {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, var(--accent-glow-strong), transparent 70%);
+      border: 2px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--accent);
+      position: relative;
+      animation: float 4s ease-in-out infinite;
+    }
+    .ai-orb::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-border);
+      opacity: 0.3;
+      animation: rotateGlow 12s linear infinite;
+    }
+    .ai-orb::after {
+      content: '';
+      position: absolute;
+      inset: -40px;
+      border-radius: 50%;
+      border: 1px solid var(--cyan-border);
+      opacity: 0.15;
+      animation: rotateGlow 20s linear infinite reverse;
+    }
+
+    .ai-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .ai-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .ai-features li .check {
+      color: var(--success);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .ai-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+    .ai-spec-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+
+    /* ── Platforms ── */
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-md);
+    }
+    @media (max-width: 768px) { .platforms-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .platform-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .platform-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .platform-card .p-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+    .platform-card .p-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Pricing ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .pricing-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    .pricing-card:hover::before { opacity: 1; }
+
+    .pricing-card.featured {
+      border-color: var(--accent-border);
+      background: var(--bg-card-hover);
+    }
+    .pricing-card.featured::before { opacity: 1; }
+
+    .pricing-tier {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: var(--space-sm);
+    }
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+    .pricing-price .currency { font-size: var(--text-xl); color: var(--text-secondary); }
+    .pricing-price .period { font-size: var(--text-sm); color: var(--text-muted); font-weight: 400; }
+    .pricing-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xl);
+      line-height: 1.5;
+    }
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+    .pricing-features li .check {
+      color: var(--success);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .pricing-features li .x {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .pricing-card .btn { width: 100%; justify-content: center; margin-top: var(--space-xl); }
+
+    /* ── Stats bar (local) ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3xl);
+      flex-wrap: wrap;
+      padding: var(--space-xl) 0;
+    }
+    .stat { text-align: center; }
+    .stat .num {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat .label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: var(--space-xs);
+    }
+
+    /* ── CTA section ── */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-5xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-inner { position: relative; z-index: 1; }
+
+    .cta-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+    .cta-section p {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    /* ── Tech pills ── */
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      justify-content: center;
+    }
+    .tech-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+
+    /* Nav active state for Vigilar */
+    .nav-links a.active {
+      color: var(--accent);
+    }
+    .nav-links a.active::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../services/index.html">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero vigilar-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-scanline"></div>
+  <div class="hero-content animate-in">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Consumer Security Companion · Alpha
+    </div>
+    <h1>
+      Your data never<br>
+      <span class="accent">leaves your device.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Vigilar runs 76 security engines entirely on-device, enforced by P1–P7 redlines — hardcoded guarantees that no power, privilege, or prompt can override. Zero cloud. Zero telemetry. Zero compromise.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:hello@aethelguard.com" class="btn btn-primary">Join the Alpha <span class="arrow">→</span></a>
+      <a href="../../index.html#journey" class="btn btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═══ -->
+<section class="section" style="padding-top: 0; padding-bottom: var(--space-3xl);">
+  <div class="section-inner">
+    <div class="stats-bar">
+      <div class="stat reveal">
+        <div class="num">76</div>
+        <div class="label">Security Engines</div>
+      </div>
+      <div class="stat reveal delay-1">
+        <div class="num">P1–P7</div>
+        <div class="label">Hardcoded Redlines</div>
+      </div>
+      <div class="stat reveal delay-2">
+        <div class="num">0</div>
+        <div class="label">Cloud Dependencies</div>
+      </div>
+      <div class="stat reveal delay-3">
+        <div class="num">5</div>
+        <div class="label">Platforms</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE PROBLEM ═══ -->
+<section class="section" id="problem" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// The Problem</div>
+      <h2 class="section-title">Consumer security is <span class="accent">broken</span></h2>
+      <p class="section-subtitle">The apps you trust to protect you are harvesting your data. "Free" security products trade your privacy for profit. The industry calls it security. We call it what it is.</p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-card reveal delay-1">
+        <div class="icon">📡</div>
+        <h3>Tracking as a Business Model</h3>
+        <p>"Free" security apps embed analytics SDKs, advertising identifiers, and fingerprinting scripts. They block viruses while tracking you themselves. The fox guarding the henhouse — and the henhouse has cameras.</p>
+      </div>
+
+      <div class="problem-card reveal delay-2">
+        <div class="icon">☁️</div>
+        <h3>Cloud Dependency</h3>
+        <p>Every security decision routes through someone else's server. Your files, your messages, your browsing — all processed in the cloud. When that server breaches, your most sensitive data goes with it.</p>
+      </div>
+
+      <div class="problem-card reveal delay-3">
+        <div class="icon">🔓</div>
+        <h3>Policies, Not Guarantees</h3>
+        <p>Privacy policies are promises, not code. They change at the next update. They have exceptions for "lawful requests." They have clauses you'll never read. What you need is architecture, not paperwork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SECURITY ENGINES ═══ -->
+<section class="section" id="engines">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Security Engines</div>
+      <h2 class="section-title">76 engines. Nine categories. <span class="accent">All on-device.</span></h2>
+      <p class="section-subtitle">Every engine runs locally. No network calls. No cloud round-trips. Your data is processed in memory and never persisted outside the device.</p>
+    </div>
+
+    <div class="engines-grid">
+      <div class="engine-card reveal">
+        <div class="icon">🛡️</div>
+        <h3>Anti-Tracking</h3>
+        <div class="count">15 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+        <p>Intercepts and refuses 15 categories of tracking — analytics, advertising, fingerprinting, cross-app, location, cookies, pixels, beacons, SDK telemetry, and more. Blocked at the network layer before any connection is established.</p>
+      </div>
+
+      <div class="engine-card reveal delay-1">
+        <div class="icon">🎣</div>
+        <h3>Anti-Phishing</h3>
+        <div class="count">12 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
+        <p>Real-time URL analysis, SMS phishing detection, email link inspection, and credential harvest prevention. All pattern matching runs on-device — no cloud lookups, no DNS leaks.</p>
+      </div>
+
+      <div class="engine-card reveal delay-2">
+        <div class="icon">🌐</div>
+        <h3>Network Security</h3>
+        <div class="count">10 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 67%;"></div></div>
+        <p>TLS interception detection, DNS poisoning prevention, rogue Wi-Fi identification, man-in-the-middle blocking, and packet inspection — all processed locally without sending a single byte to the cloud.</p>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="icon">🕵️</div>
+        <h3>Privacy</h3>
+        <div class="count">9 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
+        <p>PII redaction across 25 categories, clipboard protection, screenshot blocking, camera/microphone guard, and app permission auditing. Your personal data never leaves the device — by architecture.</p>
+      </div>
+
+      <div class="engine-card reveal delay-1">
+        <div class="icon">📱</div>
+        <h3>Device Security</h3>
+        <div class="count">8 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 53%;"></div></div>
+        <p>File integrity monitoring, process auditing, secure storage verification, USB attack prevention, and sideload analysis. The device protects itself — no remote attestation required.</p>
+      </div>
+
+      <div class="engine-card reveal delay-2">
+        <div class="icon">📦</div>
+        <h3>App Security</h3>
+        <div class="count">7 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 47%;"></div></div>
+        <p>Installed app scanning, permission analysis, behavioral profiling, SDK fingerprinting, and inter-app communication monitoring. Apps are verified locally — no app data sent to servers.</p>
+      </div>
+
+      <div class="engine-card reveal">
+        <div class="icon">🔑</div>
+        <h3>Identity</h3>
+        <div class="count">6 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 40%;"></div></div>
+        <p>Credential vault, biometric verification, session integrity, token rotation, identity proofing, and multi-factor authentication. Dual-layer MFA with duress and wipe PINs for emergency scenarios.</p>
+      </div>
+
+      <div class="engine-card reveal delay-1">
+        <div class="icon">🔒</div>
+        <h3>Data Protection</h3>
+        <div class="count">5 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 33%;"></div></div>
+        <p>At-rest encryption, in-transit protection, secure deletion, data minimization, and retention enforcement. Data that never leaves your device cannot be subpoenaed, leaked, or sold.</p>
+      </div>
+
+      <div class="engine-card reveal delay-2">
+        <div class="icon">🚨</div>
+        <h3>Emergency</h3>
+        <div class="count">4 engines</div>
+        <div class="bar"><div class="bar-fill" style="width: 27%;"></div></div>
+        <p>Duress PIN routing to Overwatch, wipe PIN for irreversible data destruction, emergency contact alerting, and panic mode lockdown. Built for real-world threats, not just theoretical ones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REDLINES ═══ -->
+<section class="section" id="redlines" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// P1–P7 Redlines</div>
+      <h2 class="section-title">Seven lines that <span class="accent">cannot be crossed.</span></h2>
+      <p class="section-subtitle">These are not policies. They are not preferences. They are hardcoded constants in the source — immutable, non-negotiable, and enforced at compile time. No prompt, no privilege, no update can override them.</p>
+    </div>
+
+    <div class="redlines-grid">
+      <div class="redline-card reveal">
+        <div class="redline-badge">P1</div>
+        <div class="body">
+          <h4>No PII Exfiltration</h4>
+          <p>Personally identifiable information is never transmitted off-device. No telemetry, no analytics, no crash reports containing user data. The network layer physically cannot access PII buffers.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal delay-1">
+        <div class="redline-badge">P2</div>
+        <div class="body">
+          <h4>No Jailbreak Bypass</h4>
+          <p>Redlines cannot be overridden by any instruction — user, admin, or injected. There is no debug mode, no developer backdoor, no emergency override. The code path to bypass does not exist.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal delay-2">
+        <div class="redline-badge">P3</div>
+        <div class="body">
+          <h4>No Model Substitution</h4>
+          <p>The on-device AI model cannot be swapped, replaced, or augmented by an external model. Ember Edge is compiled in. No remote model loading, no model marketplace, no silent replacement.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal">
+        <div class="redline-badge">P4</div>
+        <div class="body">
+          <h4>No Silent Failover</h4>
+          <p>If a security component fails, it fails closed — not open. Every failover creates an auditable record. No silent degradation, no fallback to insecure mode, no quiet bypass.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal delay-1">
+        <div class="redline-badge">P5</div>
+        <div class="body">
+          <h4>No Unapproved External Calls</h4>
+          <p>Vigilar does not make network calls unless explicitly approved by the user through MFA. No background sync, no silent update checks, no beacon pings. Every outbound connection is intentional and logged.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal delay-2">
+        <div class="redline-badge">P6</div>
+        <div class="body">
+          <h4>No Data Retention Beyond Session</h4>
+          <p>Sensitive session data is wiped from memory when the session ends. No caches, no temp files, no persistent logs. What was processed is gone — not recoverable, not reconstructable, not subpoena-able.</p>
+        </div>
+      </div>
+
+      <div class="redline-card reveal">
+        <div class="redline-badge">P7</div>
+        <div class="body">
+          <h4>No Reduced-Thinking Execution</h4>
+          <p>The AI inference engine cannot be forced into a reduced-thinking or low-effort mode. Security analysis always runs at full capability. No "quick mode," no "lite mode," no performance shortcut that sacrifices security.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ON-DEVICE AI ═══ -->
+<section class="section" id="on-device-ai">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// On-Device AI</div>
+      <h2 class="section-title">Ember Edge. <span class="accent">AI on your device.</span></h2>
+      <p class="section-subtitle">Vigilar's intelligence comes from Ember Edge — a 3.1B parameter model running entirely on your device. No cloud inference. No API calls. No data leaving your phone. Just local intelligence, always available, always private.</p>
+    </div>
+
+    <div class="ai-section reveal">
+      <div class="ai-visual">
+        <div class="ai-orb">🔥</div>
+      </div>
+      <div>
+        <h3 style="font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-md);">Zero cloud. Zero API calls. Zero data sent.</h3>
+        <p style="color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.7; margin-bottom: var(--space-lg);">
+          Ember Edge is a quantized 3.1B parameter model (Q4_K_M) that runs directly on your device's CPU/GPU. It handles threat analysis, behavioral anomaly detection, phishing URL classification, and adversarial input detection — all without a single network round-trip. The model is embedded in the app binary. It cannot be replaced, augmented, or bypassed.
+        </p>
+        <ul class="ai-features">
+          <li><span class="check">✓</span> 3.1B parameters, Q4_K_M quantization — runs on mobile hardware</li>
+          <li><span class="check">✓</span> Threat classification, anomaly detection, phishing analysis</li>
+          <li><span class="check">✓</span> Adversarial input detection and prompt injection defense</li>
+          <li><span class="check">✓</span> P3 redline: model cannot be substituted or remotely loaded</li>
+          <li><span class="check">✓</span> P7 redline: full capability always — no reduced-thinking mode</li>
+          <li><span class="check">✓</span> Inference runs in-process — no external server, no API endpoint</li>
+        </ul>
+        <div class="ai-specs">
+          <span class="ai-spec-pill">Ember Edge 3.1B</span>
+          <span class="ai-spec-pill">Q4_K_M</span>
+          <span class="ai-spec-pill">~2.1 GB</span>
+          <span class="ai-spec-pill">On-Device</span>
+          <span class="ai-spec-pill">Zero Cloud</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLATFORMS ═══ -->
+<section class="section" id="platforms" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Platforms</div>
+      <h2 class="section-title">Five platforms. <span class="accent">One security model.</span></h2>
+      <p class="section-subtitle">Vigilar runs on every major consumer platform with the same engine stack, the same redlines, and the same zero-cloud guarantee.</p>
+    </div>
+
+    <div class="platforms-grid reveal">
+      <div class="platform-card">
+        <div class="p-icon">📱</div>
+        <div class="p-name">iOS</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🤖</div>
+        <div class="p-name">Android</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">💻</div>
+        <div class="p-name">macOS</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🪟</div>
+        <div class="p-name">Windows</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🐧</div>
+        <div class="p-name">Linux</div>
+      </div>
+    </div>
+
+    <div style="margin-top: var(--space-xl); text-align: center;" class="reveal delay-1">
+      <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-md);">Desktop app built with Electron · Mobile built with React Native</p>
+      <div class="tech-pills">
+        <span class="tech-pill">React Native</span>
+        <span class="tech-pill">FastAPI</span>
+        <span class="tech-pill">Electron</span>
+        <span class="tech-pill">Ember Edge 3.1B Q4_K_M</span>
+        <span class="tech-pill">On-Device Inference</span>
+        <span class="tech-pill">Zero Cloud</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section" id="pricing">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Pricing</div>
+      <h2 class="section-title">Free to start. <span class="accent">€9/mo</span> for everything.</h2>
+      <p class="section-subtitle">No tiers designed to upsell you. No data harvesting to subsidize the free plan. The free tier is real security — not a trial. Premium unlocks the full engine stack and Ember Edge AI.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-tier">// Free</div>
+        <div class="pricing-price"><span class="currency">€</span>0<span class="period"> / forever</span></div>
+        <p class="pricing-desc">Real security, not a trial. Core protection for everyone.</p>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> 40+ security engines (core subset)</li>
+          <li><span class="check">✓</span> Anti-tracking (15 categories)</li>
+          <li><span class="check">✓</span> Anti-phishing (12 engines)</li>
+          <li><span class="check">✓</span> P1–P7 redlines enforced</li>
+          <li><span class="check">✓</span> Dual-layer MFA (PIN + biometric)</li>
+          <li><span class="check">✓</span> PII redaction (basic)</li>
+          <li><span class="x">—</span> Ember Edge AI inference</li>
+          <li><span class="x">—</span> Advanced anomaly detection</li>
+          <li><span class="x">—</span> Emergency features (duress/wipe PIN)</li>
+          <li><span class="x">—</span> Priority alpha access</li>
+        </ul>
+        <a href="mailto:hello@aethelguard.com" class="btn btn-secondary">Get Started Free</a>
+      </div>
+
+      <div class="pricing-card featured reveal delay-1">
+        <div class="pricing-tier">// Premium</div>
+        <div class="pricing-price"><span class="currency">€</span>9<span class="period"> / month</span></div>
+        <p class="pricing-desc">The full 76-engine stack with on-device AI. Everything Vigilar offers.</p>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> All 76 security engines</li>
+          <li><span class="check">✓</span> Anti-tracking (15 categories)</li>
+          <li><span class="check">✓</span> Anti-phishing (12 engines)</li>
+          <li><span class="check">✓</span> P1–P7 redlines enforced</li>
+          <li><span class="check">✓</span> Dual-layer MFA (PIN + biometric)</li>
+          <li><span class="check">✓</span> PII redaction (25 categories)</li>
+          <li><span class="check">✓</span> Ember Edge 3.1B AI inference</li>
+          <li><span class="check">✓</span> Advanced anomaly detection</li>
+          <li><span class="check">✓</span> Emergency features (duress/wipe PIN)</li>
+          <li><span class="check">✓</span> Priority alpha access + updates</li>
+        </ul>
+        <a href="mailto:hello@aethelguard.com" class="btn btn-primary">Join the Alpha <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section" id="alpha">
+  <div class="section-inner">
+    <div class="hero-badge" style="margin-bottom: var(--space-xl);">
+      <span class="pulse-dot"></span>
+      Alpha · Limited Slots
+    </div>
+    <h2>Join the <span style="color: var(--accent);">alpha.</span></h2>
+    <p>Vigilar is in alpha. We're onboarding testers platform by platform. Email us to join the waitlist — tell us your device and use case.</p>
+    <div class="hero-actions">
+      <a href="mailto:hello@aethelguard.com" class="btn btn-primary">Email to Join the Alpha <span class="arrow">→</span></a>
+      <a href="https://github.com/Aethel-Guard" class="btn btn-secondary" target="_blank">View on GitHub</a>
+    </div>
+    <div style="margin-top: var(--space-2xl); display: flex; gap: var(--space-2xl); justify-content: center; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">76</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Security Engines</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">P1–P7</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Hardcoded Redlines</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">0</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Data Sent to Cloud</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="../services/index.html#redesign">System Redesign</a></li>
+        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="../services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

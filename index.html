@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aethel Guard — Security Intelligence for Everyone</title>
+  <meta name="description" content="Aethel Guard builds cybersecurity products for individuals, small businesses, and mid-market companies. From personal protection to enterprise SOC — powered by our own AI.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="page-loader">
+  <div class="loader-shield">
+    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M256 32 L96 112 L96 272 C96 384 160 448 256 480 C352 448 416 384 416 272 L416 112 Z" fill="#0F1520" stroke="#F5A623" stroke-width="4"/>
+      <text x="256" y="300" font-family="Space Mono, monospace" font-size="180" font-weight="700" fill="url(#loaderGrad)" text-anchor="middle" letter-spacing="-8">Æ</text>
+      <defs><linearGradient id="loaderGrad" x1="160" y1="160" x2="352" y2="340"><stop offset="0%" stop-color="#FCD34D"/><stop offset="50%" stop-color="#F5A623"/><stop offset="100%" stop-color="#C77D0A"/></linearGradient></defs>
+    </svg>
+  </div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#who">Who For</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#journey">How It Works</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="pages/docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO — "The world needs a guard that doesn't sleep." ═══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-scanline"></div>
+  <div class="hero-particles">
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+  </div>
+  <div class="hero-content">
+    <img src="assets/img/logo.svg" alt="Aethel Guard" style="width: 180px; margin-bottom: var(--space-xl); opacity: 0.95;">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Security Intelligence
+    </div>
+    <h1>
+      The guard that<br>
+      <span class="accent">never sleeps.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Cybersecurity for individuals, small businesses, and mid-market companies.
+      Four products. One mission. Your data never leaves your device.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn btn-primary"><span>Explore Products</span> <span class="arrow">→</span></a>
+      <a href="#journey" class="btn btn-secondary">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section class="stats-bar">
+  <div class="stat reveal">
+    <div class="stat-number" data-count="76" data-suffix="">76</div>
+    <div class="stat-label">Security Engines</div>
+    <div class="stat-desc">Running on your device</div>
+  </div>
+  <div class="stat reveal delay-1">
+    <div class="stat-number" data-count="54000" data-suffix="+">54,000+</div>
+    <div class="stat-label">Lines of Code</div>
+    <div class="stat-desc">Hardened and audited</div>
+  </div>
+  <div class="stat reveal delay-2">
+    <div class="stat-number" data-count="7" data-suffix="">7</div>
+    <div class="stat-label">Redlines</div>
+    <div class="stat-desc">Hardcoded, non-negotiable</div>
+  </div>
+  <div class="stat reveal delay-3">
+    <div class="stat-number" data-count="0" data-suffix="">0</div>
+    <div class="stat-label">Data Sent to Cloud</div>
+    <div class="stat-desc">Your data stays yours</div>
+  </div>
+</section>
+
+<!-- ═══ WHO IS IT FOR ═══ -->
+<section class="section" id="who">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">Who it's for</div>
+      <h2 class="section-title">Security for <span class="accent">every scale</span></h2>
+      <p class="section-subtitle">From one person to ten thousand devices. Same engine. Same redlines. Different packaging.</p>
+    </div>
+
+    <div class="who-grid">
+      <div class="who-card reveal delay-1">
+        <div class="icon">👤</div>
+        <h3>Individuals & Families</h3>
+        <p>Anti-tracking, MFA, PII redaction, emergency features. Everything runs on your phone. No cloud. No tracking. No exceptions.</p>
+        <div class="price">Free — €9/mo <span class="price-note">for premium</span></div>
+      </div>
+
+      <div class="who-card reveal delay-2">
+        <div class="icon">🏢</div>
+        <h3>Small & Medium Business</h3>
+        <p>Detection engine + AI triage + SIEM integration. Deploy in an afternoon. One person can run a security operations center.</p>
+        <div class="price">€50 <span class="price-note">/device/month</span></div>
+      </div>
+
+      <div class="who-card reveal delay-3">
+        <div class="icon">🏛️</div>
+        <h3>Enterprise & MSSP</h3>
+        <p>Full SOC-as-a-Service. Four AI agents. Wazuh, OpenCTI, MISP, TheHive, Shuffle. Multi-tenant. GDPR compliant.</p>
+        <div class="price">Custom <span class="price-note">pricing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section class="section" id="services">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Services</div>
+      <h2 class="section-title">Beyond products. <span class="accent">Deep expertise.</span></h2>
+      <p class="section-subtitle">Security architecture, data sovereignty consulting, and system redesign — from people who build security products from scratch.</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Data Sovereignty Architecture -->
+      <a href="pages/services/index.html#data-sovereignty" class="product-card reveal delay-1">
+        <div class="product-icon" style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">🏛️</div>
+        <span class="product-status status-active">Available</span>
+        <h3>Data Sovereignty Architecture</h3>
+        <p class="tagline">Design systems where your data stays yours — by architecture, not by policy.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> On-premise and edge-first architecture design</li>
+          <li><span class="check">✓</span> GDPR, DORA, NIS2 compliance-by-design</li>
+          <li><span class="check">✓</span> Data residency mapping and flow analysis</li>
+          <li><span class="check">✓</span> Supplier security assessment frameworks</li>
+          <li><span class="check">✓</span> Encryption and key management architecture</li>
+        </ul>
+      </a>
+
+      <!-- Security System Redesign -->
+      <a href="pages/services/index.html#redesign" class="product-card reveal delay-2">
+        <div class="product-icon" style="background: var(--accent-glow); border: 1px solid var(--accent-border);">🔄</div>
+        <span class="product-status status-active">Available</span>
+        <h3>Security System Redesign</h3>
+        <p class="tagline">Rip-and-replace or gradual migration — we design the path and walk it with you.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> SIEM migration planning (Splunk → Wazuh, etc.)</li>
+          <li><span class="check">✓</span> Zero Trust architecture implementation</li>
+          <li><span class="check">✓</span> Legacy system security hardening</li>
+          <li><span class="check">✓</span> Network segmentation and micro-segmentation</li>
+          <li><span class="check">✓</span> Compliance gap analysis and remediation</li>
+        </ul>
+      </a>
+
+      <!-- Incident Response & Forensics -->
+      <a href="pages/services/index.html#incident-response" class="product-card reveal delay-3">
+        <div class="product-icon" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);">🚨</div>
+        <span class="product-status status-active">Available</span>
+        <h3>Incident Response & Forensics</h3>
+        <p class="tagline">When something's already happened. Rapid containment, root cause, and remediation.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> 4-hour SLA incident response engagement</li>
+          <li><span class="check">✓</span> Digital forensics and evidence preservation</li>
+          <li><span class="check">✓</span> Lateral movement analysis and containment</li>
+          <li><span class="check">✓</span> Post-incident review and hardening plan</li>
+          <li><span class="check">✓</span> AI-assisted triage with Delta forensics agent</li>
+        </ul>
+      </a>
+
+      <!-- Security Architecture Audit -->
+      <a href="pages/services/index.html#audit" class="product-card reveal delay-4">
+        <div class="product-icon" style="background: rgba(46, 213, 115, 0.1); border: 1px solid rgba(46, 213, 115, 0.2);">🔍</div>
+        <span class="product-status status-active">Available</span>
+        <h3>Security Architecture Audit</h3>
+        <p class="tagline">Independent review of your security posture — not a checkbox exercise.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> Full-stack security assessment (infra, app, data, identity)</li>
+          <li><span class="check">✓</span> Penetration testing and vulnerability assessment</li>
+          <li><span class="check">✓</span> Supply chain and third-party risk evaluation</li>
+          <li><span class="check">✓</span> Executive risk dashboard with prioritised remediation</li>
+          <li><span class="check">✓</span> AI-powered anomaly detection baseline</li>
+        </ul>
+      </a>
+
+    </div>
+
+    <div class="section-cta reveal" style="text-align: center; margin-top: var(--space-2xl);">
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">Need something not listed? We design bespoke engagements.</p>
+      <a href="pages/services/index.html" class="btn btn-primary"><span>All Services</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ JOURNEY ═══ -->
+<section class="journey" id="journey">
+  <div class="journey-inner">
+    <div class="section-header reveal">
+      <div class="section-label">The journey</div>
+      <h2 class="section-title">From <span class="accent">threat</span> to <span class="accent">resolution</span></h2>
+      <p class="section-subtitle">How Aethel Guard products work together — from individual protection to enterprise response.</p>
+    </div>
+
+    <div class="journey-timeline">
+      <!-- Step 1 -->
+      <div class="journey-step reveal">
+        <div class="journey-step-number">Step 01 — Protect</div>
+        <h3 class="journey-step-title">Your device. Your rules.</h3>
+        <p class="journey-step-desc">
+          Vigilar runs 76 security engines directly on your phone or desktop. Anti-tracking, MFA, PII redaction — all on-device. P1 redline: PII never leaves. No cloud. No exceptions.
+        </p>
+        <div class="journey-step-features">
+          <span class="journey-tag"><span class="dot dot-green"></span> On-device</span>
+          <span class="journey-tag"><span class="dot dot-amber"></span> P1-P7 Redlines</span>
+          <span class="journey-tag"><span class="dot dot-cyan"></span> Zero Cloud</span>
+          <span class="journey-tag"><span class="dot dot-red"></span> 15 Anti-Tracking</span>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="journey-step reveal">
+        <div class="journey-step-number">Step 02 — Detect</div>
+        <h3 class="journey-step-title">AI sees what humans miss.</h3>
+        <p class="journey-step-desc">
+          Vigilar Guard ingests security events, runs Sigma rules, triages with Ember AI, and enriches with threat intelligence. One engine. Every SIEM.
+        </p>
+        <div class="journey-step-features">
+          <span class="journey-tag"><span class="dot dot-amber"></span> Sigma + AI Triage</span>
+          <span class="journey-tag"><span class="dot dot-cyan"></span> Wazuh · OpenCTI · MISP</span>
+          <span class="journey-tag"><span class="dot dot-green"></span> CEF/syslog</span>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="journey-step reveal">
+        <div class="journey-step-number">Step 03 — Respond</div>
+        <h3 class="journey-step-title">Four AI agents. Always on.</h3>
+        <p class="journey-step-desc">
+          AI SOC Team runs Alpha (detect), Bravo (respond), Charlie (intel), Delta (forensics). Multi-tenant, GDPR compliant, Docker Compose deploy.
+        </p>
+        <div class="journey-step-features">
+          <span class="journey-tag"><span class="dot dot-amber"></span> Alpha · Bravo · Charlie · Delta</span>
+          <span class="journey-tag"><span class="dot dot-cyan"></span> Multi-tenant</span>
+          <span class="journey-tag"><span class="dot dot-green"></span> GDPR</span>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="journey-step reveal">
+        <div class="journey-step-number">Step 04 — Intelligence</div>
+        <h3 class="journey-step-title">The brain behind every shield.</h3>
+        <p class="journey-step-desc">
+          Ember Core powers every product. Ember Prime (12B) for inference, Selene for security guards hardcoded at inference, Ember Edge (3.1B) for on-device. No Ollama. No Gemma. Our own model.
+        </p>
+        <div class="journey-step-features">
+          <span class="journey-tag"><span class="dot dot-amber"></span> Ember Prime v8c</span>
+          <span class="journey-tag"><span class="dot dot-cyan"></span> Selene Guard</span>
+          <span class="journey-tag"><span class="dot dot-green"></span> Ember Edge</span>
+          <span class="journey-tag"><span class="dot dot-red"></span> No External Dependencies</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUCTS ═══ -->
+<section class="section" id="products" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Products</div>
+      <h2 class="section-title">Four products.<br><span class="accent">One stack.</span></h2>
+      <p class="section-subtitle">Each product stands alone. Together, they're a complete security intelligence platform.</p>
+    </div>
+
+    <div class="products-grid">
+
+      <!-- Vigilar -->
+      <a href="pages/vigilar/index.html" class="product-card reveal delay-1">
+        <div class="product-icon" style="background: rgba(46, 213, 115, 0.12); border: 1px solid rgba(46, 213, 115, 0.2);">🛡️</div>
+        <span class="product-status status-alpha">Alpha</span>
+        <h3>Vigilar</h3>
+        <p class="tagline">Consumer security companion. Your data never leaves your device.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> 76 security engines, 54K+ lines of hardened code</li>
+          <li><span class="check">✓</span> P1-P7 redlines: no PII exfiltration, ever</li>
+          <li><span class="check">✓</span> On-device AI inference — zero cloud dependency</li>
+          <li><span class="check">✓</span> Anti-tracking, MFA, PII redaction, emergency</li>
+          <li><span class="check">✓</span> iOS, Android, macOS, Windows, Linux</li>
+        </ul>
+      </a>
+
+      <!-- Vigilar Guard -->
+      <a href="pages/vigilar-guard/index.html" class="product-card reveal delay-2">
+        <div class="product-icon" style="background: var(--accent-glow); border: 1px solid var(--accent-border);">⚡</div>
+        <span class="product-status status-development">In Development</span>
+        <h3>Vigilar Guard</h3>
+        <p class="tagline">AI detection and triage engine. SMB security in a box.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> Sigma detection engine with 8 rule categories</li>
+          <li><span class="check">✓</span> Ember AI triage with fallback chain</li>
+          <li><span class="check">✓</span> Wazuh, OpenCTI, MISP integrations</li>
+          <li><span class="check">✓</span> CEF/syslog forwarding to any SIEM</li>
+          <li><span class="check">✓</span> Docker Compose — deploy in an afternoon</li>
+        </ul>
+      </a>
+
+      <!-- AI SOC Team -->
+      <a href="pages/ai-soc-team/index.html" class="product-card reveal delay-3">
+        <div class="product-icon" style="background: var(--cyan-glow); border: 1px solid var(--cyan-border);">🏢</div>
+        <span class="product-status status-development">In Development</span>
+        <h3>AI SOC Team</h3>
+        <p class="tagline">Full SOC-as-a-Service. Four AI agents. Complete stack.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> 4 AI agents: Alpha, Bravo, Charlie, Delta</li>
+          <li><span class="check">✓</span> Wazuh + OpenCTI + MISP + TheHive + Shuffle</li>
+          <li><span class="check">✓</span> Multi-tenant dashboard, billing, GDPR</li>
+          <li><span class="check">✓</span> 257 files, complete Docker Compose stack</li>
+          <li><span class="check">✓</span> Core (8GB) or Full (16GB) deployment</li>
+        </ul>
+      </a>
+
+      <!-- Ember Core -->
+      <a href="pages/ember-core/index.html" class="product-card reveal delay-4">
+        <div class="product-icon" style="background: rgba(245, 166, 35, 0.12); border: 1px solid rgba(245, 166, 35, 0.2);">🔥</div>
+        <span class="product-status status-active">Active</span>
+        <h3>Ember Core</h3>
+        <p class="tagline">Our AI model engine. The brain behind every product.</p>
+        <ul class="product-features">
+          <li><span class="check">✓</span> Ember Prime v8c — 12B skeleton + LoRA (24GB)</li>
+          <li><span class="check">✓</span> Selene security guard — P1-P7 hardcoded</li>
+          <li><span class="check">✓</span> Ember Edge — on-device inference (3.1B Q4_K_M)</li>
+          <li><span class="check">✓</span> FastAPI inference server (port 8081)</li>
+          <li><span class="check">✓</span> Product-specific system prompts</li>
+        </ul>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE ═══ -->
+<section class="section" id="architecture">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Architecture</div>
+      <h2 class="section-title">How it <span class="accent">connects</span></h2>
+      <p class="section-subtitle">Each product is independent. Products communicate through well-defined APIs. No shared database, no shared internals.</p>
+    </div>
+
+    <div class="architecture-diagram reveal">
+      <div class="arch-flow">
+        <!-- Consumer layer -->
+        <div class="arch-row">
+          <div class="arch-block primary">
+            <h4>Vigilar</h4>
+            <p>Consumer app<br>iOS · Android · Desktop</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ Integration API (REST + WebSocket)</div>
+
+        <!-- Detection layer -->
+        <div class="arch-row">
+          <div class="arch-block primary">
+            <h4>Vigilar Guard</h4>
+            <p>Detection + Triage<br>FastAPI · Sigma · Ember</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ CEF · STIX 2.1 · Webhooks</div>
+
+        <!-- SIEM layer -->
+        <div class="arch-row">
+          <div class="arch-block cyan">
+            <h4>Wazuh</h4>
+            <p>SIEM/XDR</p>
+          </div>
+          <div class="arch-block cyan">
+            <h4>OpenCTI</h4>
+            <p>Threat Intel</p>
+          </div>
+          <div class="arch-block cyan">
+            <h4>MISP</h4>
+            <p>Sharing</p>
+          </div>
+          <div class="arch-block">
+            <h4>Any SIEM</h4>
+            <p>Splunk · QRadar</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ Events + Enrichment</div>
+
+        <!-- SOC layer -->
+        <div class="arch-row">
+          <div class="arch-block primary">
+            <h4>AI SOC Team</h4>
+            <p>4 AI Agents · Dashboard · Billing<br>Multi-tenant SOC-as-a-Service</p>
+          </div>
+        </div>
+
+        <!-- AI layer -->
+        <div class="arch-arrow">↓ Inference (port 8081)</div>
+        <div class="arch-row">
+          <div class="arch-block" style="border-color: var(--accent); background: var(--accent-glow);">
+            <h4>Ember Core</h4>
+            <p>Ember Prime v8c · Selene Guard<br>Ember Edge · Training Pipeline</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATIONS ═══ -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Integrations</div>
+      <h2 class="section-title">Plays well with <span class="accent">everything</span></h2>
+      <p class="section-subtitle">Open standards. Open APIs. Open integrations.</p>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="integration-table reveal">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Integrates With</th>
+            <th>Protocol</th>
+            <th>Direction</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color: var(--text-primary);">Vigilar</td>
+            <td>Vigilar Guard</td>
+            <td><code>REST + WebSocket</code></td>
+            <td>Events → Guard, Incidents ← Guard</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">Vigilar Guard</td>
+            <td>Wazuh</td>
+            <td><code>Webhook</code></td>
+            <td>Bidirectional</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">Vigilar Guard</td>
+            <td>OpenCTI</td>
+            <td><code>STIX 2.1</code></td>
+            <td>Push enrichment</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">Vigilar Guard</td>
+            <td>MISP</td>
+            <td><code>PyMISP</code></td>
+            <td>Push events</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">Vigilar Guard</td>
+            <td>Splunk / QRadar / ArcSight</td>
+            <td><code>CEF / Syslog</code></td>
+            <td>Forward alerts</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">AI SOC Team</td>
+            <td>Vigilar Guard</td>
+            <td><code>Webhook</code></td>
+            <td>Receive detections</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">AI SOC Team</td>
+            <td>Full SOC Stack</td>
+            <td><code>Docker Compose</code></td>
+            <td>Complete platform</td>
+          </tr>
+          <tr>
+            <td style="color: var(--text-primary);">Ember Core</td>
+            <td>All products</td>
+            <td><code>FastAPI :8081</code></td>
+            <td>Inference for all</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OPEN SOURCE ═══ -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-label">Open Source</div>
+    <h2>Built in the <span class="accent">open</span></h2>
+    <p>All Aethel Guard products are developed in the open on GitHub. Security through transparency.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-xl);">
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-secondary">vigilar-app →</a>
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-secondary">vigilar-guard →</a>
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-secondary">ai-soc-team →</a>
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-secondary">ember-core →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="pages/services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="pages/services/index.html#redesign">System Redesign</a></li>
+        <li><a href="pages/services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="pages/services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="pages/vigilar/index.html">Vigilar</a></li>
+        <li><a href="pages/vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="pages/ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="pages/ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="pages/docs/index.html">Documentation</a></li>
+        <li><a href="pages/integrations/index.html">Integrations</a></li>
+        <li><a href="pages/privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="pages/privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

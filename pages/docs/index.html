@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — Aethel Guard</title>
+  <meta name="description" content="Deploy, integrate, and operate Aethel Guard products. Quick start guides, API reference, and security documentation.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .docs-hero { padding: 160px 0 80px; text-align: center; }
+    .docs-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-lg); }
+    .docs-hero h1 .accent { color: var(--accent); }
+    .docs-hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 640px; margin: 0 auto var(--space-xl); }
+
+    .docs-search { max-width: 480px; margin: 0 auto var(--space-3xl); }
+    .docs-search input {
+      width: 100%; padding: var(--space-md) var(--space-lg); background: var(--bg-card);
+      border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color var(--transition-fast);
+    }
+    .docs-search input:focus { border-color: var(--accent); }
+    .docs-search input::placeholder { color: var(--text-muted); }
+
+    .docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-xl); margin-bottom: var(--space-3xl); }
+    .docs-card {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-xl); transition: all var(--transition-slow); text-decoration: none; color: inherit; display: block;
+    }
+    .docs-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245, 166, 35, 0.08); }
+    .docs-card .card-icon { font-size: 2rem; margin-bottom: var(--space-md); }
+    .docs-card h3 { font-size: 1.25rem; margin-bottom: var(--space-sm); }
+    .docs-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-md); }
+    .docs-card ul { list-style: none; padding: 0; }
+    .docs-card li { font-size: 0.85rem; color: var(--text-secondary); padding: var(--space-xs) 0; padding-left: 1rem; position: relative; }
+    .docs-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+
+    .docs-section { margin-bottom: var(--space-3xl); }
+    .docs-section h2 { font-size: 1.75rem; margin-bottom: var(--space-lg); }
+    .docs-section h2 .accent { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../services/index.html">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="index.html" style="color: var(--accent);">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="docs-hero">
+  <div class="container">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="section-label reveal">// Documentation</div>
+    <h1 class="reveal">Read the <span class="accent">docs</span>.</h1>
+    <p class="reveal">Everything you need to deploy, integrate, and operate Aethel Guard products.</p>
+    <div class="docs-search reveal">
+      <input type="text" placeholder="Search documentation..." id="docs-search">
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT DOCS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="docs-section">
+      <h2 class="reveal">Product <span class="accent">Documentation</span></h2>
+      <div class="docs-grid">
+
+        <a href="#vigilar" class="docs-card reveal delay-1">
+          <div class="card-icon">🛡️</div>
+          <h3>Vigilar</h3>
+          <p>Consumer security companion. On-device protection with 76 security engines and P1-P7 redlines.</p>
+          <ul>
+            <li>Getting Started Guide</li>
+            <li>Security Engines Reference</li>
+            <li>P1-P7 Redlines Specification</li>
+            <li>Platform Setup (iOS, Android, Desktop)</li>
+            <li>Configuration & Policies</li>
+          </ul>
+        </a>
+
+        <a href="#vigilar-guard" class="docs-card reveal delay-2">
+          <div class="card-icon">⚡</div>
+          <h3>Vigilar Guard</h3>
+          <p>AI detection and triage engine. Sigma rules, Ember AI inference, SIEM integrations.</p>
+          <ul>
+            <li>Detection Engine Setup</li>
+            <li>Sigma Rule Reference</li>
+            <li>AI Triage Configuration</li>
+            <li>Integration API (REST + WebSocket)</li>
+            <li>CEF / Syslog Forwarding</li>
+          </ul>
+        </a>
+
+        <a href="#ai-soc-team" class="docs-card reveal delay-3">
+          <div class="card-icon">🏢</div>
+          <h3>AI SOC Team</h3>
+          <p>Full SOC-as-a-Service. Four AI agents, complete security stack, multi-tenant.</p>
+          <ul>
+            <li>Agent Architecture (Alpha, Bravo, Charlie, Delta)</li>
+            <li>Docker Compose Deployment</li>
+            <li>Multi-tenant Configuration</li>
+            <li>Billing & Quota Management</li>
+            <li>GDPR Compliance Settings</li>
+          </ul>
+        </a>
+
+        <a href="#ember-core" class="docs-card reveal delay-4">
+          <div class="card-icon">🔥</div>
+          <h3>Ember Core</h3>
+          <p>AI model engine. Ember Prime, Selene guard model, Ember Edge on-device inference.</p>
+          <ul>
+            <li>Model Reference (Prime, Selene, Edge)</li>
+            <li>Inference Server Setup (FastAPI :8081)</li>
+            <li>Product System Prompts</li>
+            <li>Performance Benchmarks</li>
+            <li>Hardware Requirements</li>
+          </ul>
+        </a>
+
+      </div>
+    </div>
+
+<!-- INTEGRATION DOCS -->
+    <div class="docs-section">
+      <h2 class="reveal">Integration <span class="accent">Guides</span></h2>
+      <div class="docs-grid">
+
+        <a href="#wazuh" class="docs-card reveal">
+          <div class="card-icon">📊</div>
+          <h3>Wazuh</h3>
+          <p>Bidirectional integration with the open-source SIEM/XDR platform.</p>
+          <ul>
+            <li>Webhook configuration</li>
+            <li>Alert enrichment from Vigilar Guard</li>
+            <li>Active response forwarding</li>
+          </ul>
+        </a>
+
+        <a href="#opencti" class="docs-card reveal">
+          <div class="card-icon">🔍</div>
+          <h3>OpenCTI</h3>
+          <p>STIX 2.1 threat intelligence integration.</p>
+          <ul>
+            <li>STIX bundle ingestion</li>
+            <li>Observable enrichment</li>
+            <li>Connector configuration</li>
+          </ul>
+        </a>
+
+        <a href="#misp" class="docs-card reveal">
+          <div class="card-icon">🔗</div>
+          <h3>MISP</h3>
+          <p>Threat sharing and event push via PyMISP.</p>
+          <ul>
+            <li>Event synchronization</li>
+            <li>Attribute enrichment</li>
+            <li>Feed configuration</li>
+          </ul>
+        </a>
+
+        <a href="#siem" class="docs-card reveal">
+          <div class="card-icon">📡</div>
+          <h3>Any SIEM</h3>
+          <p>CEF and syslog forwarding to Splunk, QRadar, ArcSight, and others.</p>
+          <ul>
+            <li>CEF message format</li>
+            <li>Syslog transport setup</li>
+            <li>Field mapping reference</li>
+          </ul>
+        </a>
+
+      </div>
+    </div>
+
+<!-- SECURITY DOCS -->
+    <div class="docs-section">
+      <h2 class="reveal">Security <span class="accent">Documentation</span></h2>
+      <div class="docs-grid">
+
+        <a href="#redlines" class="docs-card reveal">
+          <div class="card-icon">🛡️</div>
+          <h3>P1-P7 Redlines</h3>
+          <p>Seven hardcoded, non-negotiable security constraints enforced at inference time by Selene.</p>
+          <ul>
+            <li>P1: No PII exfiltration</li>
+            <li>P2: No jailbreak bypass</li>
+            <li>P3: No model substitution</li>
+            <li>P4: No silent failover</li>
+            <li>P5: No unapproved external calls</li>
+            <li>P6: No data retention beyond session</li>
+            <li>P7: No reduced-thinking execution</li>
+          </ul>
+        </a>
+
+        <a href="#threat-model" class="docs-card reveal">
+          <div class="card-icon">🎯</div>
+          <h3>Threat Model</h3>
+          <p>Adversarial analysis, attack surfaces, and defense-in-depth for every product.</p>
+          <ul>
+            <li>Attack surface analysis per product</li>
+            <li>Adversarial model assumptions</li>
+            <li>Defense-in-depth architecture</li>
+          </ul>
+        </a>
+
+        <a href="#responsible-disclosure" class="docs-card reveal">
+          <div class="card-icon">📬</div>
+          <h3>Responsible Disclosure</h3>
+          <p>Found a vulnerability? Here's how to report it responsibly.</p>
+          <ul>
+            <li>Disclosure policy</li>
+            <li>Reporting process</li>
+            <li>Response timeline (72h acknowledge, 30d fix)</li>
+          </ul>
+        </a>
+
+      </div>
+    </div>
+
+<!-- API REFERENCE -->
+    <div class="docs-section">
+      <h2 class="reveal">API <span class="accent">Reference</span></h2>
+      <div class="docs-grid">
+
+        <a href="#api-vigilar-guard" class="docs-card reveal">
+          <div class="card-icon">⚡</div>
+          <h3>Vigilar Guard API</h3>
+          <p>REST + WebSocket integration between consumer app and detection engine.</p>
+          <ul>
+            <li>Event submission (POST /events)</li>
+            <li>Alert stream (WebSocket /alerts)</li>
+            <li>Triage results (GET /triage/{id})</li>
+            <li>Health check (GET /health)</li>
+          </ul>
+        </a>
+
+        <a href="#api-soc" class="docs-card reveal">
+          <div class="card-icon">🏢</div>
+          <h3>AI SOC Team API</h3>
+          <p>Webhook-driven event processing with multi-tenant support.</p>
+          <ul>
+            <li>Tenant management</li>
+            <li>Event ingestion</li>
+            <li>Agent orchestration</li>
+            <li>Billing & quotas</li>
+          </ul>
+        </a>
+
+        <a href="#api-ember" class="docs-card reveal">
+          <div class="card-icon">🔥</div>
+          <h3>Ember Core API</h3>
+          <p>FastAPI inference server on port 8081 with product-specific endpoints.</p>
+          <ul>
+            <li>Chat completion (POST /v1/chat/completions)</li>
+            <li>Security analysis (POST /v1/analyze)</li>
+            <li>Model info (GET /v1/models)</li>
+            <li>Health check (GET /health)</li>
+          </ul>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-label">Open Source</div>
+    <h2>View on <span class="accent">GitHub</span></h2>
+    <p>All Aethel Guard products are developed in the open. Read the code, file issues, contribute.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-xl);">
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary"><span>Aethel-Guard Org</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="../services/index.html#redesign">System Redesign</a></li>
+        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="../services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

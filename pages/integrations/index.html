@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integrations — Aethel Guard</title>
+  <meta name="description" content="How Aethel Guard products integrate with each other and external systems: REST APIs, STIX 2.1, CEF/syslog, WebSocket, PyMISP, and Docker Compose stacks.">
+  <link rel="icon" href="../../assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .integrations-hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+    .matrix-wrapper { overflow-x: auto; border-radius: var(--radius-xl); border: 1px solid var(--border-default); }
+    .matrix-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); min-width: 760px; }
+    .matrix-table th { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-align: left; padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border-default); background: var(--bg-secondary); white-space: nowrap; }
+    .matrix-table td { padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); vertical-align: top; }
+    .matrix-table tr:hover td { background: var(--accent-glow); }
+    .matrix-table code { font-family: var(--font-mono); font-size: var(--text-xs); background: var(--bg-elevated); padding: 2px 6px; border-radius: 4px; color: var(--cyan); }
+    .matrix-table .product-cell { color: var(--text-primary); font-weight: 600; }
+    .matrix-table .direction-cell { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+    .integration-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-2xl); margin-bottom: var(--space-xl); transition: all var(--transition-slow); position: relative; overflow: hidden; }
+    .integration-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity var(--transition-slow); }
+    .integration-card:hover { border-color: var(--accent-border); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .integration-card:hover::before { opacity: 1; }
+    .integration-card .card-header { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg); }
+    .integration-card .card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: var(--text-xl); flex-shrink: 0; }
+    .integration-card h3 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; }
+    .integration-card .card-subtitle { font-size: var(--text-sm); color: var(--text-muted); margin-top: 2px; }
+    .integration-card .endpoints { display: flex; flex-direction: column; gap: var(--space-sm); margin-top: var(--space-lg); }
+    .endpoint-row { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-sm) var(--space-md); background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-size: var(--text-sm); }
+    .endpoint-method { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; padding: 2px 8px; border-radius: var(--radius-sm); flex-shrink: 0; min-width: 56px; text-align: center; }
+    .method-post { background: rgba(46,213,115,0.15); color: var(--success); }
+    .method-get { background: rgba(0,212,255,0.15); color: var(--cyan); }
+    .method-ws { background: rgba(245,166,35,0.15); color: var(--accent); }
+    .method-webhook { background: rgba(168,85,247,0.15); color: #A855F7; }
+    .method-stix { background: rgba(245,166,35,0.15); color: var(--accent); }
+    .method-cef { background: rgba(255,71,87,0.15); color: var(--threat); }
+    .method-compose { background: rgba(0,212,255,0.15); color: var(--cyan); }
+    .endpoint-path { font-family: var(--font-mono); color: var(--text-secondary); }
+    .endpoint-desc { color: var(--text-muted); font-size: var(--text-xs); margin-left: auto; }
+    .data-flow { background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-xl); }
+    .data-flow h4 { font-family: var(--font-display); font-size: var(--text-base); color: var(--accent); margin-bottom: var(--space-md); }
+    .data-flow-steps { display: flex; flex-direction: column; gap: var(--space-md); }
+    .flow-step { display: flex; align-items: flex-start; gap: var(--space-md); }
+    .flow-step .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-glow); border: 1px solid var(--accent-border); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; color: var(--accent); flex-shrink: 0; }
+    .flow-step .step-content { flex: 1; }
+    .flow-step .step-content strong { color: var(--text-primary); font-size: var(--text-sm); }
+    .flow-step .step-content p { color: var(--text-secondary); font-size: var(--text-sm); margin-top: 2px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+    .tech-badge { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-sm); background: var(--bg-tertiary); border: 1px solid var(--border-default); border-radius: 999px; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-secondary); }
+    .tech-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .api-section { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-2xl); margin-top: var(--space-xl); }
+    .api-section h3 { font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-sm); }
+    .api-section .api-desc { color: var(--text-muted); font-size: var(--text-sm); margin-bottom: var(--space-lg); }
+    .arch-diagram-large { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-2xl); overflow-x: auto; margin-bottom: var(--space-2xl); position: relative; }
+    .arch-diagram-large::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--cyan), var(--accent)); }
+    .arch-diagram-large pre { font-family: var(--font-mono); font-size: 13px; line-height: 1.5; color: var(--text-secondary); white-space: pre; }
+    .arch-diagram-large pre .accent { color: var(--accent); }
+    .arch-diagram-large pre .success { color: var(--success); }
+    .arch-diagram-large pre .info { color: var(--cyan); }
+    .arch-diagram-large pre .muted { color: var(--text-muted); }
+    .standards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); }
+    @media (max-width: 768px) { .standards-grid { grid-template-columns: 1fr; } }
+    .standard-card { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); transition: all var(--transition-default); }
+    .standard-card:hover { border-color: var(--accent-border); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .standard-card .standard-icon { font-size: var(--text-2xl); margin-bottom: var(--space-sm); }
+    .standard-card h4 { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-xs); }
+    .standard-card .standard-protocol { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--cyan); margin-bottom: var(--space-sm); }
+    .standard-card p { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .endpoint-desc { display: none; } }
+    .code-block { background: var(--bg-elevated); border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden; margin-top: var(--space-md); }
+    .code-block .code-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-sm) var(--space-md); background: var(--bg-tertiary); border-bottom: 1px solid var(--border-default); }
+    .code-block .code-header .lang { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+    .code-block .copy-btn { background: none; border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 2px 10px; font-size: var(--text-xs); color: var(--text-muted); cursor: pointer; transition: all var(--transition-fast); }
+    .code-block .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .code-block pre { padding: var(--space-md) var(--space-lg); font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1.7; color: var(--text-secondary); overflow-x: auto; }
+    .code-block pre .keyword { color: var(--accent); font-weight: 700; }
+    .code-block pre .string { color: var(--cyan); }
+    .code-block pre .comment { color: var(--text-muted); }
+    .cta-github { background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-3xl) var(--space-2xl); text-align: center; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../services/index.html">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero integrations-hero" style="min-height: 60vh;">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Integrations Hub
+    </div>
+    <h1>Connects to everything<br><span class="accent">you already use.</span></h1>
+    <p class="hero-subtitle">Four products. Dozens of integrations. Open standards — REST, STIX 2.1, CEF, WebSocket, PyMISP, Docker Compose. Every connection is documented, authenticated, and auditable.</p>
+    <div class="hero-actions">
+      <a href="#matrix" class="btn btn-primary">View Integration Matrix <span class="arrow">→</span></a>
+      <a href="#standards" class="btn btn-secondary">Open Standards</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATION MATRIX ═══ -->
+<section class="section" id="matrix" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">// Integration Matrix</div>
+    <h2 class="section-title">How products <span class="accent">connect</span></h2>
+    <p class="section-subtitle">Every integration at a glance — protocols, directions, and data flows. See the detailed cards below for setup instructions.</p>
+    <div class="matrix-wrapper">
+      <table class="matrix-table">
+        <thead>
+          <tr><th>Source</th><th>Target</th><th>Protocol</th><th>Direction</th><th>Data Flow</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="product-cell">Vigilar</td><td class="product-cell">Vigilar Guard</td><td><code>REST + WebSocket</code></td><td class="direction-cell">Bidirectional</td><td>Events → Guard · Incidents &amp; alerts ← Guard</td></tr>
+          <tr><td class="product-cell">Vigilar Guard</td><td class="product-cell">Wazuh</td><td><code>Webhook (:8085)</code></td><td class="direction-cell">Bidirectional</td><td>Wazuh alerts → Guard · Guard detections → Wazuh</td></tr>
+          <tr><td class="product-cell">Vigilar Guard</td><td class="product-cell">OpenCTI</td><td><code>STIX 2.1</code></td><td class="direction-cell">Guard → OpenCTI</td><td>Enriched threat intel bundles pushed via REST</td></tr>
+          <tr><td class="product-cell">Vigilar Guard</td><td class="product-cell">MISP</td><td><code>PyMISP</code></td><td class="direction-cell">Guard → MISP</td><td>Detection events shared via PyMISP API</td></tr>
+          <tr><td class="product-cell">Vigilar Guard</td><td class="product-cell">Splunk / QRadar / ArcSight</td><td><code>CEF / Syslog</code></td><td class="direction-cell">Guard → SIEM</td><td>Alerts forwarded in CEF format over syslog</td></tr>
+          <tr><td class="product-cell">AI SOC Team</td><td class="product-cell">Vigilar Guard</td><td><code>Webhook</code></td><td class="direction-cell">Guard → SOC</td><td>Detection events delivered directly to SOC agents</td></tr>
+          <tr><td class="product-cell">AI SOC Team</td><td class="product-cell">Full SOC Stack</td><td><code>Docker Compose</code></td><td class="direction-cell">Internal</td><td>9 services: Wazuh, OpenCTI, MISP, TheHive, Shuffle, Windmill, Grafana, Loki, OpenSearch</td></tr>
+          <tr><td class="product-cell">Ember Core</td><td class="product-cell">All Products</td><td><code>FastAPI :8081</code></td><td class="direction-cell">Inference for all</td><td>OpenAI-compatible endpoint serving Vigilar, Guard, and SOC Team</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE DIAGRAM ═══ -->
+<section class="section" id="architecture">
+  <div class="section-inner">
+    <div class="section-label">// Architecture</div>
+    <h2 class="section-title">System topology</h2>
+    <p class="section-subtitle">Every product is independent. Products communicate through well-defined APIs, webhooks, and open standards. No shared database. No hidden coupling.</p>
+    <div class="arch-diagram-large">
+<pre>
+<span class="muted">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="muted">│</span>                         <span class="accent">CONSUMER LAYER</span>                              <span class="muted">│</span>
+<span class="muted">│</span>   <span class="info">┌──────────────────┐</span>     <span class="info">┌──────────────────┐</span>     <span class="info">┌──────────────────┐</span>  <span class="muted">│</span>
+<span class="muted">│</span>   <span class="info">│</span>   <span class="accent">Vigilar (iOS)</span>  <span class="info">│</span>     <span class="info">│</span> <span class="accent">Vigilar (Android)</span><span class="info">│</span>     <span class="info">│</span> <span class="accent">Vigilar (Desktop)</span><span class="info">│</span>  <span class="muted">│</span>
+<span class="muted">│</span>   <span class="info">└────────┬─────────┘</span>     <span class="info">└────────┬─────────┘</span>     <span class="info">└────────┬─────────┘</span>  <span class="muted">│</span>
+<span class="muted">│</span>            <span class="muted">└────────────────────┬┴────────────────────┘</span>             <span class="muted">│</span>
+<span class="muted">│</span>                 <span class="success">REST API (OpenAPI 3.1) + WebSocket</span>                  <span class="muted">│</span>
+<span class="muted">│</span>                 <span class="success">Auth: API Key (X-API-Key header)</span>                   <span class="muted">│</span>
+<span class="muted">└─────────────────────────────────┼─────────────────────────────────────────┘</span>
+                                  <span class="muted">│</span>
+                                  <span class="muted">▼</span>
+<span class="muted">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="muted">│</span>                       <span class="accent">DETECTION LAYER</span>                               <span class="muted">│</span>
+<span class="muted">│</span>                    <span class="info">┌─────────────────────────┐</span>                       <span class="muted">│</span>
+<span class="muted">│</span>                    <span class="info">│</span>    <span class="accent">Vigilar Guard</span>        <span class="info">│</span>                       <span class="muted">│</span>
+<span class="muted">│</span>                    <span class="info">│</span>  FastAPI · Sigma · AI  <span class="info">│</span>                       <span class="muted">│</span>
+<span class="muted">│</span>                    <span class="info">└──┬──────┬──────┬──────┘</span>                        <span class="muted">│</span>
+<span class="muted">│</span>          <span class="success">Webhook</span> <span class="success">STIX 2.1</span> <span class="success">PyMISP</span> <span class="success">CEF/Syslog</span>                   <span class="muted">│</span>
+<span class="muted">└──────────────┼─────────┼──────┼──────┼──────────────────────────────────────┘</span>
+               <span class="muted">▼</span>         <span class="muted">▼</span>      <span class="muted">▼</span>      <span class="muted">▼</span>
+<span class="muted">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="muted">│</span>                          <span class="accent">SIEM LAYER</span>                                  <span class="muted">│</span>
+<span class="muted">│</span>  <span class="info">┌─────────┐</span>  <span class="info">┌──────────┐</span>  <span class="info">┌────────┐</span>  <span class="info">┌──────────────────────────┐</span>     <span class="muted">│</span>
+<span class="muted">│</span>  <span class="info">│</span> <span class="accent">Wazuh</span>  <span class="info">│</span>  <span class="info">│</span> <span class="accent">OpenCTI</span> <span class="info">│</span>  <span class="info">│</span> <span class="accent">MISP</span> <span class="info">│</span>  <span class="info">│</span> <span class="accent">Splunk/QRadar/ArcSight</span> <span class="info">│</span>     <span class="muted">│</span>
+<span class="muted">│</span>  <span class="info">└────┬────┘</span>  <span class="info">└────┬─────┘</span>  <span class="info">└───┬──┘</span>  <span class="info">└──────────────────────────┘</span>     <span class="muted">│</span>
+<span class="muted">│</span>       <span class="muted">└──────────┼───────────┘</span>                                      <span class="muted">│</span>
+<span class="muted">│</span>       <span class="success">Events + Threat Intel Enrichment</span>                              <span class="muted">│</span>
+<span class="muted">└──────────────────┼──────────────────────────────────────────────────────────┘</span>
+                   <span class="muted">▼</span>
+<span class="muted">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="muted">│</span>                         <span class="accent">SOC LAYER</span>                                    <span class="muted">│</span>
+<span class="muted">│</span>              <span class="info">┌─────────────────────────────────┐</span>                  <span class="muted">│</span>
+<span class="muted">│</span>              <span class="info">│</span>       <span class="accent">AI SOC Team</span>            <span class="info">│</span>                  <span class="muted">│</span>
+<span class="muted">│</span>              <span class="info">│</span>  4 AI Agents · Multi-tenant    <span class="info">│</span>                  <span class="muted">│</span>
+<span class="muted">│</span>              <span class="info">└─────────────────────────────────┘</span>                  <span class="muted">│</span>
+<span class="muted">│</span>    <span class="info">┌────────┐</span> <span class="info">┌──────────┐</span> <span class="info">┌────────┐</span> <span class="info">┌─────────┐</span> <span class="info">┌────────┐</span> <span class="info">┌───────────┐</span>  <span class="muted">│</span>
+<span class="muted">│</span>    <span class="info">│</span><span class="accent">TheHive</span><span class="info">│</span> <span class="info">│</span><span class="accent">Shuffle</span>  <span class="info">│</span> <span class="info">│</span><span class="accent">Windmill</span><span class="info">│</span> <span class="info">│</span><span class="accent">Grafana</span> <span class="info">│</span> <span class="info">│</span> <span class="accent">Loki</span>  <span class="info">│</span> <span class="info">│</span><span class="accent">OpenSearch</span><span class="info">│</span>  <span class="muted">│</span>
+<span class="muted">│</span>    <span class="info">└────────┘</span> <span class="info">└──────────┘</span> <span class="info">└────────┘</span> <span class="info">└─────────┘</span> <span class="info">└────────┘</span> <span class="info">└───────────┘</span>  <span class="muted">│</span>
+<span class="muted">│</span>                      <span class="success">All via Docker Compose</span>                              <span class="muted">│</span>
+<span class="muted">└─────────────────────────────────────────────────────────────────────────┘</span>
+                                  <span class="muted">▼</span>
+<span class="muted">┌─────────────────────────────────────────────────────────────────────────┐</span>
+<span class="muted">│</span>                        <span class="accent">INFERENCE LAYER</span>                              <span class="muted">│</span>
+<span class="muted">│</span>                     <span class="info">┌─────────────────────────┐</span>                        <span class="muted">│</span>
+<span class="muted">│</span>                     <span class="info">│</span>      <span class="accent">Ember Core</span>       <span class="info">│</span>                        <span class="muted">│</span>
+<span class="muted">│</span>                     <span class="info">│</span>   FastAPI · :8081       <span class="info">│</span>                        <span class="muted">│</span>
+<span class="muted">│</span>                     <span class="info">│</span>   OpenAI-compatible API <span class="info">│</span>                        <span class="muted">│</span>
+<span class="muted">│</span>                     <span class="info">└─────────────────────────┘</span>                        <span class="muted">│</span>
+<span class="muted">│</span>          <span class="success">Serves: Vigilar · Guard · AI SOC Team</span>                 <span class="muted">│</span>
+<span class="muted">│</span>          <span class="success">Selene P1-P7 guards at inference time</span>                 <span class="muted">│</span>
+<span class="muted">└─────────────────────────────────────────────────────────────────────────┘</span>
+</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATION DETAILS ═══ -->
+<section class="section" id="details" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">// Integration Details</div>
+    <h2 class="section-title">Every connection, <span class="accent">documented</span></h2>
+    <p class="section-subtitle">Protocol, direction, data flow, and setup guide for each integration.</p>
+
+    <!-- 1. Vigilar ↔ Vigilar Guard -->
+    <div class="integration-card" id="vigilar-guard">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(0,212,255,0.15);">📱</div>
+        <div>
+          <h3>Vigilar ↔ Vigilar Guard</h3>
+          <div class="card-subtitle">Consumer threat detection pipeline</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> REST API</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> WebSocket</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> OpenAPI 3.1</span>
+        <span class="tech-badge"><span class="dot" style="background: #A855F7;"></span> API Key Auth</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        Vigilar clients (iOS, Android, Desktop) send security events to Guard's FastAPI server. Guard runs Sigma detection rules and Ember AI triage, then returns triaged incidents with severity, confidence, and recommended actions. High-severity incidents trigger a WebSocket push for real-time alerting.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">/api/v1/events</span><span class="endpoint-desc">Submit security events → Guard</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">/api/v1/incidents</span><span class="endpoint-desc">Guard → client (triaged incident)</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-get">GET</span><span class="endpoint-path">/api/v1/recommendations</span><span class="endpoint-desc">Fetch remediation steps</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-ws">WS</span><span class="endpoint-path">/ws/alerts</span><span class="endpoint-desc">Real-time alert push (high severity)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Bidirectional — events flow up, incidents and alerts flow back</span><br>
+        <strong style="color: var(--text-primary);">Auth:</strong> <code style="font-family: var(--font-mono); color: var(--accent);">X-API-Key</code> header<br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 2. Vigilar Guard ↔ Wazuh -->
+    <div class="integration-card" id="guard-wazuh">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(168,85,247,0.15);">🔗</div>
+        <div>
+          <h3>Vigilar Guard ↔ Wazuh</h3>
+          <div class="card-subtitle">SIEM/XDR bidirectional webhook integration</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: #A855F7;"></span> Webhook</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> Port 8085</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> Bidirectional</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--text-muted);"></span> Network ACL auth</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        Guard listens on port 8085 for incoming Wazuh webhooks — no API key required, authenticated by network ACL. Wazuh sends alert webhooks to Guard for AI triage. Guard forwards its own detections to Wazuh for XDR correlation and additional rule matching.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-webhook">HOOK</span><span class="endpoint-path">POST :8085/webhooks/wazuh</span><span class="endpoint-desc">Wazuh → Guard (incoming alerts)</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">Wazuh API</span><span class="endpoint-desc">Guard → Wazuh (forward detections)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Bidirectional — Wazuh alerts → Guard, Guard detections → Wazuh</span><br>
+        <strong style="color: var(--text-primary);">Auth:</strong> <span style="color: var(--text-secondary);">Network ACL (no API key on webhook endpoint)</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 3. Vigilar Guard → OpenCTI -->
+    <div class="integration-card" id="guard-opencti">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(245,166,35,0.15);">🧠</div>
+        <div>
+          <h3>Vigilar Guard → OpenCTI</h3>
+          <div class="card-subtitle">Threat intelligence sharing via STIX 2.1</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> STIX 2.1</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> REST API</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> One-way push</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        When Guard's Ember AI triage identifies IoCs, TTPs, or threat actor references, it structures the intelligence as a STIX 2.1 bundle — observables, indicators, relationships, and attack patterns — and pushes it to OpenCTI via its REST API. This enriched threat intel is then available to all SOC analysts.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-stix">STIX</span><span class="endpoint-path">POST /v2/stix-bundles</span><span class="endpoint-desc">Guard → OpenCTI (threat intel)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Guard → OpenCTI (one-way push)</span><br>
+        <strong style="color: var(--text-primary);">Data:</strong> <span style="color: var(--text-secondary);">STIX 2.1 bundles — observables, indicators, relationships, attack patterns</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 4. Vigilar Guard → MISP -->
+    <div class="integration-card" id="guard-misp">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(255,71,87,0.15);">🔄</div>
+        <div>
+          <h3>Vigilar Guard → MISP</h3>
+          <div class="card-subtitle">Collaborative threat intel sharing via PyMISP</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--threat);"></span> PyMISP</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> One-way push</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> Community sharing</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        Guard shares detection events with MISP communities using the PyMISP Python library. Events are created, tagged, and pushed to configured MISP instances for collaborative threat intelligence sharing across organizations and communities.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">PyMISP API</span><span class="endpoint-desc">Guard → MISP (event creation + tagging)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Guard → MISP (one-way push)</span><br>
+        <strong style="color: var(--text-primary);">Data:</strong> <span style="color: var(--text-secondary);">Detection events with IoCs, tags, and context</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 5. Vigilar Guard → SIEM (Splunk/QRadar/ArcSight) -->
+    <div class="integration-card" id="guard-siem">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(255,71,87,0.15);">📡</div>
+        <div>
+          <h3>Vigilar Guard → Splunk / QRadar / ArcSight</h3>
+          <div class="card-subtitle">SIEM forwarding via CEF over syslog</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--threat);"></span> CEF</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--text-muted);"></span> Syslog</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> One-way push</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> Industry standard</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        Guard formats alerts as Common Event Format (CEF) messages and forwards them over syslog to any compatible SIEM — Splunk, IBM QRadar, or Micro Focus ArcSight. This uses industry-standard protocols so no custom integration is needed on the SIEM side.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-cef">CEF</span><span class="endpoint-path">syslog://siem-host:514</span><span class="endpoint-desc">Guard → SIEM (CEF alerts)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Guard → SIEM (one-way push)</span><br>
+        <strong style="color: var(--text-primary);">Data:</strong> <span style="color: var(--text-secondary);">CEF-formatted alerts over syslog (port 514)</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 6. AI SOC Team ↔ Vigilar Guard -->
+    <div class="integration-card" id="soc-guard">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(168,85,247,0.15);">🤖</div>
+        <div>
+          <h3>AI SOC Team ↔ Vigilar Guard</h3>
+          <div class="card-subtitle">Direct detection event delivery to SOC agents</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: #A855F7;"></span> Webhook</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> Direct delivery</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> Bypass Wazuh</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        For low-latency triage, Guard can deliver detection events directly to AI SOC Team agents via webhook, bypassing the Wazuh SIEM layer. The Alpha (detection) agent picks up alerts, queries Wazuh for full context, and dispatches to Bravo (response), Charlie (intel), or Delta (forensics) as needed.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-webhook">HOOK</span><span class="endpoint-path">POST /soc/webhooks/guard</span><span class="endpoint-desc">Guard → SOC (direct detection delivery)</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">Guard API</span><span class="endpoint-desc">SOC → Guard (query incident context)</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Guard → SOC (direct or via Wazuh)</span><br>
+        <strong style="color: var(--text-primary);">Data:</strong> <span style="color: var(--text-secondary);">Detection events with full triage context</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 7. AI SOC Team — Full SOC Stack -->
+    <div class="integration-card" id="soc-stack">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(0,212,255,0.15);">🏗️</div>
+        <div>
+          <h3>AI SOC Team — Full SOC Stack</h3>
+          <div class="card-subtitle">9-service Docker Compose orchestration</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> Docker Compose</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> 9 services</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> One-command deploy</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        The AI SOC Team ships with a complete SOC stack orchestrated via Docker Compose. Nine services are pre-configured and networked: Wazuh (SIEM/XDR), OpenCTI (threat intel), MISP (sharing), TheHive (incident response), Shuffle (SOAR), Windmill (workflow engine), Grafana (dashboards), Loki (log aggregation), and OpenSearch (full-text search).
+      </p>
+      <div class="grid-2" style="margin-top: var(--space-lg);">
+        <div class="svc-pill"><strong>Wazuh</strong><p>SIEM/XDR — endpoint detection, log analysis, compliance</p></div>
+        <div class="svc-pill"><strong>OpenCTI</strong><p>Threat intelligence — STIX 2.1 knowledge graph</p></div>
+        <div class="svc-pill"><strong>MISP</strong><p>Threat sharing — community intel exchange</p></div>
+        <div class="svc-pill"><strong>TheHive</strong><p>Incident response — case management, task tracking</p></div>
+        <div class="svc-pill"><strong>Shuffle</strong><p>SOAR — automated playbooks and orchestration</p></div>
+        <div class="svc-pill"><strong>Windmill</strong><p>Workflow engine — internal automation and data pipelines</p></div>
+        <div class="svc-pill"><strong>Grafana</strong><p>Dashboards — metrics, alerts, visual analytics</p></div>
+        <div class="svc-pill"><strong>Loki</strong><p>Log aggregation — structured log storage and query</p></div>
+        <div class="svc-pill"><strong>OpenSearch</strong><p>Full-text search — forensic artifact indexing</p></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">Internal — all services networked via Docker Compose</span><br>
+        <strong style="color: var(--text-primary);">Deploy:</strong> <code style="font-family: var(--font-mono); color: var(--accent);">docker compose up -d</code><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+    <!-- 8. Ember Core → All Products -->
+    <div class="integration-card" id="ember-core">
+      <div class="card-header">
+        <div class="card-icon" style="background: rgba(245,166,35,0.15);">⚡</div>
+        <div>
+          <h3>Ember Core → All Products</h3>
+          <div class="card-subtitle">Unified AI inference via FastAPI on port 8081</div>
+        </div>
+      </div>
+      <div class="badge-row">
+        <span class="tech-badge"><span class="dot" style="background: var(--accent);"></span> FastAPI</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--cyan);"></span> Port 8081</span>
+        <span class="tech-badge"><span class="dot" style="background: var(--success);"></span> OpenAI-compatible</span>
+        <span class="tech-badge"><span class="dot" style="background: #A855F7;"></span> Selene P1-P7 guards</span>
+      </div>
+      <p style="margin-top: var(--space-md); color: var(--text-secondary); font-size: var(--text-sm); line-height: 1.6;">
+        Ember Core serves as the unified inference layer for all Aethel Guard products. It exposes an OpenAI-compatible API on port 8081 via FastAPI, with Selene P1-P7 safety guards enforced at inference time. Vigilar uses it for on-device triage, Guard for detection analysis, and the AI SOC Team for agent reasoning.
+      </p>
+      <div class="endpoints">
+        <div class="endpoint-row"><span class="endpoint-method method-post">POST</span><span class="endpoint-path">:8081/v1/chat/completions</span><span class="endpoint-desc">OpenAI-compatible inference</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-get">GET</span><span class="endpoint-path">:8081/health</span><span class="endpoint-desc">Health check</span></div>
+        <div class="endpoint-row"><span class="endpoint-method method-get">GET</span><span class="endpoint-path">:8081/v1/models</span><span class="endpoint-desc">List available models</span></div>
+      </div>
+      <p style="margin-top: var(--space-lg); font-size: var(--text-sm);">
+        <strong style="color: var(--text-primary);">Direction:</strong> <span style="color: var(--text-secondary);">All products → Ember Core (inference requests)</span><br>
+        <strong style="color: var(--text-primary);">Data:</strong> <span style="color: var(--text-secondary);">OpenAI-compatible chat completions, embeddings, and custom triage prompts</span><br>
+        <strong style="color: var(--text-primary);">Setup:</strong> <a href="../docs/index.html" style="color: var(--cyan);">See documentation →</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ DATA FLOWS ═══ -->
+<section class="section" id="data-flows">
+  <div class="section-inner">
+    <div class="section-label">// Data Flows</div>
+    <h2 class="section-title">How data <span class="accent">moves</span></h2>
+    <p class="section-subtitle">Three primary data flow paths through the Aethel Guard ecosystem.</p>
+
+    <!-- Flow 1 -->
+    <div class="data-flow">
+      <h4>Flow 1 — Consumer Threat Detection (Vigilar → Guard → Vigilar)</h4>
+      <div class="data-flow-steps">
+        <div class="flow-step"><div class="step-num">1</div><div class="step-content"><strong>Vigilar detects anomalous activity on-device</strong><p>Security event captured locally — no PII leaves the device. Event structured as JSON with type, severity, and context.</p></div></div>
+        <div class="flow-step"><div class="step-num">2</div><div class="step-content"><strong>POST /api/v1/events → Vigilar Guard</strong><p>Event sent with <code style="font-family: var(--font-mono); color: var(--accent);">X-API-Key</code> authentication. Guard validates against OpenAPI 3.1 contract.</p></div></div>
+        <div class="flow-step"><div class="step-num">3</div><div class="step-content"><strong>Guard runs Sigma detection rules + Ember AI triage</strong><p>Sigma engine matches against 8 rule categories. Ember Core (port 8081) provides AI triage with product-specific system prompt. Selene P1-P7 guards enforce safety at inference.</p></div></div>
+        <div class="flow-step"><div class="step-num">4</div><div class="step-content"><strong>Guard returns incident via POST /api/v1/incidents</strong><p>Triaged incident with severity, confidence, and recommended actions. WebSocket pushes real-time alert if severity is high.</p></div></div>
+        <div class="flow-step"><div class="step-num">5</div><div class="step-content"><strong>Vigilar displays remediation guidance to user</strong><p>Recommendations fetched via GET /api/v1/recommendations. User sees actionable steps. No raw threat data stored on-device beyond the session.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 2 -->
+    <div class="data-flow">
+      <h4>Flow 2 — Enterprise Detection Pipeline (Guard → SIEM → AI SOC Team)</h4>
+      <div class="data-flow-steps">
+        <div class="flow-step"><div class="step-num">1</div><div class="step-content"><strong>Vigilar Guard detects threat via Sigma rules or AI triage</strong><p>Detection triggered by incoming event stream or Wazuh webhook on port 8085. Guard enriches with threat intel from OpenCTI.</p></div></div>
+        <div class="flow-step"><div class="step-num">2</div><div class="step-content"><strong>Guard forwards detection via CEF/syslog to Wazuh</strong><p>Alert formatted as CEF message, sent over syslog to Wazuh SIEM. Alternatively, direct webhook to AI SOC Team for bypass.</p></div></div>
+        <div class="flow-step"><div class="step-num">3</div><div class="step-content"><strong>Wazuh indexes alert and runs additional detection rules</strong><p>Wazuh XDR correlates with existing alerts, applies its own rule set, and enriches with endpoint telemetry.</p></div></div>
+        <div class="flow-step"><div class="step-num">4</div><div class="step-content"><strong>AI SOC Team Alpha agent picks up alert from Wazuh</strong><p>Alpha (detection agent) queries Wazuh API, pulls full alert context, and begins triage. Ember Core provides inference on port 8081.</p></div></div>
+        <div class="flow-step"><div class="step-num">5</div><div class="step-content"><strong>Alpha dispatches to Bravo (response) or Charlie (intel)</strong><p>If actionable, Bravo creates TheHive case and triggers Shuffle SOAR playbook. Charlie enriches with OpenCTI/MISP threat intel.</p></div></div>
+        <div class="flow-step"><div class="step-num">6</div><div class="step-content"><strong>Delta (forensics) conducts post-incident analysis</strong><p>Forensic artifacts collected, OpenSearch indexed, Loki logs queried. Grafana dashboard updated with incident metrics.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 3 -->
+    <div class="data-flow">
+      <h4>Flow 3 — Threat Intel Sharing (Guard → OpenCTI → MISP → SOC)</h4>
+      <div class="data-flow-steps">
+        <div class="flow-step"><div class="step-num">1</div><div class="step-content"><strong>Guard enriches detection with threat context</strong><p>Ember AI triage identifies IoCs, TTPs, and threat actor references during analysis.</p></div></div>
+        <div class="flow-step"><div class="step-num">2</div><div class="step-content"><strong>Guard pushes STIX 2.1 bundle to OpenCTI</strong><p>Structured threat intelligence — observables, indicators, relationships, and attack patterns — pushed via OpenCTI REST API.</p></div></div>
+        <div class="flow-step"><div class="step-num">3</div><div class="step-content"><strong>Guard shares events via PyMISP to MISP</strong><p>Detection events shared with MISP communities for collaborative threat intel. PyMISP API handles event creation and tagging.</p></div></div>
+        <div class="flow-step"><div class="step-num">4</div><div class="step-content"><strong>AI SOC Team Charlie agent queries OpenCTI + MISP</strong><p>Charlie (threat intel agent) pulls enriched context from OpenCTI and MISP, correlates with active incidents, and feeds back to Alpha and Bravo.</p></div></div>
+        <div class="flow-step"><div class="step-num">5</div><div class="step-content"><strong>Enriched intel displayed on Grafana dashboards</strong><p>Threat intel metrics, sharing stats, and correlation results visualized in Grafana. OpenSearch provides full-text search across all intel.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ API REFERENCE ═══ -->
+<section class="section" id="api-reference" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">// API Reference</div>
+    <h2 class="section-title">Vigilar Guard API</h2>
+    <p class="section-subtitle">Key endpoints for the detection engine. Full OpenAPI 3.1 spec available in the repository.</p>
+
+    <div class="api-section">
+      <h3>Authentication</h3>
+      <p class="api-desc">All endpoints require an API key passed in the <code style="font-family: var(--font-mono); color: var(--accent);">X-API-Key</code> header.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">HTTP</span><button class="copy-btn">copy</button></div>
+<pre><span class="comment"># Request headers</span>
+<span class="keyword">X-API-Key:</span> vg_live_your_api_key_here
+<span class="keyword">Content-Type:</span> application/json</pre>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <h3>Submit Events</h3>
+      <p class="api-desc">Send security events from Vigilar or external systems to Guard for detection and triage.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">POST /api/v1/events</span><button class="copy-btn">copy</button></div>
+<pre><span class="keyword">POST</span> /api/v1/events
+<span class="keyword">Content-Type:</span> application/json
+<span class="keyword">X-API-Key:</span> vg_live_your_api_key_here
+
+<span class="comment">{</span>
+  <span class="string">"event_type"</span>: <span class="string">"anomalous_process"</span>,
+  <span class="string">"severity"</span>: <span class="string">"medium"</span>,
+  <span class="string">"source"</span>: <span class="string">"vigilar_ios"</span>,
+  <span class="string">"context"</span>: {
+    <span class="string">"process"</span>: <span class="string">"unknown_bin"</span>,
+    <span class="string">"pid"</span>: 1337
+  }
+<span class="comment">}</span>
+
+<span class="comment">// Response: 202 Accepted</span>
+<span class="comment">{</span>
+  <span class="string">"event_id"</span>: <span class="string">"evt_01HZX..."</span>,
+  <span class="string">"status"</span>: <span class="string">"queued_for_triage"</span>,
+  <span class="string">"estimated_triage_ms"</span>: 2500
+<span class="comment">}</span></pre>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <h3>Receive Incidents</h3>
+      <p class="api-desc">Guard delivers triaged incidents back to the client. High-severity incidents also trigger a WebSocket push.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">POST /api/v1/incidents (Guard → Client)</span><button class="copy-btn">copy</button></div>
+<pre><span class="keyword">POST</span> /api/v1/incidents
+<span class="keyword">Content-Type:</span> application/json
+
+<span class="comment">{</span>
+  <span class="string">"incident_id"</span>: <span class="string">"inc_01HZX..."</span>,
+  <span class="string">"severity"</span>: <span class="string">"high"</span>,
+  <span class="string">"confidence"</span>: 0.87,
+  <span class="string">"title"</span>: <span class="string">"Anomalous process execution detected"</span>,
+  <span class="string">"recommendations"</span>: [
+    <span class="string">"Terminate process PID 1337"</span>,
+    <span class="string">"Block network access for unknown_bin"</span>
+  ],
+  <span class="string">"triage_source"</span>: <span class="string">"ember_prime_v8c"</span>
+<span class="comment">}</span></pre>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <h3>WebSocket — Real-time Alerts</h3>
+      <p class="api-desc">Persistent WebSocket connection for real-time alert delivery. No polling required.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">WS /ws/alerts</span><button class="copy-btn">copy</button></div>
+<pre><span class="keyword">GET</span> wss://guard.aethelguard.dev/ws/alerts
+<span class="keyword">X-API-Key:</span> vg_live_your_api_key_here
+
+<span class="comment">// Server pushes alert messages:</span>
+<span class="comment">{</span>
+  <span class="string">"type"</span>: <span class="string">"alert"</span>,
+  <span class="string">"incident_id"</span>: <span class="string">"inc_01HZX..."</span>,
+  <span class="string">"severity"</span>: <span class="string">"critical"</span>,
+  <span class="string">"title"</span>: <span class="string">"C2 communication blocked"</span>
+<span class="comment">}</span></pre>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <h3>Wazuh Webhook Receiver</h3>
+      <p class="api-desc">Guard listens on port 8085 for incoming Wazuh webhooks. No API key required — authenticated by network ACL.</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">POST :8085/webhooks/wazuh</span><button class="copy-btn">copy</button></div>
+<pre><span class="keyword">POST</span> http://guard:8085/webhooks/wazuh
+<span class="keyword">Content-Type:</span> application/json
+
+<span class="comment">// Wazuh sends alert webhook:</span>
+<span class="comment">{</span>
+  <span class="string">"agent"</span>: { <span class="string">"id"</span>: <span class="string">"001"</span>, <span class="string">"name"</span>: <span class="string">"endpoint-01"</span> },
+  <span class="string">"rule"</span>: { <span class="string">"level"</span>: 7, <span class="string">"description"</span>: <span class="string">"File modified"</span> },
+  <span class="string">"data"</span>: { <span class="string">"path"</span>: <span class="string">"/etc/passwd"</span> }
+<span class="comment">}</span>
+
+<span class="comment">// Response: 200 OK (event queued for triage)</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OPEN STANDARDS ═══ -->
+<section class="section" id="standards">
+  <div class="section-inner">
+    <div class="section-label">// Open Standards</div>
+    <h2 class="section-title">No vendor lock-in. <span class="accent">Ever.</span></h2>
+    <p class="section-subtitle">Every integration uses established open standards. If you switch SIEMs, change threat intel platforms, or build your own pipeline — Aethel Guard speaks your language.</p>
+
+    <div class="standards-grid">
+      <div class="standard-card">
+        <div class="standard-icon">📐</div>
+        <h4>STIX 2.1</h4>
+        <div class="standard-protocol">OASIS Standard · JSON</div>
+        <p>Structured Threat Information eXpression. Guard pushes observables, indicators, relationships, and attack patterns to OpenCTI in STIX 2.1 format. Industry-standard threat intel serialization.</p>
+      </div>
+
+      <div class="standard-card">
+        <div class="standard-icon">📋</div>
+        <h4>CEF</h4>
+        <div class="standard-protocol">Common Event Format · ArcSight</div>
+        <p>Common Event Format. Guard formats alerts as CEF messages for forwarding to Splunk, QRadar, ArcSight, or any CEF-compatible SIEM over syslog. No custom parser needed.</p>
+      </div>
+
+      <div class="standard-card">
+        <div class="standard-icon">📨</div>
+        <h4>Syslog</h4>
+        <div class="standard-protocol">RFC 5424 · UDP/TCP 514</div>
+        <p>Standard logging protocol. Guard forwards CEF alerts over syslog to any SIEM. No proprietary transport — just the standard syslog protocol every SIEM already ingests.</p>
+      </div>
+
+      <div class="standard-card">
+        <div class="standard-icon">🔌</div>
+        <h4>REST API</h4>
+        <div class="standard-protocol">OpenAPI 3.1 · JSON</div>
+        <p>Every Guard endpoint is documented in OpenAPI 3.1. REST + JSON over HTTPS with API key authentication. Standard HTTP methods — POST to submit, GET to query, no custom protocol.</p>
+      </div>
+
+      <div class="standard-card">
+        <div class="standard-icon">⚡</div>
+        <h4>WebSocket</h4>
+        <div class="standard-protocol">RFC 6455 · WSS</div>
+        <p>Real-time bidirectional communication for alert delivery. Guard pushes high-severity incidents over a persistent WebSocket connection — no polling, no webhook configuration needed.</p>
+      </div>
+
+      <div class="standard-card">
+        <div class="standard-icon">🔐</div>
+        <h4>OAuth2</h4>
+        <div class="standard-protocol">RFC 6749 · Bearer tokens</div>
+        <p>OAuth2 bearer token support for external API access. Guard authenticates to OpenCTI, MISP, and other external services using OAuth2 — no hardcoded API keys where standards-based auth is available.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA: GITHUB ═══ -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="cta-github reveal">
+      <div class="section-label" style="margin-bottom: var(--space-md);">// Open Source</div>
+      <h2 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: var(--space-md);">
+        View on <span class="accent">GitHub</span>
+      </h2>
+      <p style="color: var(--text-secondary); font-size: var(--text-lg); max-width: 600px; margin: 0 auto var(--space-xl);">
+        All Aethel Guard projects are developed in the open on GitHub. Explore the organization, read the code, file issues, or contribute.
+      </p>
+      <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Aethel-Guard Org →
+        </a>
+        <a href="../docs/index.html" class="btn btn-secondary">Documentation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="../services/index.html#redesign">System Redesign</a></li>
+        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="../services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

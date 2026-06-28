@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI SOC Team — Aethel Guard</title>
+  <meta name="description" content="Full SOC-as-a-Service platform. Four AI agents — Alpha, Bravo, Charlie, Delta — running a complete security operations center with Wazuh, OpenCTI, MISP, TheHive, and Shuffle SOAR.">
+  <link rel="icon" href="../../assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* Page-specific styles */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl);
+    }
+    .agent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .agent-card:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    .agent-card:hover::before { opacity: 1; }
+    .agent-card.alpha::before { background: linear-gradient(90deg, #EF4444, transparent); }
+    .agent-card.bravo::before { background: linear-gradient(90deg, #F59E0B, transparent); }
+    .agent-card.charlie::before { background: linear-gradient(90deg, #3B82F6, transparent); }
+    .agent-card.delta::before { background: linear-gradient(90deg, #8B5CF6, transparent); }
+    .agent-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+    .agent-badge {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+    }
+    .agent-badge.alpha { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+    .agent-badge.bravo { background: rgba(245, 158, 11, 0.15); color: #F59E0B; }
+    .agent-badge.charlie { background: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+    .agent-badge.delta { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
+    .agent-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+    }
+    .agent-card .agent-role {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .agent-card p {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-md);
+      line-height: 1.7;
+    }
+    .agent-skills {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+    .agent-skills li {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Tier table */
+    .tier-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .tier-table th {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-align: left;
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--border-default);
+      background: var(--bg-tertiary);
+    }
+    .tier-table th:not(:first-child) {
+      text-align: center;
+      color: var(--accent);
+    }
+    .tier-table td {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+    .tier-table td:not(:first-child) {
+      text-align: center;
+    }
+    .tier-table td:first-child {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .tier-table tr:last-child td { border-bottom: none; }
+    .tier-table tr:hover td { background: var(--accent-glow); }
+    .tier-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .tier-label.core { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--success); }
+    .tier-label.full { background: var(--accent-glow); border: 1px solid var(--border-accent); color: var(--accent); }
+
+    /* Integrations grid */
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-md);
+    }
+    .integration-tile {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .integration-tile:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .integration-tile .tool-icon {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-sm);
+    }
+    .integration-tile h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      margin-bottom: var(--space-xs);
+    }
+    .integration-tile p {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+
+    /* Fallback chain */
+    .fallback-chain {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: var(--space-xl);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+    }
+    .fallback-node {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-md);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+    .fallback-node.primary { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .fallback-node.final { border-color: var(--danger); color: var(--danger); }
+    .fallback-arrow { color: var(--text-muted); font-family: var(--font-mono); }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: var(--space-2xl);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: var(--space-xl);
+    }
+    .stat-item { text-align: center; }
+    .stat-item .stat-num {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-item .stat-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: var(--space-xs);
+    }
+
+    @media (max-width: 768px) {
+      .agent-grid { grid-template-columns: 1fr; }
+      .integrations-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .agent-grid { grid-template-columns: 1fr; }
+      .integrations-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links"><li><a href="../../index.html">Home</a></li>
+      <li><a href="../services/index.html">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-content animate-in">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      SOC-as-a-Service · In Development
+    </div>
+    <h1>
+      Your AI SOC team.<br>
+      <span class="accent">Always on.</span>
+    </h1>
+    <p class="hero-subtitle">
+      Four AI agents. A complete security operations stack. Multi-tenant, billing-ready, and GDPR compliant. Deploy your SOC in minutes with Docker Compose.
+    </p>
+    <div class="hero-actions">
+      <a href="#agents" class="btn btn-primary">Meet the Agents <span class="arrow">→</span></a>
+      <a href="#quickstart" class="btn btn-secondary">Quick Start</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">257</div>
+        <div class="stat-label">Files</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">31</div>
+        <div class="stat-label">API Modules</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4</div>
+        <div class="stat-label">AI Agents</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">~25</div>
+        <div class="stat-label">Containers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE FOUR AGENTS ═══ -->
+<section class="section" id="agents">
+  <div class="section-inner">
+    <div class="section-label">// The Team</div>
+    <h2 class="section-title">Four AI agents. One mission.</h2>
+    <p class="section-subtitle">Each agent has a specialized role. They communicate over NATS message bus and coordinate through a shared event pipeline.</p>
+
+    <div class="agent-grid">
+
+      <!-- Alpha -->
+      <div class="agent-card alpha animate-in">
+        <div class="agent-header">
+          <div class="agent-badge alpha">α</div>
+          <div>
+            <h3>Alpha</h3>
+            <div class="agent-role">Detection &amp; Triage</div>
+          </div>
+        </div>
+        <p>
+          Alpha monitors incoming events from Wazuh SIEM and other sensors. It correlates alerts, deduplicates noise, and ranks threats by severity using the Ember AI inference engine. When a genuine threat is confirmed, Alpha escalates to Bravo for response.
+        </p>
+        <ul class="agent-skills">
+          <li>Alert correlation</li>
+          <li>Severity scoring</li>
+          <li>False-positive filtering</li>
+          <li>Threat classification</li>
+          <li>Ember AI triage</li>
+        </ul>
+      </div>
+
+      <!-- Bravo -->
+      <div class="agent-card bravo animate-in animate-delay-1">
+        <div class="agent-header">
+          <div class="agent-badge bravo">β</div>
+          <div>
+            <h3>Bravo</h3>
+            <div class="agent-role">Response &amp; Remediation</div>
+          </div>
+        </div>
+        <p>
+          Bravo receives confirmed incidents from Alpha and executes response playbooks through Shuffle SOAR. It can isolate hosts, block IPs, revoke credentials, and trigger automated containment. Bravo logs every action for audit and can escalate to human analysts when needed.
+        </p>
+        <ul class="agent-skills">
+          <li>SOAR playbooks</li>
+          <li>Host isolation</li>
+          <li>IP blocking</li>
+          <li>Credential revocation</li>
+          <li>Human escalation</li>
+        </ul>
+      </div>
+
+      <!-- Charlie -->
+      <div class="agent-card charlie animate-in animate-delay-2">
+        <div class="agent-header">
+          <div class="agent-badge charlie">γ</div>
+          <div>
+            <h3>Charlie</h3>
+            <div class="agent-role">Threat Intelligence</div>
+          </div>
+        </div>
+        <p>
+          Charlie pulls and enriches threat intelligence from OpenCTI and MISP. It maintains IOC feeds, tracks adversary TTPs, and provides context to Alpha's detections and Delta's investigations. Charlie syncs indicators bidirectionally with external sharing communities.
+        </p>
+        <ul class="agent-skills">
+          <li>OpenCTI enrichment</li>
+          <li>MISP sharing</li>
+          <li>IOC management</li>
+          <li>TTP mapping (MITRE ATT&amp;CK)</li>
+          <li>Feed synchronization</li>
+        </ul>
+      </div>
+
+      <!-- Delta -->
+      <div class="agent-card delta animate-in animate-delay-3">
+        <div class="agent-header">
+          <div class="agent-badge delta">δ</div>
+          <div>
+            <h3>Delta</h3>
+            <div class="agent-role">Digital Forensics</div>
+          </div>
+        </div>
+        <p>
+          Delta performs deep-dive forensic analysis on confirmed incidents. It collects disk images, memory dumps, and network captures, then correlates artifacts using timeline analysis. Delta writes findings directly into TheHive case files and produces court-admissible reports.
+        </p>
+        <ul class="agent-skills">
+          <li>Memory analysis</li>
+          <li>Disk forensics</li>
+          <li>Network capture</li>
+          <li>Timeline reconstruction</li>
+          <li>TheHive case management</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEPLOYMENT TIERS ═══ -->
+<section class="section" id="tiers" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">// Deployment</div>
+    <h2 class="section-title">Two tiers. Your choice.</h2>
+    <p class="section-subtitle">Start with Core on a single 8GB machine. Scale to Full when you need the complete stack.</p>
+
+    <div style="overflow-x: auto;">
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th><span class="tier-label core">Core</span></th>
+            <th><span class="tier-label full">Full</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Minimum RAM</td>
+            <td>8 GB</td>
+            <td>16 GB</td>
+          </tr>
+          <tr>
+            <td>Containers</td>
+            <td>~15</td>
+            <td>~25</td>
+          </tr>
+          <tr>
+            <td>AI Agents</td>
+            <td>Alpha + Bravo</td>
+            <td>All 4 (Alpha, Bravo, Charlie, Delta)</td>
+          </tr>
+          <tr>
+            <td>SIEM (Wazuh)</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Threat Intel (OpenCTI + MISP)</td>
+            <td>—</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Case Management (TheHive)</td>
+            <td>—</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>SOAR (Shuffle)</td>
+            <td>—</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Automation (Windmill)</td>
+            <td>—</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Monitoring (Grafana + Loki)</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Log Search (OpenSearch)</td>
+            <td>—</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Angular Dashboard</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Multi-tenant + Billing</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>GDPR Compliance</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Host Enrollment + Autoscaling</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>TLS Everywhere + Encryption at Rest</td>
+            <td>✓</td>
+            <td>✓</td>
+          </tr>
+          <tr>
+            <td>Best For</td>
+            <td>Small teams, MSPs starting out</td>
+            <td>Full-scale SOC operations</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTEGRATIONS ═══ -->
+<section class="section" id="integrations">
+  <div class="section-inner">
+    <div class="section-label">// Integrations</div>
+    <h2 class="section-title">The complete SOC stack</h2>
+    <p class="section-subtitle">Every component is open source. Every integration is standard. No vendor lock-in.</p>
+
+    <div class="integrations-grid">
+      <div class="integration-tile">
+        <div class="tool-icon">🛡️</div>
+        <h4>Wazuh</h4>
+        <p>SIEM / XDR</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🌐</div>
+        <h4>OpenCTI</h4>
+        <p>Threat Intelligence</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🔗</div>
+        <h4>MISP</h4>
+        <p>Threat Sharing</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🐝</div>
+        <h4>TheHive</h4>
+        <p>Case Management</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🔀</div>
+        <h4>Shuffle</h4>
+        <p>SOAR Platform</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">⚙️</div>
+        <h4>Windmill</h4>
+        <p>Workflow Automation</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">📊</div>
+        <h4>Grafana</h4>
+        <p>Dashboards &amp; Monitoring</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">📝</div>
+        <h4>Loki</h4>
+        <p>Log Aggregation</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🔍</div>
+        <h4>OpenSearch</h4>
+        <p>Log Search &amp; Analytics</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">📮</div>
+        <h4>NATS</h4>
+        <p>Message Bus</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">⚡</div>
+        <h4>Redis</h4>
+        <p>Caching &amp; Queues</p>
+      </div>
+      <div class="integration-tile">
+        <div class="tool-icon">🐘</div>
+        <h4>PostgreSQL</h4>
+        <p>Primary Database</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ARCHITECTURE ═══ -->
+<section class="section" id="architecture" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-label">// Architecture</div>
+    <h2 class="section-title">How it fits together</h2>
+    <p class="section-subtitle">Simplified view of the AI SOC Team stack. All services run in Docker Compose.</p>
+
+    <div class="architecture-diagram">
+      <div class="arch-flow">
+
+        <!-- Dashboard layer -->
+        <div class="arch-row">
+          <div class="arch-block primary">
+            <h4>Angular Dashboard</h4>
+            <p>Multi-tenant UI<br>Billing · Reports · Alerts</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ REST API</div>
+
+        <!-- API layer -->
+        <div class="arch-row">
+          <div class="arch-block primary">
+            <h4>FastAPI Gateway</h4>
+            <p>31 Python modules<br>TLS · Auth · RBAC</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ NATS Message Bus</div>
+
+        <!-- Agent layer -->
+        <div class="arch-row">
+          <div class="arch-block" style="border-color: #EF4444; background: rgba(239, 68, 68, 0.08);">
+            <h4>Alpha</h4>
+            <p>Detection<br>&amp; Triage</p>
+          </div>
+          <div class="arch-block" style="border-color: #F59E0B; background: rgba(245, 158, 11, 0.08);">
+            <h4>Bravo</h4>
+            <p>Response<br>&amp; Remediation</p>
+          </div>
+          <div class="arch-block" style="border-color: #3B82F6; background: rgba(59, 130, 246, 0.08);">
+            <h4>Charlie</h4>
+            <p>Threat<br>Intelligence</p>
+          </div>
+          <div class="arch-block" style="border-color: #8B5CF6; background: rgba(139, 92, 246, 0.08);">
+            <h4>Delta</h4>
+            <p>Digital<br>Forensics</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ Ember AI Inference (port 8081)</div>
+
+        <!-- AI fallback chain -->
+        <div class="fallback-chain">
+          <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-right: var(--space-sm);">Fallback chain:</span>
+          <span class="fallback-node primary">gemma4-soc</span>
+          <span class="fallback-arrow">→</span>
+          <span class="fallback-node">soc-smollm2</span>
+          <span class="fallback-arrow">→</span>
+          <span class="fallback-node">gemma4:e4b</span>
+          <span class="fallback-arrow">→</span>
+          <span class="fallback-node">gemma4:latest</span>
+          <span class="fallback-arrow">→</span>
+          <span class="fallback-node final">rule-based</span>
+        </div>
+
+        <div class="arch-arrow" style="margin-top: var(--space-lg);">↓ Integrations</div>
+
+        <!-- Integration layer -->
+        <div class="arch-row">
+          <div class="arch-block">
+            <h4>Wazuh</h4>
+            <p>SIEM</p>
+          </div>
+          <div class="arch-block">
+            <h4>OpenCTI</h4>
+            <p>Intel</p>
+          </div>
+          <div class="arch-block">
+            <h4>MISP</h4>
+            <p>Sharing</p>
+          </div>
+          <div class="arch-block">
+            <h4>TheHive</h4>
+            <p>Cases</p>
+          </div>
+          <div class="arch-block">
+            <h4>Shuffle</h4>
+            <p>SOAR</p>
+          </div>
+        </div>
+
+        <div class="arch-arrow">↓ Data Layer</div>
+
+        <!-- Data layer -->
+        <div class="arch-row">
+          <div class="arch-block">
+            <h4>PostgreSQL</h4>
+            <p>Primary DB</p>
+          </div>
+          <div class="arch-block">
+            <h4>Redis</h4>
+            <p>Cache · Queue</p>
+          </div>
+          <div class="arch-block">
+            <h4>OpenSearch</h4>
+            <p>Log Search</p>
+          </div>
+          <div class="arch-block">
+            <h4>Grafana + Loki</h4>
+            <p>Monitoring</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUICK START ═══ -->
+<section class="section" id="quickstart">
+  <div class="section-inner">
+    <div class="section-label">// Quick Start</div>
+    <h2 class="section-title">Deploy in minutes</h2>
+    <p class="section-subtitle">Clone, configure, and launch your SOC with Docker Compose. Full instructions in the Integration Guide.</p>
+
+    <div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-lg);">
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('https://github.com/Aethel-Guard')">copy</button>
+        </div>
+        <pre><span class="comment"># Clone the repository</span>
+<span class="keyword">git clone</span> https://github.com/Aethel-Guard"keyword">cd</span> ai-soc-team</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('cp .env.example .env\n# Edit .env — set passwords, API keys, tenant config')">copy</button>
+        </div>
+        <pre><span class="comment"># Configure your environment</span>
+<span class="keyword">cp</span> .env.example .env
+<span class="comment"># Edit .env — set passwords, API keys, tenant config</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('docker compose -f docker-compose.core.yml up -d')">copy</button>
+        </div>
+        <pre><span class="comment"># Launch Core tier (8GB RAM, ~15 containers)</span>
+<span class="keyword">docker compose</span> -f docker-compose.core.yml up -d
+
+<span class="comment"># Or launch Full tier (16GB RAM, ~25 containers)</span>
+<span class="keyword">docker compose</span> -f docker-compose.full.yml up -d</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -s http://localhost:8080/health | jq .')">copy</button>
+        </div>
+        <pre><span class="comment"># Verify the stack is healthy</span>
+<span class="keyword">curl</span> -s http://localhost:8080/health | <span class="keyword">jq</span> .
+
+<span class="comment"># Open the dashboard</span>
+<span class="comment"># → http://localhost:4200 (Angular UI)</span></pre>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: var(--space-2xl);">
+      <p style="color: var(--text-secondary); font-size: var(--text-sm);">
+        Need detailed setup? Read the <a href="pages/docs/index.html" style="color: var(--accent);">Integration Guide</a> →
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="section" style="background: var(--bg-secondary); position: relative; overflow: hidden;">
+  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%); pointer-events: none;"></div>
+  <div class="section-inner" style="text-align: center; position: relative; z-index: 1;">
+    <div class="section-label">// Get Started</div>
+    <h2 class="section-title">Deploy your SOC.</h2>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Four AI agents. A complete security stack. Open source. Deploy in minutes.</p>
+
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);">
+      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">
+        View on GitHub <span class="arrow">→</span>
+      </a>
+      <a href="pages/docs/index.html" class="btn btn-secondary">
+        Read the Docs
+      </a>
+      <a href="../../index.html#products" class="btn btn-secondary">
+        Other Products
+      </a>
+    </div>
+
+    <div style="margin-top: var(--space-3xl); display: flex; gap: var(--space-2xl); justify-content: center; flex-wrap: wrap;">
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">Docker</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Compose deployment</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">TLS</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Everywhere · Encryption at rest</div>
+      </div>
+      <div style="text-align: center;">
+        <div style="font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 700; color: var(--accent);">GDPR</div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: var(--space-xs);">Compliant by design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="../services/index.html#redesign">System Redesign</a></li>
+        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="../services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+<div class="footer-bottom">
+    <span>© 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

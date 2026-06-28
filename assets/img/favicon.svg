@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Sentinel mark favicon -->
+  <rect width="32" height="32" rx="4" fill="#080B12"/>
+  <!-- Center stroke -->
+  <polygon points="16,4 13,18 19,18" fill="white"/>
+  <!-- Left stroke -->
+  <polygon points="16,7 8,18 11,18 17,9" fill="#D0D8E4"/>
+  <!-- Right stroke -->
+  <polygon points="16,7 24,18 21,18 15,9" fill="#B8C4D2"/>
+  <!-- Crossbar -->
+  <rect x="8" y="16.5" width="16" height="1" rx="0.5" fill="#B8C4D2" opacity="0.7"/>
+  <!-- Ember dot -->
+  <circle cx="16" cy="21" r="1.5" fill="#F5BE50"/>
+</svg>

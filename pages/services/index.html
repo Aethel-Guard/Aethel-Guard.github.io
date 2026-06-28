@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services — Aethel Guard</title>
+  <meta name="description" content="Data sovereignty architecture, security system redesign, incident response, and security audits — from the team that builds security products from scratch.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .service-hero { padding: 160px 0 80px; text-align: center; position: relative; }
+    .service-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-lg); }
+    .service-hero h1 .accent { color: var(--accent); }
+    .service-hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto var(--space-xl); line-height: 1.6; }
+
+    .service-section { padding: var(--space-3xl) 0; }
+    .service-section:nth-child(even) { background: var(--bg-secondary); }
+    .service-section-inner { max-width: 960px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+    .service-header { margin-bottom: var(--space-2xl); }
+    .service-number { font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
+    .service-header h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: var(--space-md); }
+    .service-header p { font-size: 1.125rem; color: var(--text-secondary); line-height: 1.7; max-width: 680px; }
+
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    @media (max-width: 768px) { .service-grid { grid-template-columns: 1fr; } }
+
+    .service-card {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-xl); transition: all var(--transition-slow);
+    }
+    .service-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(245, 166, 35, 0.08); }
+    .service-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: var(--space-sm); }
+    .service-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md); }
+    .service-card ul { list-style: none; padding: 0; }
+    .service-card li { font-size: 0.85rem; color: var(--text-secondary); padding: var(--space-xs) 0; padding-left: 1.25rem; position: relative; }
+    .service-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+
+    .pricing-note {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-xl) var(--space-2xl); margin: var(--space-2xl) 0; text-align: center;
+    }
+    .pricing-note h3 { font-size: 1.25rem; margin-bottom: var(--space-md); }
+    .pricing-note p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .pricing-note .btn { margin-top: var(--space-lg); }
+
+    .engagement-flow { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; justify-content: center; margin: var(--space-2xl) 0; }
+    .engagement-step {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-lg); text-align: center; min-width: 140px; flex: 1; max-width: 200px;
+    }
+    .engagement-step .step-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+    .engagement-step h4 { font-size: 0.95rem; margin: var(--space-sm) 0; }
+    .engagement-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .engagement-arrow { color: var(--text-muted); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="index.html" style="color: var(--accent);">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="service-hero">
+  <div class="container">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="section-label reveal">// Services</div>
+    <h1 class="reveal">Security <span class="accent">expertise</span>,<br>not just products.</h1>
+    <p class="reveal">We build security products from scratch — and we bring that same depth to consulting engagements. Data sovereignty architecture, system redesigns, incident response, and security audits.</p>
+  </div>
+</section>
+
+<!-- ENGAGEMENT FLOW -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">How we work</div>
+      <h2>Every engagement follows a <span class="accent">disciplined process</span></h2>
+    </div>
+    <div class="engagement-flow reveal">
+      <div class="engagement-step"><div class="step-num">01</div><h4>Scoping</h4><p>1-2 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">02</div><h4>Assessment</h4><p>2-4 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">03</div><h4>Architecture</h4><p>2-6 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">04</div><h4>Implementation</h4><p>Ongoing</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">05</div><h4>Review</h4><p>30/60/90 day</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA SOVEREIGNTY -->
+<section class="service-section" id="data-sovereignty">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="service-number">SERVICE 01</div>
+      <h2>Data Sovereignty <span class="accent">Architecture</span></h2>
+      <p>Design systems where your data stays yours — by architecture, not by policy. We map every data flow, identify sovereignty risks, and architect solutions that make compliance a structural guarantee.</p>
+    </div>
+    <div class="service-grid reveal">
+      <div class="service-card">
+        <h3>🗺️ Data Residency Mapping</h3>
+        <p>Full analysis of where your data lives, moves, and rests — across clouds, regions, and third parties.</p>
+        <ul><li>Cloud region inventory and data flow mapping</li><li>Third-party data processor audit</li><li>Cross-border transfer risk assessment</li><li>Data classification and sensitivity tagging</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🏛️ Compliance-by-Design</h3>
+        <p>Architecture that makes GDPR, DORA, NIS2, and data localisation requirements structural — not procedural.</p>
+        <ul><li>GDPR Article 25 data protection by design</li><li>DORA ICT risk management framework</li><li>NIS2 security measures and reporting</li><li>Sector-specific compliance (health, finance, energy)</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🔐 Encryption Architecture</h3>
+        <p>Key management, encryption at rest and in transit, and HSM integration — designed so that even we can't read your data.</p>
+        <ul><li>End-to-end encryption architecture</li><li>HSM and key management design</li><li>Zero-knowledge proof integration</li><li>Homomorphic encryption assessment</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🤝 Supplier Security Assessment</h3>
+        <p>Evaluate every vendor and processor in your supply chain for data sovereignty risks — before they become incidents.</p>
+        <ul><li>Vendor data handling questionnaire and audit</li><li>Sub-processor chain analysis</li><li>Contractual data protection review</li><li>Ongoing monitoring framework design</li></ul>
+      </div>
+    </div>
+    <div class="pricing-note reveal">
+      <h3>From €5,000 for a data sovereignty assessment</h3>
+      <p>Full architecture engagements typically run 4-8 weeks. Every engagement includes a written report with prioritised recommendations and architecture diagrams.</p>
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>Start a conversation</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM REDESIGN -->
+<section class="service-section" id="redesign">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="service-number">SERVICE 02</div>
+      <h2>Security System <span class="accent">Redesign</span></h2>
+      <p>Whether you're migrating from a legacy SIEM, implementing zero trust, or hardening infrastructure — we design the path and walk it with you. Rip-and-replace or gradual migration: both are valid, and we'll tell you which fits.</p>
+    </div>
+    <div class="service-grid reveal">
+      <div class="service-card">
+        <h3>🔄 SIEM Migration</h3>
+        <p>Move from Splunk, QRadar, or ArcSight to Wazuh, Elastic, or a custom stack — without losing visibility.</p>
+        <ul><li>Current SIEM rule inventory and mapping</li><li>Migration priority assessment (what moves first)</li><li>Detection parity testing framework</li><li>Parallel-run validation before cutover</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🛡️ Zero Trust Implementation</h3>
+        <p>From network perimeter to identity-first architecture — micro-segmentation, conditional access, and continuous verification.</p>
+        <ul><li>Identity provider integration and MFA rollout</li><li>Network micro-segmentation design</li><li>Conditional access policy framework</li><li>Continuous verification and monitoring</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🏗️ Legacy Hardening</h3>
+        <p>Can't replace it? Harden it. We specialise in making legacy systems defensible without a full rewrite.</p>
+        <ul><li>Attack surface reduction and hardening baselines</li><li>Patch management and compensating controls</li><li>Network isolation and monitoring insertion points</li><li>Incident detection for legacy protocols</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>📊 Compliance Gap Remediation</h3>
+        <p>Close the gaps between your current state and where you need to be — with architecture, not just documentation.</p>
+        <ul><li>Gap analysis against target framework</li><li>Technical remediation roadmap</li><li>Evidence collection automation</li><li>Continuous compliance monitoring design</li></ul>
+      </div>
+    </div>
+    <div class="pricing-note reveal">
+      <h3>From €8,000 for a system redesign engagement</h3>
+      <p>Full redesign projects typically run 6-12 weeks. Every engagement includes architecture diagrams, migration runbooks, and a 90-day review.</p>
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>Start a conversation</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- INCIDENT RESPONSE -->
+<section class="service-section" id="incident-response">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="service-number">SERVICE 03</div>
+      <h2>Incident Response <span class="accent">& Forensics</span></h2>
+      <p>When something's already happened. 4-hour SLA for initial response. We contain, investigate, and remediate — then harden so it doesn't happen again.</p>
+    </div>
+    <div class="service-grid reveal">
+      <div class="service-card" style="border-color: rgba(239, 68, 68, 0.3);">
+        <h3>🚨 Rapid Containment</h3>
+        <p>First 4 hours: isolate, contain, stop the bleeding. We deploy alongside your team or independently.</p>
+        <ul><li>Network isolation and lateral movement blocking</li><li>Credential rotation and access revocation</li><li>Indicator of compromise (IoC) identification</li><li>Stakeholder communication templates</li></ul>
+      </div>
+      <div class="service-card" style="border-color: rgba(239, 68, 68, 0.3);">
+        <h3>🔍 Digital Forensics</h3>
+        <p>Find root cause, preserve evidence, build the timeline. Our Delta forensics agent assists with AI-accelerated analysis.</p>
+        <ul><li>Evidence preservation and chain of custody</li><li>Memory and disk forensics</li><li>Log analysis and timeline reconstruction</li><li>AI-assisted anomaly detection (Delta agent)</li></ul>
+      </div>
+      <div class="service-card" style="border-color: rgba(239, 68, 68, 0.3);">
+        <h3>🛠️ Remediation</h3>
+        <p>Fix what was broken. Patch entry points, close gaps, and verify containment is complete.</p>
+        <ul><li>Root cause remediation plan</li><li>Vulnerability patching and hardening</li><li>Monitoring rule deployment</li><li>Verification testing</li></ul>
+      </div>
+      <div class="service-card" style="border-color: rgba(239, 68, 68, 0.3);">
+        <h3>📋 Post-Incident Review</h3>
+        <p>No blame, no theatre — just honest assessment and concrete hardening recommendations.</p>
+        <ul><li>Blameless post-incident review facilitation</li><li>Timeline reconstruction report</li><li>Prioritised hardening recommendations</li><li>Monitoring and detection improvements</li></ul>
+      </div>
+    </div>
+    <div class="pricing-note reveal" style="border-color: rgba(239, 68, 68, 0.2);">
+      <h3 style="color: #ef4444;">4-hour SLA · Retainer or per-incident</h3>
+      <p>Incident response retainers start at €2,500/month. Per-incident engagements start at €15,000. We'd rather you call us before something happens.</p>
+      <a href="mailto:ir@aethelguard.com" class="btn btn-primary" style="background: #ef4444; border-color: #ef4444;"><span>Emergency: ir@aethelguard.com</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY AUDIT -->
+<section class="service-section" id="audit">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="service-number">SERVICE 04</div>
+      <h2>Security Architecture <span class="accent">Audit</span></h2>
+      <p>Independent review of your security posture — not a checkbox exercise. We assess infrastructure, applications, data, identity, and supply chain. Then we give you a prioritised roadmap that an engineer can actually implement.</p>
+    </div>
+    <div class="service-grid reveal">
+      <div class="service-card">
+        <h3>🔍 Full-Stack Assessment</h3>
+        <p>Infrastructure, application, data, identity — everything, assessed by people who build security products.</p>
+        <ul><li>Infrastructure and cloud configuration review</li><li>Application security assessment (SAST/DAST)</li><li>Data flow and storage analysis</li><li>Identity and access management review</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>⚔️ Penetration Testing</h3>
+        <p>Not a scan — a manual, creative assessment by people who understand both attack and defense.</p>
+        <ul><li>External and internal penetration testing</li><li>Web application and API testing</li><li>Red team engagement simulation</li><li>Physical security assessment (where applicable)</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>🔗 Supply Chain Risk</h3>
+        <p>Your security is only as strong as your weakest vendor. We evaluate your entire supply chain.</p>
+        <ul><li>Third-party vendor security assessment</li><li>Software bill of materials (SBOM) analysis</li><li>Open source dependency risk evaluation</li><li>Contractual security requirement review</li></ul>
+      </div>
+      <div class="service-card">
+        <h3>📊 Executive Dashboard</h3>
+        <p>Prioritised, actionable remediation plan — not a 200-page PDF that gathers dust.</p>
+        <ul><li>Risk-scored finding catalog with CVSS</li><li>Prioritised remediation roadmap</li><li>Executive summary with business impact</li><li>Quarterly reassessment programme</li></ul>
+      </div>
+    </div>
+    <div class="pricing-note reveal">
+      <h3>From €10,000 for a full-stack security audit</h3>
+      <p>Standard audit: 3-4 weeks. Full red team engagement: 6-8 weeks. Every audit includes a written report, executive summary, and a walkthrough with your engineering team.</p>
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>Start a conversation</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="service-section" style="background: var(--bg-primary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Why us</div>
+      <h2>We build <span class="accent">security products</span>.<br>Not slide decks.</h2>
+      <p style="max-width: 680px;">Every service engagement is backed by people who design, build, and operate security infrastructure daily. We don't recommend what we haven't tested on our own stack.</p>
+    </div>
+    <div class="service-grid reveal">
+      <div class="service-card"><h3>🔥 We eat our own cooking</h3><p>Vigilar, Vigilar Guard, AI SOC Team — these are our products running our architecture. We recommend what we've deployed ourselves.</p></div>
+      <div class="service-card"><h3>🤖 AI-assisted, not AI-dependent</h3><p>Our Delta forensics agent and Ember triage assist every engagement. But every recommendation is validated by a human security engineer.</p></div>
+      <div class="service-card"><h3>📋 Deliverables, not debriefs</h3><p>You get architecture diagrams, migration runbooks, Sigma detection rules, and Terraform modules — not just a PDF report.</p></div>
+      <div class="service-card"><h3>🔒 No vendor lock-in</h3><p>We recommend open-source and open-standard solutions first. Everything we design, you own and can maintain without us.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="section-label">Get started</div>
+    <h2>Ready to talk <span class="accent">security</span>?</h2>
+    <p>Tell us about your challenge. We'll respond within 24 hours with an initial assessment — no charge, no commitment.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-xl);">
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>services@aethelguard.com</span></a>
+      <a href="../../index.html#products" class="btn btn-secondary">View Products →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="#redesign">System Redesign</a></li>
+        <li><a href="#incident-response">Incident Response</a></li>
+        <li><a href="#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../ember-core/index.html">Ember Core</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
