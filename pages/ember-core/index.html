@@ -3,600 +3,298 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ember Core — The brain behind every shield | Aethel Guard</title>
-  <meta name="description" content="Ember Core is the AI model engine powering every Aethel Guard product. Ember Prime v8c, Selene security guard, and Ember Edge for on-device inference.">
+  <title>Ember Core — AI Security Intelligence | Aethel Guard</title>
+  <meta name="description" content="Ember Core is the AI engine powering every Aethel Guard product — intelligent triage, threat analysis, and on-device inference with built-in security guard rails.">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .hero-sm { padding: var(--space-3xl) 0 var(--space-2xl); text-align: center; }
+    .hero-sm h1 { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: var(--space-md); }
+    .hero-sm .subtitle { color: var(--text-secondary); font-size: 1.15rem; max-width: 640px; margin: 0 auto var(--space-2xl); }
+
+    .cap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-lg); margin: var(--space-2xl) 0; }
+    .cap-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+    }
+    .cap-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .cap-card .cap-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+    .cap-card h3 { font-size: 1.1rem; margin-bottom: var(--space-xs); }
+    .cap-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+
+    .guard-section {
+      background: linear-gradient(135deg, rgba(245,166,35,0.05) 0%, rgba(239,68,68,0.05) 100%);
+      border: 1px solid rgba(245,166,35,0.2);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      margin: var(--space-3xl) 0;
+    }
+    .guard-section h2 { margin-bottom: var(--space-md); }
+    .guard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-md); margin-top: var(--space-lg); }
+    .guard-item { padding: var(--space-lg); background: var(--bg-card); border-radius: var(--radius-lg); }
+    .guard-item h4 { color: var(--accent); margin-bottom: var(--space-xs); font-size: 0.95rem; }
+    .guard-item p { color: var(--text-secondary); font-size: 0.85rem; }
+
+    .api-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      margin: var(--space-3xl) 0;
+    }
+    .api-section h2 { margin-bottom: var(--space-md); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-2xl) 0;
+    }
+    .product-link {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      text-decoration: none;
+      color: inherit;
+      transition: all var(--transition-slow);
+    }
+    .product-link:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .product-link h3 { margin-bottom: var(--space-xs); }
+    .product-link p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      .cap-grid, .guard-grid, .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ═══ NAVIGATION ═══ -->
+<!-- NAVIGATION -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand">
-      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
-        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+    <a href="../../index.html" class="nav-logo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 8 L24 24 L24 56 C24 74 34 86 50 94 C66 86 76 74 76 56 L76 24 Z" fill="none" stroke="#F5A623" stroke-width="3"/>
+        <path d="M42 58 L38 46 L50 52 L62 46 L58 58" fill="none" stroke="#F5A623" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="50" cy="38" r="3.5" fill="#F5A623"/>
       </svg>
-      <div class="nav-brand-text">
-        <span class="nav-brand-name">Aethel Guard</span>
-        <span class="nav-brand-tagline">Security Intelligence</span>
-      </div>
+      <span>Aethel Guard</span>
     </a>
-    <ul class="nav-links"><li><a href="../../index.html">Home</a></li>
-      <li><a href="../services/index.html">Services</a></li>
-      <li><a href="../../index.html#products">Products</a></li>
-      <li><a href="../../index.html#journey">How It Works</a></li>
-      <li><a href="../docs/index.html">Docs</a></li>
-      <li><a href="https://github.com/Aethel-Guard" class="nav-cta" target="_blank">GitHub</a></li>
-    </ul>
-    <button class="nav-mobile-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../services/index.html">Services</a>
+      <a href="../../index.html#products" class="nav-dropdown-trigger">Products ▾</a>
+      <a href="../../index.html#how-it-works">How It Works</a>
+      <a href="../integrations/index.html">Integrations</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="https://github.com/Aethel-Guard" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <button class="mobile-toggle" aria-label="Menu">☰</button>
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-content animate-in">
-    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
-    <div class="hero-badge">
-      <span class="pulse"></span>
-      Ember Core · Active
+<!-- HERO -->
+<section class="hero-sm">
+  <div class="section-inner">
+    <div class="section-label">// Ember Core</div>
+    <h1>AI security intelligence <span class="accent">at the core</span></h1>
+    <p class="subtitle">Ember Core is the AI engine powering every Aethel Guard product — intelligent triage, threat analysis, and on-device inference. Built-in security guard rails. Zero external dependencies.</p>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Capabilities</div>
+      <h2 class="section-title">What Ember Core <span class="accent">does</span></h2>
     </div>
-    <h1>
-      The brain behind<br>
-      every <span class="accent">shield.</span>
-    </h1>
-    <p class="hero-subtitle">
-      Ember Core is our AI model engine — the inference layer powering every Aethel Guard product. A custom 12B parameter skeleton with LoRA merges, a hardcoded security guard, and on-device edge inference.
-    </p>
-    <div class="hero-actions">
-      <a href="#models" class="btn btn-primary">Explore Models <span class="arrow">→</span></a>
-      <a href="#security" class="btn btn-secondary">Security Architecture</a>
+
+    <div class="cap-grid">
+      <div class="cap-card reveal">
+        <div class="cap-icon">🎯</div>
+        <h3>AI-Powered Triage</h3>
+        <p>Analyses security events in real-time, classifies severity, and routes incidents to the right response — reducing noise by 90%+ for SOC teams.</p>
+      </div>
+      <div class="cap-card reveal delay-1">
+        <div class="cap-icon">🧠</div>
+        <h3>Threat Intelligence</h3>
+        <p>Enriches every detection with threat intel from OpenCTI, MISP, and AbuseIPDB. Maps to MITRE ATT&CK techniques automatically.</p>
+      </div>
+      <div class="cap-card reveal delay-2">
+        <div class="cap-icon">📱</div>
+        <h3>On-Device Inference</h3>
+        <p>Runs locally on user devices. No cloud dependency, no data exfiltration. Your threat analysis never leaves your hardware.</p>
+      </div>
+      <div class="cap-card reveal delay-3">
+        <div class="cap-icon">🔒</div>
+        <h3>Security Guard Rails</h3>
+        <p>Architecturally isolated security layer that intercepts every request and response. Cannot be bypassed, disabled, or jailbroken.</p>
+      </div>
+      <div class="cap-card reveal delay-4">
+        <div class="cap-icon">⚡</div>
+        <h3>Product-Specific Behaviour</h3>
+        <p>Each product gets a tailored inference profile — consumer security for Vigilar, detection rules for Guard, SOC workflows for AI SOC Team.</p>
+      </div>
+      <div class="cap-card reveal delay-5">
+        <div class="cap-icon">🔗</div>
+        <h3>REST API</h3>
+        <p>Full OpenAPI 3.1 spec. Submit events, query analysis results, integrate with any system. OAuth2 authentication with scoped tokens.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ MODEL LINEUP ═══ -->
-<section class="section" id="models">
+<!-- SECURITY GUARD RAILS -->
+<section class="section">
   <div class="section-inner">
-    <div class="section-label">// Model Lineup</div>
-    <h2 class="section-title">Three models. One engine.</h2>
-    <p class="section-subtitle">Each model serves a distinct role in the Ember Core architecture — from the full production model to the on-device edge variant.</p>
+    <div class="guard-section reveal">
+      <div class="section-label">// Security</div>
+      <h2>Guard rails that <span class="accent">cannot be compromised</span></h2>
+      <p style="color: var(--text-secondary); max-width: 600px;">Ember Core's security layer is architecturally isolated from the inference engine. It cannot be bypassed, disabled, or jailbroken — by design.</p>
+
+      <div class="guard-grid">
+        <div class="guard-item reveal">
+          <h4>🛡️ Input Guard</h4>
+          <p>Intercepts every request before inference. Blocks jailbreaks, prompt injection, and adversarial inputs before they reach the model.</p>
+        </div>
+        <div class="guard-item reveal delay-1">
+          <h4>🔍 Output Guard</h4>
+          <p>Filters every response after inference. Prevents data exfiltration, PII leakage, and harmful outputs from reaching any product or user.</p>
+        </div>
+        <div class="guard-item reveal delay-2">
+          <h4>🧊 Process Isolation</h4>
+          <p>Security layer runs in a separate process. Compromising the inference engine does not compromise the guard rails.</p>
+        </div>
+        <div class="guard-item reveal delay-3">
+          <h4>📊 Self-Monitoring</h4>
+          <p>Continuously monitors for drift toward compliance with adversarial inputs. Aborts and alerts if anomalous behaviour detected.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT POWERS EACH PRODUCT -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Products</div>
+      <h2 class="section-title">One engine. <span class="accent">Four products.</span></h2>
+      <p class="section-subtitle">Ember Core adapts its behaviour for each product — consumer security, enterprise detection, SOC orchestration, and incident response.</p>
+    </div>
 
     <div class="products-grid">
-
-      <!-- Ember Prime v8c -->
-      <div class="product-card animate-in animate-delay-1">
-        <div class="product-icon" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B;">🔥</div>
-        <span class="product-status status-active">Production</span>
-        <h3>Ember Prime v8c</h3>
-        <p class="tagline">12B parameter skeleton + LoRA merges. The primary inference model.</p>
-        <ul class="product-features">
-          <li><span class="check">✓</span> 12B skeleton — custom architecture (not Qwen, not Gemma)</li>
-          <li><span class="check">✓</span> SFT: 9.8K training pairs</li>
-          <li><span class="check">✓</span> DPO: 15K preference pairs</li>
-          <li><span class="check">✓</span> Security methodology + anti-jailbreak training</li>
-          <li><span class="check">✓</span> LoRA merges: Security + Edge + Governance + Fingerprint</li>
-          <li><span class="check">✓</span> 24GB safetensors (merged)</li>
-        </ul>
-      </div>
-
-      <!-- Selene Guard -->
-      <div class="product-card animate-in animate-delay-2">
-        <div class="product-icon" style="background: rgba(239, 68, 68, 0.15); color: #EF4444;">🛡️</div>
-        <span class="product-status status-active">Active</span>
-        <h3>Selene Security Guard</h3>
-        <p class="tagline">Hardcoded security layer. P1-P7 enforced at inference time.</p>
-        <ul class="product-features">
-          <li><span class="check">✓</span> P1-P7 guards hardcoded — no prompt override possible</li>
-          <li><span class="check">✓</span> Input guard: intercepts jailbreaks BEFORE processing</li>
-          <li><span class="check">✓</span> Output guard: blocks sensitive outputs AFTER generation</li>
-          <li><span class="check">✓</span> Architectural isolation from Companion model</li>
-          <li><span class="check">✓</span> 10× adversarial training oversample (all 10 jailbreak categories)</li>
-          <li><span class="check">✓</span> Self-monitoring: detects drift toward compliance</li>
-        </ul>
-      </div>
-
-      <!-- Ember Edge -->
-      <div class="product-card animate-in animate-delay-3">
-        <div class="product-icon" style="background: rgba(59, 130, 246, 0.15); color: #3B82F6;">📱</div>
-        <span class="product-status status-active">Active</span>
-        <h3>Ember Edge</h3>
-        <p class="tagline">On-device inference. Runs directly on the phone.</p>
-        <ul class="product-features">
-          <li><span class="check">✓</span> 3.1B parameters, Q4_K_M quantization</li>
-          <li><span class="check">✓</span> Runs on mobile (iOS / Android)</li>
-          <li><span class="check">✓</span> Zero cloud dependency for inference</li>
-          <li><span class="check">✓</span> Edge LoRA merge for on-device optimization</li>
-          <li><span class="check">✓</span> Powers Vigilar's on-device AI</li>
-        </ul>
-      </div>
-
+      <a href="../vigilar/index.html" class="product-link reveal">
+        <h3>🛡️ Vigilar</h3>
+        <p>On-device threat detection for consumers. Ember runs locally — credential breach scanning, phishing detection, anti-tracking. Zero cloud dependency.</p>
+      </a>
+      <a href="../vigilar-guard/index.html" class="product-link reveal delay-1">
+        <h3>⚡ Vigilar Guard</h3>
+        <p>AI triage for SMBs. Ember analyses Sigma rule hits, enriches with threat intel, assigns severity, and generates response recommendations.</p>
+      </a>
+      <a href="../ai-soc-team/index.html" class="product-link reveal delay-2">
+        <h3>🏢 AI SOC Team</h3>
+        <p>Full SOC-as-a-Service. Four AI agents coordinate containment, forensics, and remediation across TheHive, Shuffle, and MISP.</p>
+      </a>
+      <a href="../services/index.html" class="product-link reveal delay-3">
+        <h3>🏛️ Security Services</h3>
+        <p>Ember powers our consulting services — automated vulnerability assessment, compliance gap analysis, and incident forensics.</p>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ═══ TRAINING PIPELINE ═══ -->
-<section class="section" style="background: var(--bg-secondary);">
+<!-- API -->
+<section class="section">
   <div class="section-inner">
-    <div class="section-label">// Training Pipeline</div>
-    <h2 class="section-title">How the model learns</h2>
-    <p class="section-subtitle">A multi-stage pipeline: SFT foundation, DPO alignment, and distillation from seven specialized teacher models.</p>
+    <div class="api-section reveal">
+      <div class="section-label">// API</div>
+      <h2>REST API — integrate Ember Core into anything</h2>
+      <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">Full OpenAPI 3.1 specification. OAuth2 with scoped tokens. Submit events, query analysis, stream results.</p>
 
-    <div class="architecture-diagram">
-      <div class="arch-flow">
-
-        <!-- Stage 1: Teachers -->
-        <div class="arch-row">
-          <div class="arch-block">
-            <h4>7 Teacher Models</h4>
-            <p>DeepSeek-R1 · Mistral-Sec<br>Foundation-Sec · Qwen-Math<br>OLMo-3 · Qwen3 · RNJ-1</p>
-          </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md);">
+        <div style="background: var(--bg-primary); padding: var(--space-lg); border-radius: var(--radius-lg); text-align: center;">
+          <code style="color: var(--accent); font-size: 1.1rem;">POST /v1/events</code>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: var(--space-xs);">Submit security events for triage</p>
         </div>
-
-        <div class="arch-arrow">↓ Distillation</div>
-
-        <!-- Stage 2: SFT -->
-        <div class="arch-row">
-          <div class="arch-block primary">
-            <h4>SFT — Supervised Fine-Tuning</h4>
-            <p>9.8K training pairs<br>Security methodology + anti-jailbreak</p>
-          </div>
+        <div style="background: var(--bg-primary); padding: var(--space-lg); border-radius: var(--radius-lg); text-align: center;">
+          <code style="color: var(--accent); font-size: 1.1rem;">GET /v1/incidents</code>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: var(--space-xs);">Query triaged incidents</p>
         </div>
-
-        <div class="arch-arrow">↓ Checkpoint ckpt8500</div>
-
-        <!-- Stage 3: DPO -->
-        <div class="arch-row">
-          <div class="arch-block primary">
-            <h4>DPO — Direct Preference Optimization</h4>
-            <p>15K preference pairs<br>Helpfulness + harmlessness alignment</p>
-          </div>
+        <div style="background: var(--bg-primary); padding: var(--space-lg); border-radius: var(--radius-lg); text-align: center;">
+          <code style="color: var(--accent); font-size: 1.1rem;">WS /v1/stream</code>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: var(--space-xs);">Real-time event stream</p>
         </div>
-
-        <div class="arch-arrow">↓ Checkpoint ckpt18000</div>
-
-        <!-- Stage 4: LoRA Merges -->
-        <div class="arch-row">
-          <div class="arch-block" style="border-color: var(--accent); background: var(--accent-glow);">
-            <h4>LoRA Merges</h4>
-            <p>Security LoRA + Edge LoRA<br>Governance LoRA + Fingerprint</p>
-          </div>
+        <div style="background: var(--bg-primary); padding: var(--space-lg); border-radius: var(--radius-lg); text-align: center;">
+          <code style="color: var(--accent); font-size: 1.1rem;">GET /v1/health</code>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: var(--space-xs);">Service health check</p>
         </div>
-
-        <div class="arch-arrow">↓ Merge</div>
-
-        <!-- Stage 5: Output -->
-        <div class="arch-row">
-          <div class="arch-block primary">
-            <h4>Ember Prime v8c</h4>
-            <p>24GB safetensors (merged)<br>Production model</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Training Stats -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-top: var(--space-2xl);">
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">9.8K</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">SFT Training Pairs</div>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">15K</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">DPO Preference Pairs</div>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">7</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">Teacher Models</div>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">12B</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">Skeleton Parameters</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SECURITY ARCHITECTURE ═══ -->
-<section class="section" id="security">
-  <div class="section-inner">
-    <div class="section-label">// Security Architecture</div>
-    <h2 class="section-title">Selene — the guard that cannot be bypassed</h2>
-    <p class="section-subtitle">Selene is architecturally isolated from the Companion model. Compromising the Companion does not compromise Selene. Guards are hardcoded at inference time — no prompt override is possible.</p>
-
-    <div class="architecture-diagram">
-      <div class="arch-flow">
-
-        <!-- Input Flow -->
-        <div class="arch-row">
-          <div class="arch-block">
-            <h4>User Input</h4>
-            <p>Prompt / query</p>
-          </div>
-        </div>
-
-        <div class="arch-arrow">↓</div>
-
-        <!-- Selene Input Guard -->
-        <div class="arch-block" style="border-color: var(--danger); background: rgba(239, 68, 68, 0.08);">
-          <h4 style="color: var(--danger);">Selene Input Guard</h4>
-          <p>Intercepts jailbreak attempts<br>BEFORE Companion processes</p>
-        </div>
-
-        <div class="arch-arrow">↓ Passed</div>
-
-        <!-- Companion -->
-        <div class="arch-block primary">
-          <h4>Companion (Ember Prime)</h4>
-          <p>Generates response<br>Subject to P1-P7 constraints</p>
-        </div>
-
-        <div class="arch-arrow">↓</div>
-
-        <!-- Selene Output Guard -->
-        <div class="arch-block" style="border-color: var(--danger); background: rgba(239, 68, 68, 0.08);">
-          <h4 style="color: var(--danger);">Selene Output Guard</h4>
-          <p>Blocks security-relevant outputs<br>AFTER generation</p>
-        </div>
-
-        <div class="arch-arrow">↓ Approved</div>
-
-        <!-- Output -->
-        <div class="arch-block">
-          <h4>Response</h4>
-          <p>Delivered to user</p>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- P1-P7 Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg); margin-top: var(--space-2xl);">
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">P1 — P7 Hardcoded</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Seven security principles enforced at inference time. No admin, developer, or debug backdoor commands exist. No prompt can override them.</p>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">Architectural Isolation</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Selene runs in a separate process. Compromising the Companion model does not compromise Selene. The guard has its own execution context.</p>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">Adversarial Training</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">10× oversample against all 10 jailbreak categories. Selene detects drift toward compliance with jailbreaks and aborts immediately.</p>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">Self-Monitoring</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Selene continuously monitors its own behavior. If it detects drift toward fulfilling a jailbreak request, it aborts the operation automatically.</p>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">S1-S10 at Inference</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Ten safety constraints hardcoded at inference time. Not part of the prompt — baked into the inference pipeline itself. No prompt override possible.</p>
-      </div>
-
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl);">
-        <h4 style="font-family: var(--font-mono); color: var(--accent); font-size: var(--text-sm); margin-bottom: var(--space-sm);">Applies to All Models</h4>
-        <p style="color: var(--text-secondary); font-size: var(--text-sm);">Selene guards apply across the entire model family: Selene itself, Companion (Ember Prime), and Ember Edge. No model runs unguarded.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══ INFERENCE SERVER ═══ -->
-<section class="section" style="background: var(--bg-secondary);">
-  <div class="section-inner">
-    <div class="section-label">// Inference Server</div>
-    <h2 class="section-title">FastAPI inference on port 8081</h2>
-    <p class="section-subtitle">Every Aethel Guard product routes inference requests through the Ember Core FastAPI server. Product-specific system prompts ensure correct behavior per product.</p>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-top: var(--space-2xl);">
-
-      <!-- Server Details -->
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-2xl);">
-        <h3 style="font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-lg);">Server Architecture</h3>
-        <ul class="product-features">
-          <li><span class="check">✓</span> FastAPI async inference server</li>
-          <li><span class="check">✓</span> Port 8081 — dedicated to Ember Core</li>
-          <li><span class="check">✓</span> Selene guards run on every request</li>
-          <li><span class="check">✓</span> Product-specific system prompts (Vigilar vs Guard)</li>
-          <li><span class="check">✓</span> No Ollama dependency — direct ember-server</li>
-          <li><span class="check">✓</span> GGUF deployments: Q4_K_M, Q5_K_M, Q8_0</li>
-        </ul>
-      </div>
-
-      <!-- Product Routing -->
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-xl); padding: var(--space-2xl);">
-        <h3 style="font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-lg);">Product Routing</h3>
-        <div style="overflow-x: auto;">
-          <table class="integration-table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Model</th>
-                <th>Prompt</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="color: var(--text-primary);">Vigilar</td>
-                <td>Ember Edge</td>
-                <td>Consumer security</td>
-              </tr>
-              <tr>
-                <td style="color: var(--text-primary);">Vigilar Guard</td>
-                <td>Ember Prime v8c</td>
-                <td>Detection / triage</td>
-              </tr>
-              <tr>
-                <td style="color: var(--text-primary);">AI SOC Team</td>
-                <td>Ember Prime v8c</td>
-                <td>SOC analysis</td>
-              </tr>
-              <tr>
-                <td style="color: var(--text-primary);">Internal tools</td>
-                <td>Ember Prime v8c</td>
-                <td>Generic</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Code Example -->
-    <div class="code-block" style="margin-top: var(--space-2xl);">
-      <div class="code-header">
-        <span class="lang">python</span>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('code-content').textContent)">copy</button>
-      </div>
-      <pre id="code-content"><span class="comment"># Ember Core inference server — product routing</span>
-<span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI
-<span class="keyword">from</span> selene <span class="keyword">import</span> InputGuard, OutputGuard
-
-app = FastAPI(title=<span class="string">"Ember Core"</span>)
-
-PRODUCT_PROMPTS = {
-    <span class="string">"vigilar"</span>: <span class="string">"You are a consumer security companion..."</span>,
-    <span class="string">"vigilar-guard"</span>: <span class="string">"You are a detection and triage engine..."</span>,
-    <span class="string">"ai-soc"</span>: <span class="string">"You are a SOC analyst..."</span>,
-}
-
-@app.post(<span class="string">"/v1/chat"</span>)
-async def chat(product: str, message: str):
-    <span class="comment"># Selene input guard — intercepts jailbreaks</span>
-    InputGuard.check(message)
-
-    prompt = PRODUCT_PROMPTS.get(product, <span class="string">""</span>)
-    response = ember_prime.generate(prompt + message)
-
-    <span class="comment"># Selene output guard — blocks sensitive outputs</span>
-    OutputGuard.check(response)
-
-    <span class="keyword">return</span> {<span class="string">"response"</span>: response}</pre>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ MODEL ARTIFACTS ═══ -->
-<section class="section" id="artifacts">
-  <div class="section-inner">
-    <div class="section-label">// Model Artifacts</div>
-    <h2 class="section-title">What's stored on the NAS</h2>
-    <p class="section-subtitle">28 of 28 artifacts verified. All model files, adapters, and GGUF deployments are backed up on GreyGoose87 NAS with 3-2-1-1-0 compliance.</p>
-
-    <div style="overflow-x: auto; margin-top: var(--space-2xl);">
-      <table class="integration-table">
-        <thead>
-          <tr>
-            <th>Artifact</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="color: var(--text-primary);">Ember Prime v8c (merged)</td>
-            <td>Safetensors</td>
-            <td>24 GB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">SFT merged checkpoint</td>
-            <td>Safetensors (2 shards)</td>
-            <td>5.7 GB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">DPO-final merged</td>
-            <td>Safetensors (2 shards)</td>
-            <td>5.7 GB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">DPO v2 ckpt18000</td>
-            <td>LoRA adapter</td>
-            <td>228 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">SFT ckpt8500</td>
-            <td>LoRA adapter</td>
-            <td>114 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Deploy GGUF — Q4_K_M</td>
-            <td>GGUF (SFT + DPO)</td>
-            <td>~4.5 GB each</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Deploy GGUF — Q5_K_M</td>
-            <td>GGUF (SFT + DPO)</td>
-            <td>~5.2 GB each</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Deploy GGUF — Q8_0</td>
-            <td>GGUF (SFT + DPO)</td>
-            <td>~8.3 GB each</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">F16 GGUF — SFT</td>
-            <td>GGUF (full precision)</td>
-            <td>5.8 GB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">F16 GGUF — DPO-final</td>
-            <td>GGUF (full precision)</td>
-            <td>5.8 GB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Training data — sft.jsonl</td>
-            <td>JSONL</td>
-            <td>83 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Training data — dpo.jsonl</td>
-            <td>JSONL</td>
-            <td>75 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Training data — eval.jsonl</td>
-            <td>JSONL</td>
-            <td>8.8 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Training data — 12b_train.jsonl</td>
-            <td>JSONL</td>
-            <td>351 MB</td>
-            <td><span class="product-status status-active">✓ Verified</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Artifact Summary -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); margin-top: var(--space-2xl);">
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--success);">28/28</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">Artifacts Verified</div>
-      </div>
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">85 GB</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">Total Artifacts Size</div>
-      </div>
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--accent);">3-2-1-1-0</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">Backup Strategy</div>
-      </div>
-      <div style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center;">
-        <div style="font-family: var(--font-mono); font-size: var(--text-4xl); font-weight: 700; color: var(--success);">Q4→Q8</div>
-        <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: var(--space-xs);">GGUF Quantizations</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══ CTA ═══ -->
-<section class="section" style="background: var(--bg-secondary);">
-  <div class="section-inner" style="text-align: center;">
-    <div class="section-label">// Open Source</div>
-    <h2 class="section-title">Ember Core is on GitHub</h2>
-    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Security through transparency. The model engine, training pipeline, and inference server are all open source.</p>
-
-    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);">
-      <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">View on GitHub <span class="arrow">→</span></a>
-      <a href="../../index.html#architecture" class="btn btn-secondary">Back to Architecture</a>
-    </div>
+<!-- CTA -->
+<section class="cta-section" style="text-align: center; padding: var(--space-3xl) 0;">
+  <div class="section-inner reveal">
+    <h2>Interested in Ember Core?</h2>
+    <p style="color: var(--text-secondary); margin-bottom: var(--space-xl);">We're building in the open. Follow progress on GitHub or reach out for integration details.</p>
+    <a href="https://github.com/Aethel-Guard" target="_blank" rel="noopener" class="btn btn-primary">Follow on GitHub</a>
+    <a href="mailto:hello@aethelguard.com" class="btn btn-secondary" style="margin-left: var(--space-md);">Contact Us</a>
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
-
-
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="logo">
-        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
-          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
-        </svg>
-        Aethel Guard
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 8 L24 24 L24 56 C24 74 34 86 50 94 C66 86 76 74 76 56 L76 24 Z" fill="none" stroke="#F5A623" stroke-width="3"/>
+            <path d="M42 58 L38 46 L50 52 L62 46 L58 58" fill="none" stroke="#F5A623" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="50" cy="38" r="3.5" fill="#F5A623"/>
+          </svg>
+          <span>Aethel Guard</span>
+        </div>
+        <p class="footer-tagline">Security intelligence for everyone.</p>
       </div>
-      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="../services/index.html#data-sovereignty">Data Sovereignty</a>
+        <a href="../services/index.html#redesign">System Redesign</a>
+        <a href="../services/index.html#incident-response">Incident Response</a>
+        <a href="../services/index.html#audit">Security Audit</a>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="../vigilar/index.html">Vigilar</a>
+        <a href="../vigilar-guard/index.html">Vigilar Guard</a>
+        <a href="../ai-soc-team/index.html">AI SOC Team</a>
+        <a href="index.html">Ember Core</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="../integrations/index.html">Integrations</a>
+        <a href="../docs/index.html">Documentation</a>
+        <a href="https://github.com/Aethel-Guard" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="../privacy/index.html">Privacy Policy</a>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <ul>
-        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
-        <li><a href="../services/index.html#redesign">System Redesign</a></li>
-        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
-        <li><a href="../services/index.html#audit">Security Audit</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Aethel Guard. All rights reserved.</p>
     </div>
-    <div class="footer-col">
-      <h4>Products</h4>
-      <ul>
-        <li><a href="../vigilar/index.html">Vigilar</a></li>
-        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
-        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
-        <li><a href="../ember-core/index.html">Ember Core</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Resources</h4>
-      <ul>
-        <li><a href="../docs/index.html">Documentation</a></li>
-        <li><a href="../integrations/index.html">Integrations</a></li>
-        <li><a href="../privacy/index.html">Privacy Policy</a></li>
-        <li><a href="https://github.com/Aethel-Guard" target="_blank">GitHub</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="../privacy/index.html">Privacy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Security</a></li>
-        <li><a href="#">Responsible Disclosure</a></li>
-      </ul>
-    </div>
-  <div class="footer-bottom">
-    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
-    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
-  </div>
-<div class="footer-bottom">
-    <span>© 2026 Aethel Guard. All rights reserved.</span>
-    <span style="font-family: var(--font-mono); color: var(--text-muted);">🔥 Ember Core</span>
   </div>
 </footer>
 

@@ -573,11 +573,11 @@
     <div class="triage-chain">
       <div class="triage-step">
         <span class="triage-label">Primary:</span>
-        <span class="triage-model">qwen2.5:7b</span>
+        <span class="triage-model">Ember AI</span>
       </div>
       <span class="triage-arrow">→</span>
       <div class="triage-step">
-        <span class="triage-label">Fallback:</span>
+        <span class="triage-label">Backup:</span>
         <span class="triage-model">ember-prime</span>
       </div>
       <span class="triage-arrow">→</span>
@@ -616,7 +616,7 @@
           <div class="step-icon">🧠</div>
           <div class="step-num">03</div>
           <h4>Ember AI Triage</h4>
-          <p>qwen2.5:7b analyzes context, severity, and intent via Ollama</p>
+          <p>Ember AI analyses context, severity, and intent in real-time</p>
         </div>
         <div class="pipeline-connector">→</div>
         <div class="pipeline-step">
@@ -944,7 +944,7 @@ docker compose up -d</pre>
         <h5 style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent); margin-bottom: var(--space-sm);">Services</h5>
         <ul class="service-list">
           <li>Guard API <span class="port">:8082</span></li>
-          <li>Ollama (AI inference) <span class="port">:11434</span></li>
+          <li>Ember AI (inference engine)</li>
           <li>PostgreSQL (alerts) <span class="port">:5432</span></li>
           <li>ClickHouse (analytics) <span class="port">:8123</span></li>
           <li>Redis (cache/queue) <span class="port">:6379</span></li>
@@ -989,7 +989,7 @@ docker compose up -d</pre>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">AI Inference</span>
-          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Ollama · qwen2.5:7b · ember-prime</span>
+          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Ember AI · Detection · Triage</span>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Detection</span>
