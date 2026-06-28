@@ -457,67 +457,38 @@
       <p class="section-subtitle">Open standards. Open APIs. Open integrations.</p>
     </div>
 
-    <div style="overflow-x: auto;">
-      <table class="integration-table reveal">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Integrates With</th>
-            <th>Protocol</th>
-            <th>Direction</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="color: var(--text-primary);">Vigilar</td>
-            <td>Vigilar Guard</td>
-            <td><code>REST + WebSocket</code></td>
-            <td>Events → Guard, Incidents ← Guard</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Vigilar Guard</td>
-            <td>Wazuh</td>
-            <td><code>Webhook</code></td>
-            <td>Bidirectional</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Vigilar Guard</td>
-            <td>OpenCTI</td>
-            <td><code>STIX 2.1</code></td>
-            <td>Push enrichment</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Vigilar Guard</td>
-            <td>MISP</td>
-            <td><code>PyMISP</code></td>
-            <td>Push events</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Vigilar Guard</td>
-            <td>Splunk / QRadar / ArcSight</td>
-            <td><code>CEF / Syslog</code></td>
-            <td>Forward alerts</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">AI SOC Team</td>
-            <td>Vigilar Guard</td>
-            <td><code>Webhook</code></td>
-            <td>Receive detections</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">AI SOC Team</td>
-            <td>Full SOC Stack</td>
-            <td><code>Docker Compose</code></td>
-            <td>Complete platform</td>
-          </tr>
-          <tr>
-            <td style="color: var(--text-primary);">Ember Core</td>
-            <td>All products</td>
-            <td><code>FastAPI :8081</code></td>
-            <td>Inference for all</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="int-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-xl);">
+      <div class="int-card reveal" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
+        <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">🔐</div>
+        <strong style="color: var(--text-primary);">Password Managers</strong>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">1Password · Bitwarden · Proton Pass · KeePassXC</p>
+      </div>
+      <div class="int-card reveal delay-1" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
+        <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">📊</div>
+        <strong style="color: var(--text-primary);">SIEM & Logs</strong>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Wazuh · Splunk · QRadar · Elastic</p>
+      </div>
+      <div class="int-card reveal delay-2" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
+        <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">🌐</div>
+        <strong style="color: var(--text-primary);">Threat Intel</strong>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">OpenCTI · MISP · MITRE ATT&CK · AbuseIPDB</p>
+      </div>
+      <div class="int-card reveal delay-3" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
+        <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">🚨</div>
+        <strong style="color: var(--text-primary);">Incident Response</strong>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">TheHive · Shuffle · Slack · PagerDuty</p>
+      </div>
+      <div class="int-card reveal delay-4" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
+        <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">☁️</div>
+        <strong style="color: var(--text-primary);">Cloud & Infra</strong>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Docker · Kubernetes · AWS · Azure · GCP</p>
+      </div>
+    </div>
+
+    <p class="section-subtitle reveal" style="margin-bottom: var(--space-xl);">Every integration uses open standards — <code>STIX 2.1</code> · <code>CEF</code> · <code>REST API</code> · <code>WebSocket</code> · <code>OAuth2</code> · <code>Docker</code> — no vendor lock-in, ever.</p>
+
+    <div style="text-align: center;">
+      <a href="pages/integrations/index.html" class="btn btn-primary reveal">See All Integrations →</a>
     </div>
   </div>
 </section>
