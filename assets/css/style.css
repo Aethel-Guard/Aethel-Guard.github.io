@@ -1441,6 +1441,14 @@ img { max-width: 100%; height: auto; }
   transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
 }
 
+/* Hide loader if JS fails — content still visible */
+@keyframes loader-fallback {
+  to { opacity: 0; visibility: hidden; }
+}
+.page-loader {
+  animation: loader-fallback 0s 4s forwards;
+}
+
 .page-loader.loaded {
   opacity: 0;
   visibility: hidden;

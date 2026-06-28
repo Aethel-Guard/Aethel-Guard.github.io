@@ -24,6 +24,8 @@
   </div>
   <div class="loader-bar"></div>
 </div>
+<script>/* Hide loader even if main.js fails */setTimeout(function(){var l=document.querySelector('.page-loader');if(l){l.classList.add('loaded');setTimeout(function(){l.remove()},600)}},2000)</script>
+<noscript><style>.page-loader{display:none!important}</style></noscript>
 
 <!-- NAVIGATION -->
 <nav class="nav">
