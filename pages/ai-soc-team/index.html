@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI SOC Team — Aethel Guard</title>
-  <meta name="description" content="Full SOC-as-a-Service platform. Four AI agents — Alpha, Bravo, Charlie, Delta — running a complete security operations center with Wazuh, OpenCTI, MISP, TheHive, and Shuffle SOAR.">
+  <meta name="description" content="SOC-as-a-Service platform. AI agents for detection, response, intelligence, and forensics — running a complete security operations center with Wazuh, OpenCTI, MISP, TheHive, and Shuffle SOAR.">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -284,7 +284,7 @@
       <span class="accent">Always on.</span>
     </h1>
     <p class="hero-subtitle">
-      Four AI agents. A complete security operations stack. Multi-tenant, billing-ready, and GDPR compliant. Your SOC, managed by us with Docker Compose.
+      AI agents for detection, response, intelligence, and forensics. A complete security operations stack. Multi-tenant, billing-ready, and GDPR compliant. Your SOC, managed by us with Docker Compose.
     </p>
     <div class="hero-actions">
       <a href="#agents" class="btn btn-primary">Meet the Agents <span class="arrow">→</span></a>
@@ -300,11 +300,11 @@
         <div class="stat-label">API Modules</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">4</div>
+        <div class="stat-num">🔬</div>
         <div class="stat-label">AI Agents</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">~25</div>
+        <div class="stat-num">24/7</div>
         <div class="stat-label">Containers</div>
       </div>
     </div>
@@ -315,22 +315,22 @@
 <section class="section" id="agents">
   <div class="section-inner">
     <div class="section-label">// The Team</div>
-    <h2 class="section-title">Four AI agents. One mission.</h2>
+    <h2 class="section-title">AI agents. One mission.</h2>
     <p class="section-subtitle">Each agent has a specialized role. They communicate over NATS message bus and coordinate through a shared event pipeline.</p>
 
     <div class="agent-grid">
 
-      <!-- Alpha -->
+      <!-- Detection -->
       <div class="agent-card alpha animate-in">
         <div class="agent-header">
-          <div class="agent-badge alpha">α</div>
+          <div class="agent-badge alpha">🔍</div>
           <div>
-            <h3>Alpha</h3>
+            <h3>Detection</h3>
             <div class="agent-role">Detection &amp; Triage</div>
           </div>
         </div>
         <p>
-          Alpha monitors incoming events from Wazuh SIEM and other sensors. It correlates alerts, deduplicates noise, and ranks threats by severity using the AI inference engine. When a genuine threat is confirmed, Alpha escalates to Bravo for response.
+          The detection agent monitors incoming events from Wazuh SIEM and other sensors. It correlates alerts, deduplicates noise, and ranks threats by severity using the AI inference engine. When a genuine threat is confirmed, the detection agent escalates to the response agent.
         </p>
         <ul class="agent-skills">
           <li>Alert correlation</li>
@@ -341,17 +341,17 @@
         </ul>
       </div>
 
-      <!-- Bravo -->
+      <!-- Response -->
       <div class="agent-card bravo animate-in animate-delay-1">
         <div class="agent-header">
-          <div class="agent-badge bravo">β</div>
+          <div class="agent-badge bravo">🛡️</div>
           <div>
-            <h3>Bravo</h3>
+            <h3>Response</h3>
             <div class="agent-role">Response &amp; Remediation</div>
           </div>
         </div>
         <p>
-          Bravo receives confirmed incidents from Alpha and executes response playbooks through Shuffle SOAR. It can isolate hosts, block IPs, revoke credentials, and trigger automated containment. Bravo logs every action for audit and can escalate to human analysts when needed.
+          The response agent receives confirmed incidents and executes response playbooks through Shuffle SOAR. It can isolate hosts, block IPs, revoke credentials, and trigger automated containment. The response agent logs every action for audit and can escalate to human analysts when needed.
         </p>
         <ul class="agent-skills">
           <li>SOAR playbooks</li>
@@ -362,17 +362,17 @@
         </ul>
       </div>
 
-      <!-- Charlie -->
+      <!-- Intelligence -->
       <div class="agent-card charlie animate-in animate-delay-2">
         <div class="agent-header">
-          <div class="agent-badge charlie">γ</div>
+          <div class="agent-badge charlie">🎯</div>
           <div>
-            <h3>Charlie</h3>
+            <h3>Intelligence</h3>
             <div class="agent-role">Threat Intelligence</div>
           </div>
         </div>
         <p>
-          Charlie pulls and enriches threat intelligence from OpenCTI and MISP. It maintains IOC feeds, tracks adversary TTPs, and provides context to Alpha's detections and Delta's investigations. Charlie syncs indicators bidirectionally with external sharing communities.
+          The intelligence agent pulls and enriches threat intelligence from OpenCTI and MISP. It maintains IOC feeds, tracks adversary TTPs, and provides context to detection and forensics. Indicators sync bidirectionally with external sharing communities.
         </p>
         <ul class="agent-skills">
           <li>OpenCTI enrichment</li>
@@ -383,17 +383,17 @@
         </ul>
       </div>
 
-      <!-- Delta -->
+      <!-- Forensics -->
       <div class="agent-card delta animate-in animate-delay-3">
         <div class="agent-header">
-          <div class="agent-badge delta">δ</div>
+          <div class="agent-badge delta">🔬</div>
           <div>
-            <h3>Delta</h3>
+            <h3>Forensics</h3>
             <div class="agent-role">Digital Forensics</div>
           </div>
         </div>
         <p>
-          Delta performs deep-dive forensic analysis on confirmed incidents. It collects disk images, memory dumps, and network captures, then correlates artifacts using timeline analysis. Delta writes findings directly into TheHive case files and produces court-admissible reports.
+          The forensics agent performs deep-dive forensic analysis on confirmed incidents. It collects disk images, memory dumps, and network captures, then correlates artifacts using timeline analysis. Findings are written directly into case management and produce court-admissible reports.
         </p>
         <ul class="agent-skills">
           <li>Memory analysis</li>
@@ -428,8 +428,8 @@
 
           <tr>
             <td>AI Agents</td>
-            <td>Alpha + Bravo</td>
-            <td>All 4 (Alpha, Bravo, Charlie, Delta)</td>
+            <td>Detection + Response</td>
+            <td>Full suite (Detection, Response, Intelligence, Forensics)</td>
           </tr>
           <tr>
             <td>SIEM (Wazuh)</td>
@@ -607,19 +607,19 @@
         <!-- Agent layer -->
         <div class="arch-row">
           <div class="arch-block" style="border-color: #EF4444; background: rgba(239, 68, 68, 0.08);">
-            <h4>Alpha</h4>
+            <h4>Detection</h4>
             <p>Detection<br>&amp; Triage</p>
           </div>
           <div class="arch-block" style="border-color: #F59E0B; background: rgba(245, 158, 11, 0.08);">
-            <h4>Bravo</h4>
+            <h4>Response</h4>
             <p>Response<br>&amp; Remediation</p>
           </div>
           <div class="arch-block" style="border-color: #3B82F6; background: rgba(59, 130, 246, 0.08);">
-            <h4>Charlie</h4>
+            <h4>Intelligence</h4>
             <p>Threat<br>Intelligence</p>
           </div>
           <div class="arch-block" style="border-color: #8B5CF6; background: rgba(139, 92, 246, 0.08);">
-            <h4>Delta</h4>
+            <h4>Forensics</h4>
             <p>Digital<br>Forensics</p>
           </div>
         </div>
@@ -758,7 +758,7 @@
   <div class="section-inner" style="text-align: center; position: relative; z-index: 1;">
     <div class="section-label">// Get Started</div>
     <h2 class="section-title">Your SOC.</h2>
-    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Four AI agents. A complete security stack. Managed service. Operational in hours.</p>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">AI-powered security operations. Complete stack. Managed service. Operational in hours.</p>
 
     <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);">
       <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">
