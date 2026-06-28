@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vigilar Guard — AI Detection & Triage Engine | Aethel Guard</title>
-  <meta name="description" content="Vigilar Guard is an AI-powered detection and triage engine. Sigma rules, AI triage, SIEM integrations. Add-on for Vigilar or standalone for enterprise.">
+  <meta name="description" content="Vigilar Guard is an AI-powered detection and triage engine. Detection rules, AI triage, SIEM integrations. Add-on for Vigilar or standalone for enterprise.">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -562,7 +562,7 @@
       Detect. Triage. <span class="accent">Respond.</span>
     </h1>
     <p class="hero-subtitle">
-      AI-powered threat detection and triage. Sigma rules meet AI for real-time analysis. Add-on for Vigilar, standalone for enterprise. FastAPI, Docker-ready, SIEM-integrated.
+      AI-powered threat detection and triage. Detection rules meet AI for real-time analysis. Add-on for Vigilar, standalone for enterprise. FastAPI, Docker-ready, SIEM-integrated.
     </p>
     <div class="hero-actions">
       <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">View on GitHub <span class="arrow">→</span></a>
@@ -608,7 +608,7 @@
         <div class="pipeline-step">
           <div class="step-icon">📏</div>
           <div class="step-num">02</div>
-          <h4>Sigma Rules</h4>
+          <h4>Detection Rules</h4>
           <p>Multiple rule categories evaluate every event against known attack patterns</p>
         </div>
         <div class="pipeline-connector">→</div>
@@ -623,7 +623,7 @@
           <div class="step-icon">🔍</div>
           <div class="step-num">04</div>
           <h4>Enrichment</h4>
-          <p>Threat intel from OpenCTI/MISP adds IOCs, TTPs, and confidence scores</p>
+          <p>Threat intel from connected platforms adds IOCs, TTPs, and confidence scores</p>
         </div>
         <div class="pipeline-connector">→</div>
         <div class="pipeline-step">
@@ -637,7 +637,7 @@
 
     <!-- Rule Categories -->
     <h3 style="font-family: var(--font-mono); font-size: var(--text-lg); margin-top: var(--space-2xl); margin-bottom: var(--space-md); color: var(--text-secondary);">
-      Sigma Rule Categories
+      Detection Rule Categories
     </h3>
     <div class="rule-grid">
       <div class="rule-card">
@@ -692,54 +692,54 @@
     <p class="section-subtitle">Guard doesn't lock you in. Alerts flow to your existing SIEM stack through standard protocols.</p>
 
     <div class="siem-grid">
-      <!-- Wazuh -->
+      <!-- SIEM Integration -->
       <div class="siem-card">
         <div class="siem-header">
           <div class="siem-logo">🟠</div>
           <div>
-            <h4>Wazuh</h4>
+            <h4>SIEM</h4>
             <div class="siem-protocol">Webhook (Bidirectional)</div>
           </div>
         </div>
-        <p>Full bidirectional integration. Guard sends alerts to Wazuh and receives Wazuh events for correlation.</p>
+        <p>Full bidirectional integration. Guard sends alerts to your SIEM and receives events for correlation.</p>
         <ul class="siem-features">
-          <li>Alert webhook to Wazuh manager</li>
-          <li>Event ingestion from Wazuh active responses</li>
-          <li>Correlation with Wazuh rule engine</li>
+          <li>Alert webhook to SIEM</li>
+          <li>Event ingestion from active responses</li>
+          <li>Correlation with rule engine</li>
           <li>Shared MITRE ATT&amp;CK mapping</li>
         </ul>
       </div>
 
-      <!-- OpenCTI -->
+      <!-- Threat Intel -->
       <div class="siem-card">
         <div class="siem-header">
           <div class="siem-logo">🔵</div>
           <div>
-            <h4>OpenCTI</h4>
+            <h4>Threat Intel</h4>
             <div class="siem-protocol">STIX 2.1 Push</div>
           </div>
         </div>
-        <p>Guard pushes enriched threat intelligence to OpenCTI as STIX 2.1 bundles. Observable-driven, relationship-aware.</p>
+        <p>Guard pushes enriched threat intelligence as STIX 2.1 bundles. Observable-driven, relationship-aware.</p>
         <ul class="siem-features">
           <li>STIX 2.1 bundle export</li>
           <li>Indicator, observable, and relationship objects</li>
           <li>Confidence score propagation</li>
-          <li>Pull enrichment from OpenCTI knowledge base</li>
+          <li>Pull enrichment from connected threat intel platforms</li>
         </ul>
       </div>
 
-      <!-- MISP -->
+      <!-- Threat Sharing -->
       <div class="siem-card">
         <div class="siem-header">
           <div class="siem-logo">🔴</div>
           <div>
-            <h4>MISP</h4>
-            <div class="siem-protocol">PyMISP Event Push</div>
+            <h4>Threat Sharing</h4>
+            <div class="siem-protocol">STIX/TAXII + Community Feeds</div>
           </div>
         </div>
-        <p>Guard creates MISP events with attributes and tags. Share detections with your MISP communities automatically.</p>
+        <p>Guard shares detections with threat communities automatically. Attributes, tags, and taxonomies.</p>
         <ul class="siem-features">
-          <li>PyMISP event creation</li>
+          <li>STIX/TAXII event creation</li>
           <li>Attribute tagging with Galaxy clusters</li>
           <li>Automatic IOC sharing to communities</li>
           <li>Feed synchronization support</li>
@@ -792,13 +792,13 @@
       </div>
       <div class="endpoint">
         <span class="method method-post">POST</span>
-        <span class="path">/api/v1/rules/sigma</span>
-        <span class="desc">Upload or update Sigma detection rules</span>
+        <span class="path">/api/v1/rules</span>
+        <span class="desc">Upload or update detection rules</span>
       </div>
       <div class="endpoint">
         <span class="method method-get">GET</span>
-        <span class="path">/api/v1/rules/sigma</span>
-        <span class="desc">List all active Sigma rules and their categories</span>
+        <span class="path">/api/v1/rules</span>
+        <span class="desc">List all active detection rules and their categories</span>
       </div>
       <div class="endpoint">
         <span class="method method-get">GET</span>
@@ -808,17 +808,17 @@
       <div class="endpoint">
         <span class="method method-post">POST</span>
         <span class="path">/api/v1/integrations/wazuh</span>
-        <span class="desc">Configure Wazuh webhook endpoint</span>
+        <span class="desc">Configure SIEM webhook endpoint</span>
       </div>
       <div class="endpoint">
         <span class="method method-post">POST</span>
         <span class="path">/api/v1/integrations/opencti</span>
-        <span class="desc">Configure OpenCTI STIX 2.1 push target</span>
+        <span class="desc">Configure threat intel STIX 2.1 push target</span>
       </div>
       <div class="endpoint">
         <span class="method method-post">POST</span>
         <span class="path">/api/v1/integrations/misp</span>
-        <span class="desc">Configure MISP event push target</span>
+        <span class="desc">Configure threat sharing push target</span>
       </div>
       <div class="endpoint">
         <span class="method method-get">GET</span>
@@ -861,7 +861,7 @@
         <div class="integration-layer">
           <div class="integration-block primary" style="min-width: 280px;">
             <h4>Vigilar Guard</h4>
-            <p>Sigma Engine · AI Triage · Enrichment<br>FastAPI · port 8082</p>
+            <p>Detection Engine · AI Triage · Enrichment</p>
           </div>
         </div>
 
@@ -870,15 +870,15 @@
         <!-- SIEM -->
         <div class="integration-layer">
           <div class="integration-block">
-            <h4>Wazuh</h4>
+            <h4>SIEM</h4>
             <p>SIEM/XDR</p>
           </div>
           <div class="integration-block">
-            <h4>OpenCTI</h4>
+            <h4>Threat Intel</h4>
             <p>Threat Intel</p>
           </div>
           <div class="integration-block">
-            <h4>MISP</h4>
+            <h4>Threat Sharing</h4>
             <p>Intel Sharing</p>
           </div>
           <div class="integration-block">
@@ -985,7 +985,7 @@
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Detection</span>
-          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Sigma rules · multiple categories</span>
+          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Detection rules · multiple categories</span>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Storage</span>
@@ -993,7 +993,7 @@
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Integrations</span>
-          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Wazuh · OpenCTI · MISP · CEF</span>
+          <span style="font-size: var(--text-sm); color: var(--text-secondary);">SIEM · Threat Intel · CEF</span>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Container</span>

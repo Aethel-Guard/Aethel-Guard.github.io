@@ -171,7 +171,7 @@
         <h3>Security System Redesign</h3>
         <p class="tagline">Rip-and-replace or gradual migration — we design the path and walk it with you.</p>
         <ul class="product-features">
-          <li><span class="check">✓</span> SIEM migration planning (Splunk → Wazuh, etc.)</li>
+          <li><span class="check">✓</span> SIEM migration planning (vendor-neutral)</li>
           <li><span class="check">✓</span> Zero Trust architecture implementation</li>
           <li><span class="check">✓</span> Legacy system security hardening</li>
           <li><span class="check">✓</span> Network segmentation and micro-segmentation</li>
@@ -248,11 +248,11 @@
         <div class="journey-step-number">Step 02 — Detect</div>
         <h3 class="journey-step-title">AI sees what humans miss.</h3>
         <p class="journey-step-desc">
-          Vigilar Guard ingests security events, runs Sigma rules, triages with AI, and enriches with threat intelligence. One engine. Every SIEM.
+          Vigilar Guard ingests security events, runs detection rules, triages with AI, and enriches with threat intelligence. One engine. Every SIEM.
         </p>
         <div class="journey-step-features">
-          <span class="journey-tag"><span class="dot dot-amber"></span> Sigma + AI Triage</span>
-          <span class="journey-tag"><span class="dot dot-cyan"></span> Wazuh · OpenCTI · MISP</span>
+          <span class="journey-tag"><span class="dot dot-amber"></span> Detection Rules + AI Triage</span>
+          <span class="journey-tag"><span class="dot dot-cyan"></span> SIEM · Threat Intel · SOAR</span>
           <span class="journey-tag"><span class="dot dot-green"></span> CEF/syslog</span>
         </div>
       </div>
@@ -322,9 +322,9 @@
         <h3>Vigilar Guard</h3>
         <p class="tagline">AI detection and triage service. SMB security, managed for you.</p>
         <ul class="product-features">
-          <li><span class="check">✓</span> Sigma detection engine with comprehensive rule coverage</li>
+          <li><span class="check">✓</span> AI-powered detection engine with comprehensive rule coverage</li>
           <li><span class="check">✓</span> AI triage with fallback chain</li>
-          <li><span class="check">✓</span> Wazuh, OpenCTI, MISP integrations</li>
+          <li><span class="check">✓</span> SIEM, threat intel, and SOAR integrations</li>
           <li><span class="check">✓</span> CEF/syslog forwarding to any SIEM</li>
           <li><span class="check">✓</span> Managed service — operational in hours</li>
         </ul>
@@ -338,7 +338,7 @@
         <p class="tagline">SOC-as-a-Service. AI-powered security operations. Complete stack.</p>
         <ul class="product-features">
           <li><span class="check">✓</span> AI agents for detection, response, intelligence, and forensics</li>
-          <li><span class="check">✓</span> Wazuh + OpenCTI + MISP + TheHive + Shuffle</li>
+          <li><span class="check">✓</span> Full SOC stack: SIEM, threat intel, case management, SOAR</li>
           <li><span class="check">✓</span> Multi-tenant dashboard, billing, GDPR</li>
           <li><span class="check">✓</span> Fully managed infrastructure</li>
           <li><span class="check">✓</span> Starter or Professional plan</li>
@@ -383,15 +383,15 @@
         <!-- SIEM layer -->
         <div class="arch-row">
           <div class="arch-block cyan">
-            <h4>Wazuh</h4>
+            <h4>SIEM</h4>
             <p>SIEM/XDR</p>
           </div>
           <div class="arch-block cyan">
-            <h4>OpenCTI</h4>
+            <h4>Threat Intel</h4>
             <p>Threat Intel</p>
           </div>
           <div class="arch-block cyan">
-            <h4>MISP</h4>
+            <h4>Threat Sharing</h4>
             <p>Sharing</p>
           </div>
           <div class="arch-block">
@@ -432,17 +432,17 @@
       <div class="int-card reveal delay-1" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
         <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">📊</div>
         <strong style="color: var(--text-primary);">SIEM & Logs</strong>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Wazuh · Splunk · QRadar · Elastic</p>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Any SIEM · Standards-based ingestion</p>
       </div>
       <div class="int-card reveal delay-2" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
         <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">🌐</div>
         <strong style="color: var(--text-primary);">Threat Intel</strong>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">OpenCTI · MISP · MITRE ATT&CK · AbuseIPDB</p>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Threat intel · MITRE ATT&CK · STIX 2.1</p>
       </div>
       <div class="int-card reveal delay-3" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
         <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">🚨</div>
         <strong style="color: var(--text-primary);">Incident Response</strong>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">TheHive · Shuffle · Slack · PagerDuty</p>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Case management · SOAR · Slack · PagerDuty</p>
       </div>
       <div class="int-card reveal delay-4" style="background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center;">
         <div style="font-size: 1.8rem; margin-bottom: var(--space-xs);">☁️</div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI SOC Team — Aethel Guard</title>
-  <meta name="description" content="SOC-as-a-Service platform. AI agents for detection, response, intelligence, and forensics — running a complete security operations center with Wazuh, OpenCTI, MISP, TheHive, and Shuffle SOAR.">
+  <meta name="description" content="SOC-as-a-Service platform. AI agents for detection, response, intelligence, and forensics. Managed SIEM, threat intel, case management, and SOAR.">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -330,7 +330,7 @@
           </div>
         </div>
         <p>
-          The detection agent monitors incoming events from Wazuh SIEM and other sensors. It correlates alerts, deduplicates noise, and ranks threats by severity using the AI inference engine. When a genuine threat is confirmed, the detection agent escalates to the response agent.
+          The detection agent monitors incoming events from your SIEM and other sensors. It correlates alerts, deduplicates noise, and ranks threats by severity using the AI inference engine. When a genuine threat is confirmed, the detection agent escalates to the response agent.
         </p>
         <ul class="agent-skills">
           <li>Alert correlation</li>
@@ -351,7 +351,7 @@
           </div>
         </div>
         <p>
-          The response agent receives confirmed incidents and executes response playbooks through Shuffle SOAR. It can isolate hosts, block IPs, revoke credentials, and trigger automated containment. The response agent logs every action for audit and can escalate to human analysts when needed.
+          The response agent receives confirmed incidents and executes automated response playbooks. It can isolate hosts, block IPs, revoke credentials, and trigger automated containment. The response agent logs every action for audit and can escalate to human analysts when needed.
         </p>
         <ul class="agent-skills">
           <li>SOAR playbooks</li>
@@ -372,11 +372,11 @@
           </div>
         </div>
         <p>
-          The intelligence agent pulls and enriches threat intelligence from OpenCTI and MISP. It maintains IOC feeds, tracks adversary TTPs, and provides context to detection and forensics. Indicators sync bidirectionally with external sharing communities.
+          The intelligence agent pulls and enriches threat intelligence from connected platforms. It maintains IOC feeds, tracks adversary TTPs, and provides context to detection and forensics. Indicators sync bidirectionally with external sharing communities.
         </p>
         <ul class="agent-skills">
-          <li>OpenCTI enrichment</li>
-          <li>MISP sharing</li>
+          <li>Threat intel enrichment</li>
+          <li>Community threat sharing</li>
           <li>IOC management</li>
           <li>TTP mapping (MITRE ATT&amp;CK)</li>
           <li>Feed synchronization</li>
@@ -400,7 +400,7 @@
           <li>Disk forensics</li>
           <li>Network capture</li>
           <li>Timeline reconstruction</li>
-          <li>TheHive case management</li>
+          <li>Case management integration</li>
         </ul>
       </div>
 
@@ -432,22 +432,22 @@
             <td>Full suite (Detection, Response, Intelligence, Forensics)</td>
           </tr>
           <tr>
-            <td>SIEM (Wazuh)</td>
+            <td>SIEM (bring your own)</td>
             <td>✓</td>
             <td>✓</td>
           </tr>
           <tr>
-            <td>Threat Intel (OpenCTI + MISP)</td>
+            <td>Threat Intel (managed)</td>
             <td>—</td>
             <td>✓</td>
           </tr>
           <tr>
-            <td>Case Management (TheHive)</td>
+            <td>Case Management</td>
             <td>—</td>
             <td>✓</td>
           </tr>
           <tr>
-            <td>SOAR (Shuffle)</td>
+            <td>SOAR (managed)</td>
             <td>—</td>
             <td>✓</td>
           </tr>
@@ -512,27 +512,27 @@
     <div class="integrations-grid">
       <div class="integration-tile">
         <div class="tool-icon">🛡️</div>
-        <h4>Wazuh</h4>
+        <h4>SIEM</h4>
         <p>SIEM / XDR</p>
       </div>
       <div class="integration-tile">
         <div class="tool-icon">🌐</div>
-        <h4>OpenCTI</h4>
+        <h4>Threat Intel</h4>
         <p>Threat Intelligence</p>
       </div>
       <div class="integration-tile">
         <div class="tool-icon">🔗</div>
-        <h4>MISP</h4>
+        <h4>Threat Sharing</h4>
         <p>Threat Sharing</p>
       </div>
       <div class="integration-tile">
         <div class="tool-icon">🐝</div>
-        <h4>TheHive</h4>
+        <h4>Case Management</h4>
         <p>Case Management</p>
       </div>
       <div class="integration-tile">
         <div class="tool-icon">🔀</div>
-        <h4>Shuffle</h4>
+        <h4>SOAR</h4>
         <p>SOAR Platform</p>
       </div>
       <div class="integration-tile">
@@ -645,23 +645,23 @@
         <!-- Integration layer -->
         <div class="arch-row">
           <div class="arch-block">
-            <h4>Wazuh</h4>
+            <h4>SIEM</h4>
             <p>SIEM</p>
           </div>
           <div class="arch-block">
-            <h4>OpenCTI</h4>
+            <h4>Threat Intel</h4>
             <p>Intel</p>
           </div>
           <div class="arch-block">
-            <h4>MISP</h4>
+            <h4>Threat Sharing</h4>
             <p>Sharing</p>
           </div>
           <div class="arch-block">
-            <h4>TheHive</h4>
+            <h4>Case Management</h4>
             <p>Cases</p>
           </div>
           <div class="arch-block">
-            <h4>Shuffle</h4>
+            <h4>SOAR</h4>
             <p>SOAR</p>
           </div>
         </div>
@@ -716,7 +716,7 @@
         <div class="code-header">
           <span class="lang">bash</span>
         </div>
-        <pre><span class="comment"># 2. Connect your SIEM (Wazuh, Splunk, etc.)</span>
+        <pre><span class="comment"># 2. Connect your SIEM</span>
 <span class="keyword">curl</span> -X POST https://api.aethelguard.com/v1/integrations \
   -H "Authorization: Bearer $AETHEL_API_KEY" \
   -d '{"type": "wazuh", "url": "https://wazuh.your-org.com"}'</pre>
@@ -758,7 +758,7 @@
   <div class="section-inner" style="text-align: center; position: relative; z-index: 1;">
     <div class="section-label">// Get Started</div>
     <h2 class="section-title">Your SOC.</h2>
-    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">AI-powered security operations. Complete stack. Managed service. Operational in hours.</p>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">AI-powered security operations. Complete managed stack. Operational in hours.</p>
 
     <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);">
       <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">
