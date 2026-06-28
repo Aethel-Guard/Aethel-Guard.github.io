@@ -277,14 +277,14 @@
     <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
     <div class="hero-badge">
       <span class="pulse"></span>
-      SOC-as-a-Service · In Development
+      SOC-as-a-Service · Coming Soon
     </div>
     <h1>
       Your AI SOC team.<br>
       <span class="accent">Always on.</span>
     </h1>
     <p class="hero-subtitle">
-      Four AI agents. A complete security operations stack. Multi-tenant, billing-ready, and GDPR compliant. Deploy your SOC in minutes with Docker Compose.
+      Four AI agents. A complete security operations stack. Multi-tenant, billing-ready, and GDPR compliant. Your SOC, managed by us with Docker Compose.
     </p>
     <div class="hero-actions">
       <a href="#agents" class="btn btn-primary">Meet the Agents <span class="arrow">→</span></a>
@@ -413,7 +413,7 @@
   <div class="section-inner">
     <div class="section-label">// Deployment</div>
     <h2 class="section-title">Two tiers. Your choice.</h2>
-    <p class="section-subtitle">Start with Core on a single machine. Scale to Full when you need the complete stack.</p>
+    <p class="section-subtitle">Start with the Starter plan. Scale to Professional when you need the full agent roster.</p>
 
     <div style="overflow-x: auto;">
       <table class="tier-table">
@@ -427,8 +427,8 @@
         <tbody>
           <tr>
             <td>Minimum RAM</td>
-            <td>Core</td>
-            <td>Full</td>
+            <td>Starter</td>
+            <td>Professional</td>
           </tr>
           <tr>
             <td>Containers</td>
@@ -588,7 +588,7 @@
   <div class="section-inner">
     <div class="section-label">// Architecture</div>
     <h2 class="section-title">How it fits together</h2>
-    <p class="section-subtitle">Simplified view of the AI SOC Team stack. All services run in Docker Compose.</p>
+    <p class="section-subtitle">Simplified view of the AI SOC Team stack. All services managed by Aethel Guard.</p>
 
     <div class="architecture-diagram">
       <div class="arch-flow">
@@ -724,35 +724,31 @@
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('cp .env.example .env\n# Edit .env — set passwords, API keys, tenant config')">copy</button>
         </div>
-        <pre><span class="comment"># Configure your environment</span>
-<span class="keyword">cp</span> .env.example .env
-<span class="comment"># Edit .env — set passwords, API keys, tenant config</span></pre>
+        <pre><span class="comment"># Configuration is managed by Aethel Guard</span>
+<span class="comment"># No local setup required — we handle everything</span></pre>
       </div>
 
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('docker compose -f docker-compose.core.yml up -d')">copy</button>
         </div>
-        <pre><span class="comment"># Launch Core tier</span>
-<span class="keyword">docker compose</span> -f docker-compose.core.yml up -d
+        <pre><span class="comment"># Provisioning is managed by Aethel Guard</span>
+<span class="keyword"># You focus on security, we handle the infrastructure</span>
 
-<span class="comment"># Or launch Full tier</span>
-<span class="keyword">docker compose</span> -f docker-compose.full.yml up -d</pre>
+<span class="comment"># Scale your plan anytime from the dashboard</span></pre>
       </div>
 
       <div class="code-block">
         <div class="code-header">
           <span class="lang">bash</span>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -s http://localhost:8080/health | jq .')">copy</button>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('curl -s https://api.aethelguard.com/v1/health')">copy</button>
         </div>
-        <pre><span class="comment"># Verify the stack is healthy</span>
-<span class="keyword">curl</span> -s http://localhost:8080/health | <span class="keyword">jq</span> .
+        <pre><span class="comment"># Check your SOC status</span>
+<span class="keyword">curl</span> -s https://api.aethelguard.com/v1/health
 
-<span class="comment"># Open the dashboard</span>
-<span class="comment"># → http://localhost:4200 (Angular UI)</span></pre>
+<span class="comment"># Open your dashboard</span>
+<span class="comment"># → https://app.aethelguard.com/dashboard</span></pre>
       </div>
 
     </div>
@@ -770,8 +766,8 @@
   <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%); pointer-events: none;"></div>
   <div class="section-inner" style="text-align: center; position: relative; z-index: 1;">
     <div class="section-label">// Get Started</div>
-    <h2 class="section-title">Deploy your SOC.</h2>
-    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Four AI agents. A complete security stack. Open source. Deploy in minutes.</p>
+    <h2 class="section-title">Your SOC.</h2>
+    <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Four AI agents. A complete security stack. Managed service. Operational in hours.</p>
 
     <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap; margin-top: var(--space-2xl);">
       <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">

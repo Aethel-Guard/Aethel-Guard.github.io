@@ -556,7 +556,7 @@
         <span class="pulse"></span>
         Detection & Triage Engine
       </span>
-      <span class="status-badge status-development">In Development</span>
+      <span class="status-badge status-development">Coming Soon</span>
     </div>
     <h1>
       Detect. Triage. <span class="accent">Respond.</span>
@@ -922,59 +922,51 @@
 <section class="section" id="deployment">
   <div class="section-inner">
     <div class="section-label">// Deployment</div>
-    <h2 class="section-title">Deploy your own</h2>
-    <p class="section-subtitle">Docker Compose for local and server deployment. VPS script for Ubuntu 22.04/24.04. Python 3.12, tested on M4 Mac.</p>
+    <h2 class="section-title">Get started</h2>
+    <p class="section-subtitle">Managed service with on-prem option. We handle infrastructure, you handle security.</p>
 
     <div class="deploy-grid">
       <!-- Docker Compose -->
       <div class="deploy-card">
-        <h4>Docker Compose Stack</h4>
-        <p class="deploy-subtitle">Five containers. One command. Full stack.</p>
+        <h4>Managed Service</h4>
+        <p class="deploy-subtitle">Fully managed. We handle the infrastructure, you handle security.</p>
 
         <div class="code-block" style="margin-bottom: var(--space-md);">
           <div class="code-header">
             <span class="lang">bash</span>
           </div>
-          <pre><span class="comment"># Clone and deploy</span>
-git clone https://github.com/Aethel-Guard
-cd Aethel-Guard
-docker compose up -d</pre>
+          <pre><span class="comment"># Managed by Aethel Guard</span>
+<span class="comment"># Contact us to get started</span></pre>
         </div>
 
         <h5 style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent); margin-bottom: var(--space-sm);">Services</h5>
         <ul class="service-list">
-          <li>Guard API</li>
-          <li>AI inference engine</li>
-          <li>PostgreSQL (alerts) <span class="port">:5432</span></li>
-          <li>ClickHouse (analytics) <span class="port">:8123</span></li>
-          <li>Redis (cache/queue) <span class="port">:6379</span></li>
+
         </ul>
       </div>
 
       <!-- VPS Deploy -->
       <div class="deploy-card">
-        <h4>VPS Deployment</h4>
-        <p class="deploy-subtitle">Automated script for Ubuntu 22.04 / 24.04 servers.</p>
+        <h4>On-Prem Option</h4>
+        <p class="deploy-subtitle">For organisations requiring on-premises deployment. Managed by our team.</p>
 
         <div class="code-block" style="margin-bottom: var(--space-md);">
           <div class="code-header">
             <span class="lang">bash</span>
           </div>
-          <pre><span class="comment"># Clone and deploy</span>
-<span class="keyword">git clone</span> https://github.com/Aethel-Guard
-<span class="keyword">cd</span> Aethel-Guard
-<span class="comment"># See deployment docs at docs/</span></pre>
+          <pre><span class="comment"># Contact us for on-prem setup</span>
+<span class="comment"># → hello@aethelguard.com</span></pre>
         </div>
 
         <h5 style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--accent); margin-bottom: var(--space-sm);">Requirements</h5>
         <ul class="req-list">
-          <li><span class="check">✓</span> Ubuntu 22.04 or 24.04 LTS</li>
-          <li><span class="check">✓</span> Small VPS minimum</li>
-          <li><span class="check">✓</span> SSD storage recommended</li>
-          <li><span class="check">✓</span> Docker Engine 24.0+</li>
-          <li><span class="check">✓</span> Docker Compose v2.20+</li>
-          <li><span class="check">✓</span> Python 3.12 (for local dev)</li>
-          <li><span class="check">✓</span> Open ports: 8082, 11434</li>
+          <li><span class="check">✓</span> Linux server (Ubuntu 22.04+)</li>
+          <li><span class="check">✓</span> Managed — no infrastructure requirements</li>
+          <li><span class="check">✓</span> Included in your subscription</li>
+          
+          
+          
+          
         </ul>
       </div>
     </div>
@@ -993,7 +985,7 @@ docker compose up -d</pre>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Detection</span>
-          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Sigma rules · 8 categories</span>
+          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Sigma rules · multiple categories</span>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Storage</span>
@@ -1005,7 +997,7 @@ docker compose up -d</pre>
         </div>
         <div>
           <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); display: block; margin-bottom: var(--space-xs);">Container</span>
-          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Docker Compose · 5 services</span>
+          <span style="font-size: var(--text-sm); color: var(--text-secondary);">Managed service · 4 AI agents</span>
         </div>
       </div>
     </div>
@@ -1017,7 +1009,7 @@ docker compose up -d</pre>
   <div class="section-inner">
     <div class="section-label">// Get Started</div>
     <h2 class="section-title">Deploy your own detection engine</h2>
-    <p class="cta-subtitle">Open source. Docker-ready. SIEM-integrated. Build your own AI-powered detection pipeline today.</p>
+    <p class="cta-subtitle">Managed detection and triage service. SIEM-integrated. Focus on security, not infrastructure.</p>
     <div class="cta-actions">
       <a href="https://github.com/Aethel-Guard" target="_blank" class="btn btn-primary">View on GitHub <span class="arrow">→</span></a>
       <a href="../ai-soc-team/index.html" class="btn btn-secondary">Explore AI SOC Team</a>
