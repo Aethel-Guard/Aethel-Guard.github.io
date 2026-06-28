@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vigilar — Your Data Never Leaves Your Device | Aethel Guard</title>
+  <title>Vigilar — Protects How You Live, On Every Device | Aethel Guard</title>
   <meta name="description" content="Vigilar is a security companion that learns your patterns and adapts protection to you. On-device engines, P1-P7 redlines, zero cloud dependency.">nti-tracking, MFA, PII redaction, and zero cloud dependency. Your data never leaves your device.">
   <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -251,9 +251,10 @@
     /* ── Platforms ── */
     .platforms-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(7, 1fr);
       gap: var(--space-md);
     }
+    @media (max-width: 1024px) { .platforms-grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 768px) { .platforms-grid { grid-template-columns: repeat(2, 1fr); } }
 
     .platform-card {
@@ -485,14 +486,14 @@
     <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
     <div class="hero-badge">
       <span class="pulse-dot"></span>
-      Security Companion · Alpha
+      Protects how you live · Alpha
     </div>
     <h1>
       Your data never<br>
       <span class="accent">leaves your device.</span>
     </h1>
     <p class="hero-subtitle">
-      Vigilar runs comprehensive security checks entirely on-device, enforced by P1–P7 redlines. It learns your patterns, adapts to your threats, and gets smarter the more you use it — all without sending a single byte to the cloud. Zero telemetry. Zero compromise.
+      Vigilar protects the way you live — on your phone, laptop, and wrist. It learns your patterns, adapts to your threats, and gets smarter every day. All on-device. All private. Zero telemetry. Zero compromise.
     </p>
     <div class="hero-actions">
       <a href="mailto:hello@aethelguard.com" class="btn btn-primary">Join the Alpha <span class="arrow">→</span></a>
@@ -738,30 +739,45 @@
   <div class="section-inner">
     <div class="section-header reveal">
       <div class="section-label">// Platforms</div>
-      <h2 class="section-title">Five platforms. <span class="accent">One security model.</span></h2>
-      <p class="section-subtitle">Vigilar runs on every major consumer platform with the same engine stack, the same redlines, and the same zero-cloud guarantee.</p>
+      <h2 class="section-title">Every device you own. <span class="accent">One security model.</span></h2>
+      <p class="section-subtitle">Phone, laptop, tablet, watch — Vigilar runs on all modern devices with the same engine stack, the same redlines, and the same zero-cloud guarantee.</p>
     </div>
 
     <div class="platforms-grid reveal">
       <div class="platform-card">
         <div class="p-icon">📱</div>
         <div class="p-name">iOS</div>
+        <div class="p-desc">iPhone · iPad</div>
       </div>
       <div class="platform-card">
         <div class="p-icon">🤖</div>
         <div class="p-name">Android</div>
+        <div class="p-desc">Phone · Tablet</div>
       </div>
       <div class="platform-card">
         <div class="p-icon">💻</div>
         <div class="p-name">macOS</div>
+        <div class="p-desc">MacBook · iMac</div>
       </div>
       <div class="platform-card">
         <div class="p-icon">🪟</div>
         <div class="p-name">Windows</div>
+        <div class="p-desc">Laptop · Desktop</div>
       </div>
       <div class="platform-card">
         <div class="p-icon">🐧</div>
         <div class="p-name">Linux</div>
+        <div class="p-desc">Ubuntu · Fedora · Arch</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">⌚</div>
+        <div class="p-name">Watches</div>
+        <div class="p-desc">Apple Watch · Wear OS</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">📱</div>
+        <div class="p-name">Tablets</div>
+        <div class="p-desc">iPad · Android Tablet</div>
       </div>
     </div>
 
@@ -811,7 +827,7 @@
       <div class="pricing-card featured reveal delay-1">
         <div class="pricing-tier">// Premium</div>
         <div class="pricing-price"><span class="currency">€</span>9<span class="period"> / month</span></div>
-        <p class="pricing-desc">The full security stack with on-device AI. Everything Vigilar offers.</p>
+        <p class="pricing-desc">The full security stack with on-device AI. Every device you own.</p>
         <ul class="pricing-features">
           <li><span class="check">✓</span> All security engines</li>
           <li><span class="check">✓</span> Anti-tracking</li>
@@ -839,7 +855,7 @@
       Alpha · Limited Slots
     </div>
     <h2>Join the <span style="color: var(--accent);">alpha.</span></h2>
-    <p>Vigilar is in alpha. We're onboarding testers platform by platform. Email us to join the waitlist — tell us your device and use case.</p>
+    <p>Vigilar is in alpha. We're onboarding testers platform by platform. Email us to join the waitlist — tell us what devices you use and how you want to be protected.</p>
     <div class="hero-actions">
       <a href="mailto:hello@aethelguard.com" class="btn btn-primary">Email to Join the Alpha <span class="arrow">→</span></a>
       <a href="https://github.com/Aethel-Guard" class="btn btn-secondary" target="_blank">View on GitHub</a>
