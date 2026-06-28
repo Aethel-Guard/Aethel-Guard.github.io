@@ -413,7 +413,7 @@
   <div class="section-inner">
     <div class="section-label">// Deployment</div>
     <h2 class="section-title">Two tiers. Your choice.</h2>
-    <p class="section-subtitle">Start with Core on a single 8GB machine. Scale to Full when you need the complete stack.</p>
+    <p class="section-subtitle">Start with Core on a single machine. Scale to Full when you need the complete stack.</p>
 
     <div style="overflow-x: auto;">
       <table class="tier-table">
@@ -427,8 +427,8 @@
         <tbody>
           <tr>
             <td>Minimum RAM</td>
-            <td>8 GB</td>
-            <td>16 GB</td>
+            <td>Core</td>
+            <td>Full</td>
           </tr>
           <tr>
             <td>Containers</td>
@@ -736,10 +736,10 @@
           <span class="lang">bash</span>
           <button class="copy-btn" onclick="navigator.clipboard.writeText('docker compose -f docker-compose.core.yml up -d')">copy</button>
         </div>
-        <pre><span class="comment"># Launch Core tier (8GB RAM, ~15 containers)</span>
+        <pre><span class="comment"># Launch Core tier (~15 containers)</span>
 <span class="keyword">docker compose</span> -f docker-compose.core.yml up -d
 
-<span class="comment"># Or launch Full tier (16GB RAM, ~25 containers)</span>
+<span class="comment"># Or launch Full tier (~25 containers)</span>
 <span class="keyword">docker compose</span> -f docker-compose.full.yml up -d</pre>
       </div>
 
