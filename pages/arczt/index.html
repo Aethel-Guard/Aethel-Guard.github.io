@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCZT Personal Vault — Zero-Knowledge Password Manager | Aethel Guard</title>
+  <meta name="description" content="ARCZT Personal Vault is a zero-knowledge, quantum-resistant password manager. Your vault never leaves your device. AES-256-GCM + post-quantum lattice encryption.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* ── ARCZT-specific styles ── */
+    .arczt-hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+
+    /* ── Features grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+    }
+    @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .feature-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-card .icon { font-size: 1.75rem; margin-bottom: var(--space-md); }
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-xs);
+    }
+    .feature-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Encryption section ── */
+    .encryption-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3xl);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+    @media (max-width: 768px) { .encryption-section { grid-template-columns: 1fr; } }
+
+    .encryption-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 280px;
+    }
+    .vault-visual {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, var(--accent-glow-strong), transparent 70%);
+      border: 2px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      animation: float 4s ease-in-out infinite;
+    }
+    .vault-visual::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-border);
+      opacity: 0.3;
+      animation: rotateGlow 12s linear infinite;
+    }
+    .vault-visual::after {
+      content: '';
+      position: absolute;
+      inset: -40px;
+      border-radius: 50%;
+      border: 1px solid var(--cyan-border);
+      opacity: 0.15;
+      animation: rotateGlow 20s linear infinite reverse;
+    }
+
+    .encryption-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+    .encryption-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .encryption-features li .check {
+      color: var(--success);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .encryption-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+    .encryption-spec-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+
+    /* ── Platforms ── */
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-md);
+    }
+    @media (max-width: 1024px) { .platforms-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 768px) { .platforms-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .platform-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .platform-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .platform-card .p-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+    .platform-card .p-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Redlines ── */
+    .redlines-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .redlines-grid { grid-template-columns: 1fr; } }
+
+    .redline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-left: 3px solid var(--threat);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      display: flex;
+      gap: var(--space-lg);
+      align-items: flex-start;
+      transition: all var(--transition-default);
+    }
+    .redline-card:hover {
+      border-color: var(--border-accent);
+      border-left-color: var(--threat);
+      background: var(--bg-card-hover);
+    }
+
+    .redline-badge {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 71, 87, 0.12);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--threat);
+    }
+
+    .redline-card .body h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      margin-bottom: var(--space-xs);
+    }
+    .redline-card .body p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3xl);
+      flex-wrap: wrap;
+      padding: var(--space-xl) 0;
+    }
+    .stat { text-align: center; }
+    .stat .num {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat .label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: var(--space-xs);
+    }
+
+    /* ── Family sharing ── */
+    .sharing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .sharing-grid { grid-template-columns: 1fr; } }
+
+    .sharing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .sharing-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+    .sharing-card .icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+    .sharing-card h4 {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      margin-bottom: var(--space-xs);
+    }
+    .sharing-card p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ── CTA section ── */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-5xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-inner { position: relative; z-index: 1; }
+
+    .cta-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+    .cta-section p {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto var(--space-2xl);
+    }
+
+    /* ── Tech pills ── */
+    .tech-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      justify-content: center;
+    }
+    .tech-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+    }
+
+    /* Nav active state */
+    .nav-links a.active {
+      color: var(--accent);
+    }
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+    .status-coming-soon {
+      background: rgba(245, 166, 35, 0.12);
+      border: 1px solid rgba(245, 166, 35, 0.3);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../services/index.html">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+      <li><a href="https://github.com/Aethel-Guard/ARCZT-Personal-Vault" class="nav-cta" target="_blank">GitHub</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero arczt-hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-scanline"></div>
+  <div class="hero-content animate-in">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Zero-Knowledge Password Manager · Coming Soon
+    </div>
+    <h1>
+      Your vault.<br>
+      <span class="accent">Your secrets.</span><br>
+      Quantum-resistant.
+    </h1>
+    <p class="hero-subtitle">
+      ARCZT Personal Vault is a zero-knowledge password manager that never sends your data to any server. AES-256-GCM encryption meets post-quantum lattice cryptography. Your credentials stay on your device — always. P1-P7 redlines enforced.
+    </p>
+    <div class="hero-actions">
+      <a href="https://github.com/Aethel-Guard/ARCZT-Personal-Vault" target="_blank" class="btn btn-primary">View on GitHub <span class="arrow">→</span></a>
+      <a href="#features" class="btn btn-secondary">Explore Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═══ -->
+<section class="section" style="padding-top: 0; padding-bottom: var(--space-3xl);">
+  <div class="section-inner">
+    <div class="stats-bar">
+      <div class="stat reveal">
+        <div class="num">0</div>
+        <div class="label">Servers That See Your Data</div>
+      </div>
+      <div class="stat reveal delay-1">
+        <div class="num">AES-256</div>
+        <div class="label">Encryption Standard</div>
+      </div>
+      <div class="stat reveal delay-2">
+        <div class="num">5</div>
+        <div class="label">Platforms</div>
+      </div>
+      <div class="stat reveal delay-3">
+        <div class="num">P1–P7</div>
+        <div class="label">Redlines Enforced</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Features</div>
+      <h2 class="section-title">Security by <span class="accent">architecture</span></h2>
+      <p class="section-subtitle">Every feature designed around one principle: your data never leaves your device. No exceptions. No excuses.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="icon">🔐</div>
+        <h3>Zero-Knowledge Architecture</h3>
+        <p>Your master password never leaves your device. We can't see your vault, we can't reset your password, we can't decrypt your data. Not even if we wanted to. Not even with a court order. The encryption keys are derived on your device.</p>
+      </div>
+
+      <div class="feature-card reveal delay-1">
+        <div class="icon">⚛️</div>
+        <h3>Quantum-Resistant Encryption</h3>
+        <p>AES-256-GCM for authenticated encryption today. Post-quantum lattice-based cryptography layered on top for tomorrow. Your vault is protected against both classical and quantum attacks. Future-proof by design.</p>
+      </div>
+
+      <div class="feature-card reveal delay-2">
+        <div class="icon">📱</div>
+        <h3>On-Device Only</h3>
+        <p>Your vault lives on your device. Sync happens peer-to-peer between your devices — no cloud relay, no intermediary server. Your credentials never touch infrastructure we control. P1 redline: PII never leaves.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="icon">💻</div>
+        <h3>Cross-Platform</h3>
+        <p>iOS, Android, macOS, Windows, and Linux. Native apps for each platform. Biometric unlock on mobile. Browser extensions for Chrome, Firefox, Safari, and Edge. One vault, every device.</p>
+      </div>
+
+      <div class="feature-card reveal delay-1">
+        <div class="icon">👨‍👩‍👧</div>
+        <h3>Family Sharing</h3>
+        <p>Share vault items with family members using granular permissions. Share a credential without revealing the password. Revoke access instantly. Emergency access for trusted contacts. Family-grade security.</p>
+      </div>
+
+      <div class="feature-card reveal delay-2">
+        <div class="icon">🚨</div>
+        <h3>Breach Monitoring</h3>
+        <p>ARCZT checks your credentials against known breach databases — locally. No credential hashes sent to remote servers. If your password appears in a breach, you'll know immediately. Powered by Vigilar's breach detection engine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENCRYPTION DEEP DIVE ═══ -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Encryption</div>
+      <h2 class="section-title">Two layers. <span class="accent">Zero compromises.</span></h2>
+      <p class="section-subtitle">Classical encryption for today. Post-quantum encryption for tomorrow. Both layers, every credential, all the time.</p>
+    </div>
+
+    <div class="encryption-section reveal">
+      <div class="encryption-visual">
+        <div class="vault-visual">🔐</div>
+      </div>
+      <div>
+        <h3 style="font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-lg);">How it works</h3>
+        <ul class="encryption-features">
+          <li><span class="check">✓</span> <strong>Layer 1 — AES-256-GCM:</strong> Authenticated symmetric encryption. Your vault is encrypted with a key derived from your master password using Argon2id key derivation.</li>
+          <li><span class="check">✓</span> <strong>Layer 2 — Post-Quantum Lattice:</strong> Module-Lattice-Based KEM (ML-KEM-768) wraps the AES key. Even a quantum computer can't break it.</li>
+          <li><span class="check">✓</span> <strong>Key Derivation:</strong> Argon2id with high memory and iteration parameters. Resistant to GPU and ASIC attacks.</li>
+          <li><span class="check">✓</span> <strong>Peer-to-Peer Sync:</strong> Devices sync directly over end-to-end encrypted local network or Tor. No cloud relay.</li>
+          <li><span class="check">✓</span> <strong>Zero-Knowledge:</strong> We never receive your vault, your master password, or your encryption keys. By architecture.</li>
+        </ul>
+        <div class="encryption-specs">
+          <span class="encryption-spec-pill">AES-256-GCM</span>
+          <span class="encryption-spec-pill">ML-KEM-768</span>
+          <span class="encryption-spec-pill">Argon2id</span>
+          <span class="encryption-spec-pill">E2E Encrypted</span>
+          <span class="encryption-spec-pill">P1-P7 Redlines</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLATFORMS ═══ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Platforms</div>
+      <h2 class="section-title">Every device. <span class="accent">One vault.</span></h2>
+      <p class="section-subtitle">Native apps for every platform. Sync peer-to-peer between your devices.</p>
+    </div>
+
+    <div class="platforms-grid">
+      <div class="platform-card reveal">
+        <div class="p-icon">🍎</div>
+        <div class="p-name">iOS</div>
+      </div>
+      <div class="platform-card reveal delay-1">
+        <div class="p-icon">🤖</div>
+        <div class="p-name">Android</div>
+      </div>
+      <div class="platform-card reveal delay-2">
+        <div class="p-icon">🖥️</div>
+        <div class="p-name">macOS</div>
+      </div>
+      <div class="platform-card reveal delay-3">
+        <div class="p-icon">🪟</div>
+        <div class="p-name">Windows</div>
+      </div>
+      <div class="platform-card reveal delay-4">
+        <div class="p-icon">🐧</div>
+        <div class="p-name">Linux</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAMILY SHARING ═══ -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Family Sharing</div>
+      <h2 class="section-title">Share without <span class="accent">exposing</span></h2>
+      <p class="section-subtitle">Granular permissions for family vault sharing. Share access, not passwords.</p>
+    </div>
+
+    <div class="sharing-grid">
+      <div class="sharing-card reveal">
+        <div class="icon">🔗</div>
+        <h4>Share Access, Not Passwords</h4>
+        <p>Grant a family member access to a credential without showing them the password. They can use it to autofill logins — without ever seeing the secret.</p>
+      </div>
+      <div class="sharing-card reveal delay-1">
+        <div class="icon">⏰</div>
+        <h4>Time-Limited Access</h4>
+        <p>Share credentials with an expiry. Access automatically revokes after a set period. No manual cleanup needed.</p>
+      </div>
+      <div class="sharing-card reveal delay-2">
+        <div class="icon">🚨</div>
+        <h4>Emergency Access</h4>
+        <p>Designate trusted contacts who can request access to your vault in an emergency. Configurable waiting periods and approvals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ REDLINES ═══ -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-label">// Redlines</div>
+      <h2 class="section-title">P1-P7. <span class="accent">Hardcoded.</span></h2>
+      <p class="section-subtitle">Same redlines as every Aethel Guard product. Enforced at the architecture level, not by policy.</p>
+    </div>
+
+    <div class="redlines-grid">
+      <div class="redline-card reveal">
+        <div class="redline-badge">P1</div>
+        <div class="body">
+          <h4>No PII Exfiltration</h4>
+          <p>Your vault, your master password, your encryption keys — never leave your device. Hardcoded. No override. No exception.</p>
+        </div>
+      </div>
+      <div class="redline-card reveal delay-1">
+        <div class="redline-badge">P2</div>
+        <div class="body">
+          <h4>No Bypass</h4>
+          <p>Security constraints cannot be circumvented. No debug mode, no admin override, no backdoor.</p>
+        </div>
+      </div>
+      <div class="redline-card reveal">
+        <div class="redline-badge">P5</div>
+        <div class="body">
+          <h4>No Unapproved External Calls</h4>
+          <p>ARCZT makes zero network calls to external services. All operations are local. No analytics, no telemetry, no "phone home."</p>
+        </div>
+      </div>
+      <div class="redline-card reveal delay-1">
+        <div class="redline-badge">P6</div>
+        <div class="body">
+          <h4>No Data Retention</h4>
+          <p>No vault data is retained on any server. There is no server. Your vault exists only on your devices.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--space-2xl);" class="reveal">
+      <a href="../privacy/index.html" class="btn btn-secondary">Read the Full Privacy Policy →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TECH PILLS ═══ -->
+<section class="section" style="background: var(--bg-secondary); padding: var(--space-2xl) 0;">
+  <div class="section-inner" style="text-align: center;">
+    <div class="section-label reveal" style="margin-bottom: var(--space-lg);">// Technology</div>
+    <div class="tech-pills reveal">
+      <span class="tech-pill">AES-256-GCM</span>
+      <span class="tech-pill">ML-KEM-768</span>
+      <span class="tech-pill">Argon2id</span>
+      <span class="tech-pill">Zero-Knowledge</span>
+      <span class="tech-pill">On-Device</span>
+      <span class="tech-pill">P2P Sync</span>
+      <span class="tech-pill">P1-P7 Redlines</span>
+      <span class="tech-pill">No Cloud</span>
+      <span class="tech-pill">No Telemetry</span>
+      <span class="tech-pill">Open Source</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="section-inner">
+    <div class="section-label">// Get Started</div>
+    <h2>Your vault. <span class="accent">Your secrets.</span></h2>
+    <p>Coming soon. Open source. Zero-knowledge. Quantum-resistant. Watch the repo for updates.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;">
+      <a href="https://github.com/Aethel-Guard/ARCZT-Personal-Vault" target="_blank" class="btn btn-primary">
+        View on GitHub <span class="arrow">→</span>
+      </a>
+      <a href="../../index.html#products" class="btn btn-secondary">
+        Other Products
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="../services/index.html#data-sovereignty">Data Sovereignty</a></li>
+        <li><a href="../services/index.html#redesign">System Redesign</a></li>
+        <li><a href="../services/index.html#incident-response">Incident Response</a></li>
+        <li><a href="../services/index.html#audit">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="index.html">ARCZT Personal Vault</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/Aethel-Guard/ARCZT-Personal-Vault" target="_blank">GitHub</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
