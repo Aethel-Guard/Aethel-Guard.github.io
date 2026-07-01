@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Sovereignty Architecture — Aethel Guard</title>
+  <meta name="description" content="Design systems where your data stays yours — by architecture, not by policy. GDPR, DORA, NIS2 compliance-by-design. Data residency mapping, encryption architecture, and supplier security assessment.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* ── Page-specific styles ── */
+    .service-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.15) 0%, transparent 70%),
+        radial-gradient(circle at 15% 85%, rgba(245, 166, 35, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .service-hero .container { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 0 var(--space-lg); }
+    .service-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-lg); }
+    .service-hero h1 .accent { color: var(--accent); }
+    .service-hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto var(--space-xl); line-height: 1.6; }
+
+    .service-section { padding: var(--space-3xl) 0; }
+    .service-section:nth-child(even) { background: var(--bg-secondary); }
+    .service-section-inner { max-width: 960px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+    .service-header { margin-bottom: var(--space-2xl); }
+    .service-number { font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
+    .service-header h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: var(--space-md); }
+    .service-header p { font-size: 1.125rem; color: var(--text-secondary); line-height: 1.7; max-width: 680px; }
+
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    @media (max-width: 768px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .feature-card:hover {
+      border-color: var(--cyan-border);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: var(--space-sm); }
+    .feature-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md); }
+    .feature-card ul { list-style: none; padding: 0; }
+    .feature-card li { font-size: 0.85rem; color: var(--text-secondary); padding: var(--space-xs) 0; padding-left: 1.25rem; position: relative; }
+    .feature-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+
+    /* Benefits grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .benefits-grid { grid-template-columns: 1fr; } }
+
+    .benefit-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .benefit-card:hover {
+      border-color: var(--accent-border);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .benefit-card .icon { font-size: 1.75rem; margin-bottom: var(--space-sm); }
+    .benefit-card h4 { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-xs); color: var(--text-primary); }
+    .benefit-card p { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
+
+    /* Compliance badges */
+    .compliance-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      justify-content: center;
+      margin-top: var(--space-xl);
+    }
+    .compliance-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-default);
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+    .compliance-pill strong { color: var(--accent); }
+
+    /* Pricing note */
+    .pricing-note {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl) var(--space-2xl);
+      margin: var(--space-2xl) 0;
+      text-align: center;
+    }
+    .pricing-note h3 { font-size: 1.25rem; margin-bottom: var(--space-md); }
+    .pricing-note p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .pricing-note .btn { margin-top: var(--space-lg); }
+
+    /* CTA section */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-5xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .cta-section h2 { font-family: var(--font-display); font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl)); font-weight: 700; margin-bottom: var(--space-md); }
+    .cta-section p { font-size: var(--text-lg); color: var(--text-secondary); margin-bottom: var(--space-2xl); }
+
+    /* Engagement flow */
+    .engagement-flow { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; justify-content: center; margin: var(--space-2xl) 0; }
+    .engagement-step {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-lg); text-align: center; min-width: 140px; flex: 1; max-width: 200px;
+    }
+    .engagement-step .step-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+    .engagement-step h4 { font-size: 0.95rem; margin: var(--space-sm) 0; }
+    .engagement-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .engagement-arrow { color: var(--text-muted); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="index.html" style="color: var(--accent);">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="service-hero">
+  <div class="container">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="section-label reveal">// Service 01</div>
+    <h1 class="reveal">Data Sovereignty <span class="accent">Architecture</span></h1>
+    <p class="reveal">Design systems where your data stays yours — by architecture, not by policy. We map every data flow, identify sovereignty risks, and architect solutions that make compliance a structural guarantee.</p>
+    <div class="compliance-bar reveal">
+      <span class="compliance-pill"><strong>GDPR</strong> Art. 25</span>
+      <span class="compliance-pill"><strong>DORA</strong> ICT Risk</span>
+      <span class="compliance-pill"><strong>NIS2</strong> Measures</span>
+      <span class="compliance-pill"><strong>AI Act</strong> Transparency</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OVERVIEW ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Why data sovereignty</div>
+      <h2>Compliance by <span class="accent">architecture</span>, not by paperwork.</h2>
+      <p>European regulation isn't a suggestion — it's the operating environment. GDPR, DORA, NIS2, and the AI Act impose real obligations on how data is stored, processed, and transferred. We make compliance a structural guarantee, not a procedural promise.</p>
+    </div>
+
+    <div class="benefits-grid reveal">
+      <div class="benefit-card">
+        <div class="icon">🏛️</div>
+        <h4>EU Data Residency</h4>
+        <p>Data stays in your jurisdiction. No US cloud dependencies. No CLOUD Act exposure.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">🔐</div>
+        <h4>Encryption by Design</h4>
+        <p>End-to-end encryption with HSM-backed key management. Even we can't read your data.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">📋</div>
+        <h4>Audit-Ready</h4>
+        <p>Every data flow documented. Every processor assessed. Ready for regulator review at any time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURE SECTIONS ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// What we do</div>
+      <h2>Four pillars of <span class="accent">data sovereignty</span></h2>
+      <p>Each engagement is tailored to your regulatory landscape, infrastructure, and risk profile. Here's what a typical data sovereignty architecture engagement covers.</p>
+    </div>
+
+    <div class="feature-grid reveal">
+      <div class="feature-card">
+        <h3>🗺️ Data Residency Mapping</h3>
+        <p>Full analysis of where your data lives, moves, and rests — across clouds, regions, and third parties.</p>
+        <ul>
+          <li>Cloud region inventory and data flow mapping</li>
+          <li>Third-party data processor audit</li>
+          <li>Cross-border transfer risk assessment</li>
+          <li>Data classification and sensitivity tagging</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>🏛️ Compliance-by-Design</h3>
+        <p>Architecture that makes GDPR, DORA, NIS2, and data localisation requirements structural — not procedural.</p>
+        <ul>
+          <li>GDPR Article 25 data protection by design</li>
+          <li>DORA ICT risk management framework</li>
+          <li>NIS2 security measures and reporting</li>
+          <li>Sector-specific compliance (health, finance, energy)</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>🔐 Encryption Architecture</h3>
+        <p>Key management, encryption at rest and in transit, and HSM integration — designed so that even we can't read your data.</p>
+        <ul>
+          <li>End-to-end encryption architecture</li>
+          <li>HSM and key management design</li>
+          <li>Zero-knowledge proof integration</li>
+          <li>Homomorphic encryption assessment</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>🤝 Supplier Security Assessment</h3>
+        <p>Evaluate every vendor and processor in your supply chain for data sovereignty risks — before they become incidents.</p>
+        <ul>
+          <li>Vendor data handling questionnaire and audit</li>
+          <li>Sub-processor chain analysis</li>
+          <li>Contractual data protection review</li>
+          <li>Ongoing monitoring framework design</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENGAGEMENT FLOW ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// How we work</div>
+      <h2>Every engagement follows a <span class="accent">disciplined process</span></h2>
+    </div>
+    <div class="engagement-flow reveal">
+      <div class="engagement-step"><div class="step-num">01</div><h4>Scoping</h4><p>1-2 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">02</div><h4>Assessment</h4><p>2-4 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">03</div><h4>Architecture</h4><p>2-6 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">04</div><h4>Implementation</h4><p>Ongoing</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">05</div><h4>Review</h4><p>30/60/90 day</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="pricing-note reveal">
+      <h3>From €5,000 for a data sovereignty assessment</h3>
+      <p>Full architecture engagements typically run 4-8 weeks. Every engagement includes a written report with prioritised recommendations and architecture diagrams.</p>
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>Start a conversation</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="section-inner">
+    <div class="section-label">Get started</div>
+    <h2>Ready to talk <span class="accent">sovereignty</span>?</h2>
+    <p>Tell us about your regulatory landscape and infrastructure. We'll respond within 24 hours with an initial assessment — no charge, no commitment.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;">
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>services@aethelguard.com</span> <span class="arrow">→</span></a>
+      <a href="index.html" class="btn btn-secondary">All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="data-sovereignty.html">Data Sovereignty</a></li>
+        <li><a href="system-redesign.html">System Redesign</a></li>
+        <li><a href="incident-response.html">Incident Response</a></li>
+        <li><a href="security-audit.html">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../arczt/index.html">ARCZT Personal Vault</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

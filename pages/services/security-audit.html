@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Architecture Audit — Aethel Guard</title>
+  <meta name="description" content="Independent security audit — not a checkbox exercise. Full-stack assessment, penetration testing, supply chain risk analysis, and executive dashboard with prioritised remediation.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* ── Page-specific styles ── */
+    .service-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.12) 0%, transparent 70%),
+        radial-gradient(circle at 85% 85%, rgba(245, 166, 35, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .service-hero .container { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 0 var(--space-lg); }
+    .service-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-lg); }
+    .service-hero h1 .accent { color: var(--accent); }
+    .service-hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto var(--space-xl); line-height: 1.6; }
+
+    .service-section { padding: var(--space-3xl) 0; }
+    .service-section:nth-child(even) { background: var(--bg-secondary); }
+    .service-section-inner { max-width: 960px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+    .service-header { margin-bottom: var(--space-2xl); }
+    .service-number { font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
+    .service-header h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: var(--space-md); }
+    .service-header p { font-size: 1.125rem; color: var(--text-secondary); line-height: 1.7; max-width: 680px; }
+
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    @media (max-width: 768px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .feature-card:hover {
+      border-color: var(--cyan-border);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: var(--space-sm); }
+    .feature-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md); }
+    .feature-card ul { list-style: none; padding: 0; }
+    .feature-card li { font-size: 0.85rem; color: var(--text-secondary); padding: var(--space-xs) 0; padding-left: 1.25rem; position: relative; }
+    .feature-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+
+    /* Benefits grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .benefits-grid { grid-template-columns: 1fr; } }
+
+    .benefit-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .benefit-card:hover {
+      border-color: var(--accent-border);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .benefit-card .icon { font-size: 1.75rem; margin-bottom: var(--space-sm); }
+    .benefit-card h4 { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-xs); color: var(--text-primary); }
+    .benefit-card p { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
+
+    /* Audit scope bars */
+    .audit-scope {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-top: var(--space-2xl);
+    }
+    .scope-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg) var(--space-xl);
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      transition: all var(--transition-default);
+    }
+    .scope-bar:hover {
+      border-color: var(--accent-border);
+      background: var(--bg-card-hover);
+    }
+    .scope-bar .scope-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .scope-bar .scope-info { flex: 1; }
+    .scope-bar h4 { font-size: 1rem; font-weight: 600; margin-bottom: var(--space-xs); }
+    .scope-bar p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .scope-bar .scope-level {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .scope-level.essential { background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3); color: #FF4757; }
+    .scope-level.important { background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.3); color: var(--accent); }
+    .scope-level.recommended { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); color: var(--cyan); }
+
+    /* Deliverables */
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .deliverables-grid { grid-template-columns: 1fr; } }
+
+    .deliverable-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg) var(--space-xl);
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-start;
+      transition: all var(--transition-default);
+    }
+    .deliverable-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+    .deliverable-card .d-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .deliverable-card h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: var(--space-xs); }
+    .deliverable-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Pricing note */
+    .pricing-note {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl) var(--space-2xl);
+      margin: var(--space-2xl) 0;
+      text-align: center;
+    }
+    .pricing-note h3 { font-size: 1.25rem; margin-bottom: var(--space-md); }
+    .pricing-note p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .pricing-note .btn { margin-top: var(--space-lg); }
+
+    /* CTA section */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-5xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .cta-section h2 { font-family: var(--font-display); font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl)); font-weight: 700; margin-bottom: var(--space-md); }
+    .cta-section p { font-size: var(--text-lg); color: var(--text-secondary); margin-bottom: var(--space-2xl); }
+
+    /* Engagement flow */
+    .engagement-flow { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; justify-content: center; margin: var(--space-2xl) 0; }
+    .engagement-step {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-lg); text-align: center; min-width: 140px; flex: 1; max-width: 200px;
+    }
+    .engagement-step .step-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+    .engagement-step h4 { font-size: 0.95rem; margin: var(--space-sm) 0; }
+    .engagement-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .engagement-arrow { color: var(--text-muted); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="index.html" style="color: var(--accent);">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="service-hero">
+  <div class="container">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="section-label reveal">// Service 04</div>
+    <h1 class="reveal">Security Architecture <span class="accent">Audit</span></h1>
+    <p class="reveal">Independent review of your security posture — not a checkbox exercise. We assess infrastructure, applications, data, identity, and supply chain. Then we give you a prioritised roadmap that an engineer can actually implement.</p>
+  </div>
+</section>
+
+<!-- ═══ OVERVIEW ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Why audit</div>
+      <h2>Not a 200-page PDF that <span class="accent">gathers dust</span>.</h2>
+      <p>Most security audits tell you what's wrong and leave you to figure out the rest. Ours come with a prioritised, risk-scored remediation roadmap — categorised by essential, important, and recommended — so your team knows exactly what to fix first, what can wait, and what's nice-to-have.</p>
+    </div>
+
+    <div class="benefits-grid reveal">
+      <div class="benefit-card">
+        <div class="icon">🔍</div>
+        <h4>Full-Stack Review</h4>
+        <p>Infrastructure, application, data, identity — assessed by people who build security products.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">📊</div>
+        <h4>Risk-Scored</h4>
+        <p>Every finding scored with CVSS. Prioritised roadmap, not a raw list of problems.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">🚀</div>
+        <h4>Actionable</h4>
+        <p>Detection rules, Terraform modules, architecture diagrams — not just recommendations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AUDIT SCOPE ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Audit scope</div>
+      <h2>What we <span class="accent">assess</span></h2>
+      <p>Every audit covers five domains. Each is assessed independently, scored, and mapped to a prioritised remediation roadmap.</p>
+    </div>
+
+    <div class="audit-scope reveal">
+      <div class="scope-bar">
+        <div class="scope-icon">🖥️</div>
+        <div class="scope-info">
+          <h4>Infrastructure & Cloud</h4>
+          <p>Cloud configuration, network architecture, access controls, logging and monitoring coverage</p>
+        </div>
+        <span class="scope-level essential">Essential</span>
+      </div>
+      <div class="scope-bar">
+        <div class="scope-icon">📱</div>
+        <div class="scope-info">
+          <h4>Application Security</h4>
+          <p>SAST/DAST, API security, authentication, session management, input validation</p>
+        </div>
+        <span class="scope-level essential">Essential</span>
+      </div>
+      <div class="scope-bar">
+        <div class="scope-icon">🔐</div>
+        <div class="scope-info">
+          <h4>Data & Encryption</h4>
+          <p>Data flow analysis, encryption at rest and in transit, key management, data classification</p>
+        </div>
+        <span class="scope-level essential">Essential</span>
+      </div>
+      <div class="scope-bar">
+        <div class="scope-icon">👤</div>
+        <div class="scope-info">
+          <h4>Identity & Access</h4>
+          <p>IAM review, MFA coverage, privileged access, service accounts, access reviews</p>
+        </div>
+        <span class="scope-level important">Important</span>
+      </div>
+      <div class="scope-bar">
+        <div class="scope-icon">🔗</div>
+        <div class="scope-info">
+          <h4>Supply Chain</h4>
+          <p>Third-party vendor assessment, SBOM analysis, open source dependency risk, contractual review</p>
+        </div>
+        <span class="scope-level recommended">Recommended</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURE SECTIONS ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// What we do</div>
+      <h2>Four pillars of a <span class="accent">security audit</span></h2>
+      <p>Each audit is tailored to your stack, threat model, and compliance requirements. Here's what a typical full-stack security audit includes.</p>
+    </div>
+
+    <div class="feature-grid reveal">
+      <div class="feature-card">
+        <h3>🔍 Full-Stack Assessment</h3>
+        <p>Infrastructure, application, data, identity — everything, assessed by people who build security products.</p>
+        <ul>
+          <li>Infrastructure and cloud configuration review</li>
+          <li>Application security assessment (SAST/DAST)</li>
+          <li>Data flow and storage analysis</li>
+          <li>Identity and access management review</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>⚔️ Penetration Testing</h3>
+        <p>Not a scan — a manual, creative assessment by people who understand both attack and defense.</p>
+        <ul>
+          <li>External and internal penetration testing</li>
+          <li>Web application and API testing</li>
+          <li>Red team engagement simulation</li>
+          <li>Physical security assessment (where applicable)</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>🔗 Supply Chain Risk</h3>
+        <p>Your security is only as strong as your weakest vendor. We evaluate your entire supply chain.</p>
+        <ul>
+          <li>Third-party vendor security assessment</li>
+          <li>Software bill of materials (SBOM) analysis</li>
+          <li>Open source dependency risk evaluation</li>
+          <li>Contractual security requirement review</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <h3>📊 Executive Dashboard</h3>
+        <p>Prioritised, actionable remediation plan — not a 200-page PDF that gathers dust.</p>
+        <ul>
+          <li>Risk-scored finding catalog with CVSS</li>
+          <li>Prioritised remediation roadmap</li>
+          <li>Executive summary with business impact</li>
+          <li>Quarterly reassessment programme</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DELIVERABLES ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Deliverables</div>
+      <h2>What you <span class="accent">get</span></h2>
+      <p>Nothing that gathers dust. Everything an engineer can actually use.</p>
+    </div>
+
+    <div class="deliverables-grid reveal">
+      <div class="deliverable-card">
+        <div class="d-icon">📄</div>
+        <div>
+          <h4>Written Report</h4>
+          <p>Full technical report with findings, CVSS scores, and detailed remediation steps.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-icon">📊</div>
+        <div>
+          <h4>Executive Summary</h4>
+          <p>Business-impact summary for leadership — risk, priorities, and resource needs.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-icon">🗺️</div>
+        <div>
+          <h4>Remediation Roadmap</h4>
+          <p>Prioritised, risk-scored plan with timelines, effort estimates, and dependencies.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-icon">🛠️</div>
+        <div>
+          <h4>Technical Artifacts</h4>
+          <p>Detection rules, Terraform modules, architecture diagrams — ready to deploy.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-icon">🗣️</div>
+        <div>
+          <h4>Engineering Walkthrough</h4>
+          <p>Session with your engineering team to walk through findings and answer questions.</p>
+        </div>
+      </div>
+      <div class="deliverable-card">
+        <div class="d-icon">🔄</div>
+        <div>
+          <h4>Quarterly Reassessment</h4>
+          <p>Optional quarterly reassessment programme to track progress and catch new risks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENGAGEMENT FLOW ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// How we work</div>
+      <h2>Every engagement follows a <span class="accent">disciplined process</span></h2>
+    </div>
+    <div class="engagement-flow reveal">
+      <div class="engagement-step"><div class="step-num">01</div><h4>Scoping</h4><p>1-2 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">02</div><h4>Assessment</h4><p>2-4 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">03</div><h4>Architecture</h4><p>2-6 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">04</div><h4>Implementation</h4><p>Ongoing</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">05</div><h4>Review</h4><p>30/60/90 day</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="pricing-note reveal">
+      <h3>From €10,000 for a full-stack security audit</h3>
+      <p>Standard audit: 3-4 weeks. Full red team engagement: 6-8 weeks. Every audit includes a written report, executive summary, and a walkthrough with your engineering team.</p>
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>Start a conversation</span> <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="section-inner">
+    <div class="section-label">Get started</div>
+    <h2>Ready to talk <span class="accent">audit</span>?</h2>
+    <p>Tell us about your stack and compliance requirements. We'll respond within 24 hours with an initial assessment — no charge, no commitment.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;">
+      <a href="mailto:services@aethelguard.com" class="btn btn-primary"><span>services@aethelguard.com</span> <span class="arrow">→</span></a>
+      <a href="index.html" class="btn btn-secondary">All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="data-sovereignty.html">Data Sovereignty</a></li>
+        <li><a href="system-redesign.html">System Redesign</a></li>
+        <li><a href="incident-response.html">Incident Response</a></li>
+        <li><a href="security-audit.html">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../arczt/index.html">ARCZT Personal Vault</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

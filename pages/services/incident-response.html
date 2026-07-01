@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incident Response & Forensics — Aethel Guard</title>
+  <meta name="description" content="4-hour SLA incident response. Rapid containment, digital forensics, remediation, and post-incident review. AI-accelerated forensic analysis. Retainer or per-incident.">
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    /* ── Page-specific styles ── */
+    .service-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 71, 87, 0.12) 0%, transparent 70%),
+        radial-gradient(circle at 15% 85%, rgba(245, 166, 35, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .service-hero .container { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 0 var(--space-lg); }
+    .service-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-lg); }
+    .service-hero h1 .accent { color: var(--accent); }
+    .service-hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto var(--space-xl); line-height: 1.6; }
+
+    /* Emergency banner */
+    .emergency-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-lg);
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: #FF4757;
+      margin-bottom: var(--space-xl);
+    }
+    .emergency-banner .pulse {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #FF4757;
+      animation: pulse-red 2s infinite;
+    }
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(255, 71, 87, 0); }
+    }
+
+    .service-section { padding: var(--space-3xl) 0; }
+    .service-section:nth-child(even) { background: var(--bg-secondary); }
+    .service-section-inner { max-width: 960px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+    .service-header { margin-bottom: var(--space-2xl); }
+    .service-number { font-family: var(--font-mono); font-size: 0.875rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: var(--space-sm); }
+    .service-header h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: var(--space-md); }
+    .service-header p { font-size: 1.125rem; color: var(--text-secondary); line-height: 1.7; max-width: 680px; }
+
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); }
+    @media (max-width: 768px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: all var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card.ir-card {
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    .feature-card.ir-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #FF4757, transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+    .feature-card.ir-card:hover {
+      border-color: rgba(239, 68, 68, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(255, 71, 87, 0.08);
+    }
+    .feature-card.ir-card:hover::before { opacity: 1; }
+    .feature-card h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: var(--space-sm); }
+    .feature-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md); }
+    .feature-card ul { list-style: none; padding: 0; }
+    .feature-card li { font-size: 0.85rem; color: var(--text-secondary); padding: var(--space-xs) 0; padding-left: 1.25rem; position: relative; }
+    .feature-card li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+
+    /* SLA timeline */
+    .sla-timeline {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: var(--space-2xl) 0;
+    }
+    .sla-step {
+      flex: 1;
+      min-width: 180px;
+      max-width: 240px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-align: center;
+      position: relative;
+    }
+    .sla-step .sla-time {
+      font-family: var(--font-mono);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: #FF4757;
+      margin-bottom: var(--space-xs);
+    }
+    .sla-step h4 { font-size: 0.95rem; margin-bottom: var(--space-xs); }
+    .sla-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .sla-step .sla-connector {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+    .sla-step:last-child .sla-connector { display: none; }
+
+    /* Benefits grid */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) { .benefits-grid { grid-template-columns: 1fr; } }
+
+    .benefit-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      text-align: center;
+      transition: all var(--transition-default);
+    }
+    .benefit-card:hover {
+      border-color: var(--accent-border);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .benefit-card .icon { font-size: 1.75rem; margin-bottom: var(--space-sm); }
+    .benefit-card h4 { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-xs); color: var(--text-primary); }
+    .benefit-card p { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
+
+    /* Pricing note — IR styled with red accent */
+    .pricing-note {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl) var(--space-2xl);
+      margin: var(--space-2xl) 0;
+      text-align: center;
+    }
+    .pricing-note.ir-pricing {
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+    .pricing-note h3 { font-size: 1.25rem; margin-bottom: var(--space-md); }
+    .pricing-note h3.ir-heading { color: #ef4444; }
+    .pricing-note p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .pricing-note .btn { margin-top: var(--space-lg); }
+    .pricing-note .btn.ir-btn {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    /* CTA section */
+    .cta-section {
+      text-align: center;
+      padding: var(--space-5xl) var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section .section-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .cta-section h2 { font-family: var(--font-display); font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl)); font-weight: 700; margin-bottom: var(--space-md); }
+    .cta-section p { font-size: var(--text-lg); color: var(--text-secondary); margin-bottom: var(--space-2xl); }
+
+    /* Engagement flow */
+    .engagement-flow { display: flex; align-items: center; gap: var(--space-lg); flex-wrap: wrap; justify-content: center; margin: var(--space-2xl) 0; }
+    .engagement-step {
+      background: var(--bg-card); border: 1px solid var(--border-default); border-radius: var(--radius-lg);
+      padding: var(--space-lg); text-align: center; min-width: 140px; flex: 1; max-width: 200px;
+    }
+    .engagement-step .step-num { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+    .engagement-step h4 { font-size: 0.95rem; margin: var(--space-sm) 0; }
+    .engagement-step p { font-size: 0.8rem; color: var(--text-muted); }
+    .engagement-arrow { color: var(--text-muted); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <svg class="logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+        <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+      </svg>
+      <div class="nav-brand-text">
+        <span class="nav-brand-name">Aethel Guard</span>
+        <span class="nav-brand-tagline">Security Intelligence</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="index.html" style="color: var(--accent);">Services</a></li>
+      <li><a href="../../index.html#products">Products</a></li>
+      <li><a href="../../index.html#journey">How It Works</a></li>
+      <li><a href="../docs/index.html">Docs</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="service-hero">
+  <div class="container">
+    <img src="../../assets/img/logo.svg" alt="Aethel Guard" style="width: 160px; margin-bottom: var(--space-lg); opacity: 0.95;">
+    <div class="emergency-banner reveal">
+      <span class="pulse"></span>
+      4-hour SLA · Active incident? Call now.
+    </div>
+    <div class="section-label reveal">// Service 03</div>
+    <h1 class="reveal">Incident Response <span class="accent">& Forensics</span></h1>
+    <p class="reveal">When something's already happened. 4-hour SLA for initial response. We contain, investigate, and remediate — then harden so it doesn't happen again.</p>
+  </div>
+</section>
+
+<!-- ═══ SLA TIMELINE ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Response timeline</div>
+      <h2>What happens in the first <span class="accent">4 hours</span></h2>
+      <p>When you call us for an active incident, the clock starts immediately. Here's what the first hours look like.</p>
+    </div>
+
+    <div class="sla-timeline reveal">
+      <div class="sla-step">
+        <div class="sla-time">0-30 min</div>
+        <h4>Initial Call</h4>
+        <p>Scope assessment, team mobilisation, initial containment decision</p>
+        <div class="sla-connector">→</div>
+      </div>
+      <div class="sla-step">
+        <div class="sla-time">30-60 min</div>
+        <h4>Deploy</h4>
+        <p>Remote deployment alongside your team or independently</p>
+        <div class="sla-connector">→</div>
+      </div>
+      <div class="sla-step">
+        <div class="sla-time">1-2 hrs</div>
+        <h4>Contain</h4>
+        <p>Network isolation, credential rotation, lateral movement blocking</p>
+        <div class="sla-connector">→</div>
+      </div>
+      <div class="sla-step">
+        <div class="sla-time">2-4 hrs</div>
+        <h4>Assess</h4>
+        <p>IoC identification, initial forensic sweep, stakeholder briefing</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OVERVIEW ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// Why our IR</div>
+      <h2>We'd rather you <span class="accent">call us before</span> something happens.</h2>
+      <p>The cheapest incident response is the one you never need. But when you do need it, you need it fast. Our retainer clients get priority response, pre-scoped environments, and proactive hardening that prevents most incidents from happening in the first place.</p>
+    </div>
+
+    <div class="benefits-grid reveal">
+      <div class="benefit-card">
+        <div class="icon">⚡</div>
+        <h4>4-Hour SLA</h4>
+        <p>From your call to initial response. Retainer clients get priority positioning.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">🤖</div>
+        <h4>AI-Accelerated</h4>
+        <p>AI forensics and triage assist every engagement. Human validation on every recommendation.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="icon">🔒</div>
+        <h4>Evidence-Grade</h4>
+        <p>Chain of custody, admissible evidence, complete timeline reconstruction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURE SECTIONS ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// What we do</div>
+      <h2>Four phases of <span class="accent">incident response</span></h2>
+      <p>Every incident is different, but the discipline is the same: contain, investigate, remediate, review. Here's what each phase covers.</p>
+    </div>
+
+    <div class="feature-grid reveal">
+      <div class="feature-card ir-card">
+        <h3>🚨 Rapid Containment</h3>
+        <p>First 4 hours: isolate, contain, stop the bleeding. We deploy alongside your team or independently.</p>
+        <ul>
+          <li>Network isolation and lateral movement blocking</li>
+          <li>Credential rotation and access revocation</li>
+          <li>Indicator of compromise (IoC) identification</li>
+          <li>Stakeholder communication templates</li>
+        </ul>
+      </div>
+
+      <div class="feature-card ir-card">
+        <h3>🔍 Digital Forensics</h3>
+        <p>Find root cause, preserve evidence, build the timeline. AI-accelerated forensic analysis assists every engagement.</p>
+        <ul>
+          <li>Evidence preservation and chain of custody</li>
+          <li>Memory and disk forensics</li>
+          <li>Log analysis and timeline reconstruction</li>
+          <li>AI-assisted anomaly detection</li>
+        </ul>
+      </div>
+
+      <div class="feature-card ir-card">
+        <h3>🛠️ Remediation</h3>
+        <p>Fix what was broken. Patch entry points, close gaps, and verify containment is complete.</p>
+        <ul>
+          <li>Root cause remediation plan</li>
+          <li>Vulnerability patching and hardening</li>
+          <li>Monitoring rule deployment</li>
+          <li>Verification testing</li>
+        </ul>
+      </div>
+
+      <div class="feature-card ir-card">
+        <h3>📋 Post-Incident Review</h3>
+        <p>No blame, no theatre — just honest assessment and concrete hardening recommendations.</p>
+        <ul>
+          <li>Blameless post-incident review facilitation</li>
+          <li>Timeline reconstruction report</li>
+          <li>Prioritised hardening recommendations</li>
+          <li>Monitoring and detection improvements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENGAGEMENT FLOW ═══ -->
+<section class="service-section" style="background: var(--bg-secondary);">
+  <div class="service-section-inner">
+    <div class="service-header reveal">
+      <div class="section-label">// How we work</div>
+      <h2>Every engagement follows a <span class="accent">disciplined process</span></h2>
+    </div>
+    <div class="engagement-flow reveal">
+      <div class="engagement-step"><div class="step-num">01</div><h4>Scoping</h4><p>1-2 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">02</div><h4>Assessment</h4><p>2-4 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">03</div><h4>Architecture</h4><p>2-6 weeks</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">04</div><h4>Implementation</h4><p>Ongoing</p></div>
+      <div class="engagement-arrow">→</div>
+      <div class="engagement-step"><div class="step-num">05</div><h4>Review</h4><p>30/60/90 day</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="service-section">
+  <div class="service-section-inner">
+    <div class="pricing-note ir-pricing reveal">
+      <h3 class="ir-heading">4-hour SLA · Retainer or per-incident</h3>
+      <p>Incident response retainers start at €2,500/month. Per-incident engagements start at €15,000. We'd rather you call us before something happens.</p>
+      <a href="mailto:ir@aethelguard.com" class="btn btn-primary ir-btn"><span>Emergency: ir@aethelguard.com</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="section-inner">
+    <div class="section-label">Get started</div>
+    <h2>Don't wait for the <span class="accent">incident</span>.</h2>
+    <p>The best time to engage incident response is before you need it. The second best time is now. Talk to us about a retainer or per-incident arrangement.</p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; flex-wrap: wrap;">
+      <a href="mailto:ir@aethelguard.com" class="btn btn-primary"><span>ir@aethelguard.com</span> <span class="arrow">→</span></a>
+      <a href="index.html" class="btn btn-secondary">All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <svg class="logo-mark" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3 L5 10 L5 20 C5 26 9 29 16 31 C23 29 27 26 27 20 L27 10 Z" fill="#0F1520" stroke="#D9AB52" stroke-width="1.5"/>
+          <path d="M12 14 L16 8 L20 14 M10 18 L22 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="16" cy="23" r="1.5" fill="#D9AB52"/>
+        </svg>
+        Aethel Guard
+      </div>
+      <p>Security intelligence for individuals, small businesses, and mid-market. Built in the open. Powered by our own AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="data-sovereignty.html">Data Sovereignty</a></li>
+        <li><a href="system-redesign.html">System Redesign</a></li>
+        <li><a href="incident-response.html">Incident Response</a></li>
+        <li><a href="security-audit.html">Security Audit</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="../vigilar/index.html">Vigilar</a></li>
+        <li><a href="../vigilar-guard/index.html">Vigilar Guard</a></li>
+        <li><a href="../ai-soc-team/index.html">AI SOC Team</a></li>
+        <li><a href="../arczt/index.html">ARCZT Personal Vault</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="../docs/index.html">Documentation</a></li>
+        <li><a href="../integrations/index.html">Integrations</a></li>
+        <li><a href="../privacy/index.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="../privacy/index.html">Privacy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Responsible Disclosure</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Aethel Guard. All rights reserved.</span>
+    <span style="font-family: var(--font-mono); color: var(--text-muted);">Æ</span>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
